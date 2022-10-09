@@ -4,6 +4,32 @@ author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output: html_document
 ---
 
+```{r}
+
+suppressMessages(library(tidyverse))
+suppressMessages(library(lubridate))
+suppressMessages(library(tibble))
+suppressMessages(library(gapminder))
+suppressMessages(library(readr))
+suppressMessages(library(knitr))
+suppressMessages(library(dplyr))
+options(scipen = 999)
+```
+
+
+```{r}
+sessionInfo() 
+```
+
+
+```{r}
+read.csv(demo_r_pjanaggr3_custom_3539873_page_linear:csv
+```
+
+
+
+
+
 ```{r Calculate GDP per capita}
 library(ggplot2)
 
@@ -15,3 +41,12 @@ data_aut <- cbind(data_aut, "GDP.pc" = data_aut$rgdpe / data_aut$pop)
 ggplot(data_aut, aes(x = year, y = GDP.pc)) +
   geom_line()
 ```
+
+
+
+```{r denne formelen bruker vi til å finne gjennomsnitt ol}
+heights$heightInt <- cut(heights$height, breaks = 8)
+kable(summary(heights[,1:4]))
+
+```
+
