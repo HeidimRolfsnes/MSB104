@@ -8,13 +8,23 @@ output: html_document
 suppressMessages(library(tidyverse))
 suppressMessages(library(lubridate))
 suppressMessages(library(tibble))
-suppressMessages(library(gapminder))
 suppressMessages(library(readr))
 suppressMessages(library(knitr))
 suppressMessages(library(dplyr))
 options(scipen = 999)
 ```
 
+```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
+data <- read_csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
+head(data)
+geo<-100*data$DK/data*
+```
+
+
+
+```{r}
+RY<-cbind(data)
+```
 
 ## 4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
 
@@ -28,23 +38,6 @@ options(scipen = 999)
 
     #BnP per inbygger.
 
-    ```{r Informasjon om utvalget}
-    gapminder
-    ```
-
-## 5. Recreate the continent variable in gapminder with the new data?
-
-Vi flytter Australia og New Zealand fra Asia til Osceania for å være på line med gapminder
-
-```{r Nytt datasett}
-g_c <- read_csv("data/nama_10r_3gdp_custom_3521535_page_linear.csv")
-print(g_c)
-```
-
-
-```{r}
-spec(g_c)
-```
 
 ```{r}
     g_c <- g_c %>%
@@ -129,8 +122,8 @@ tibble(country = unique(g_c_min$name))
 ## 12. Read in the total_population and join with g_c
 
 ```{r folketall}
-pop <- read_csv("data/countries-etc-datapoints/ddf--datapoints--population_total--by--geo--time.csv",
-                 col_types = cols(time = col_date(format = "%Y")))
+pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
+                 col_types = cols(geo = col_date(obs_value = "%Y")))
 ```
 
 ```{r}
