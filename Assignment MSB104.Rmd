@@ -5,45 +5,23 @@ output:
   pdf_document: default
   html_document: default
 ---
+---
+title: "Econometriscs assignment"
+author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
+output:
+  pdf_document: default
+  html_document: default
+---
 
-<<<<<<< HEAD
-```{r}
-
-suppressMessages(library(tidyverse))
-suppressMessages(library(lubridate))
-suppressMessages(library(tibble))
-suppressMessages(library(gapminder))
-=======
 ```{r Packages}
 suppressMessages(library(tidyverse))
 suppressMessages(library(lubridate))
 suppressMessages(library(tibble))
->>>>>>> b9d32ed35d5dccccc7f0da9b489895a6d71d0b88
 suppressMessages(library(readr))
 suppressMessages(library(knitr))
 suppressMessages(library(dplyr))
 options(scipen = 999)
 ```
-<<<<<<< HEAD
-
-
-```{r}
-sessionInfo() 
-```
-
-
-```{r}
-read.csv(demo_r_pjanaggr3_custom_3539873_page_linear:csv
-```
-
-
-
-
-
-```{r Calculate GDP per capita}
-library(ggplot2)
-=======
->>>>>>> b9d32ed35d5dccccc7f0da9b489895a6d71d0b88
 
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
 data<- read.csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
@@ -52,7 +30,7 @@ head(data)
 
 data_geo <- data[data$isocode == "DK",]
 ```
-#capita
+
 ```{r}
 data_geo <- cbind (data_geo, "DK" = data_geo$rgdpe / data_geo$pop) 
 ggplot (data_geo, 
@@ -60,20 +38,7 @@ ggplot (data_geo,
     geom_line ()
 ```
 
-<<<<<<< HEAD
-
-
-```{r denne formelen bruker vi til å finne gjennomsnitt ol}
-heights$heightInt <- cut(heights$height, breaks = 8)
-kable(summary(heights[,1:4]))
-
-```
-
-=======
 ```{r Population}
 pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
                  col_types = cols(time = col_date(format = "%Y")))
 ````
-
-
->>>>>>> b9d32ed35d5dccccc7f0da9b489895a6d71d0b88
