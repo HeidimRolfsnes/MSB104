@@ -5,13 +5,6 @@ output:
   pdf_document: default
   html_document: default
 ---
----
-title: "Econometriscs assignment"
-author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
-output:
-  pdf_document: default
-  html_document: default
----
 
 ```{r Packages}
 suppressMessages(library(tidyverse))
@@ -27,17 +20,6 @@ options(scipen = 999)
 data<- read.csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
 head(data)
 ```
-
-data_geo <- data[data$isocode == "DK",]
-```
-
-```{r}
-data_geo <- cbind (data_geo, "DK" = data_geo$rgdpe / data_geo$pop) 
-ggplot (data_geo, 
-        aes (x = time_period, y = OBS_value)) +
-    geom_line ()
-```
-
 ```{r Population}
 pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
                  col_types = cols(time = col_date(format = "%Y")))
