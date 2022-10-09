@@ -1,7 +1,9 @@
 ---
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r Packages}
@@ -18,7 +20,6 @@ options(scipen = 999)
 data<- read.csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
 head(data)
 ```
-```{r}
 
 data_geo <- data[data$isocode == "DK",]
 ```
@@ -30,7 +31,7 @@ ggplot (data_geo,
     geom_line ()
 ```
 
-```{r folketall}
+```{r Population}
 pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
                  col_types = cols(time = col_date(format = "%Y")))
 ````
