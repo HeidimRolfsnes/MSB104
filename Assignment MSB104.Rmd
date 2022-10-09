@@ -1,0 +1,17 @@
+---
+title: "Econometriscs assignment"
+author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
+output: html_document
+---
+
+```{r Calculate GDP per capita}
+library(ggplot2)
+
+data <- 
+data_DK <- data[data$isocode == "AUT",]
+
+data_aut <- cbind(data_aut, "GDP.pc" = data_aut$rgdpe / data_aut$pop)
+
+ggplot(data_aut, aes(x = year, y = GDP.pc)) +
+  geom_line()
+```
