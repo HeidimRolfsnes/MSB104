@@ -23,7 +23,7 @@ head(data)
 
 data_geo <- data[data$isocode == "DK",]
 ```
-
+#capita
 ```{r}
 data_geo <- cbind (data_geo, "DK" = data_geo$rgdpe / data_geo$pop) 
 ggplot (data_geo, 
