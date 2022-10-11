@@ -14,6 +14,7 @@ suppressMessages(library(readr))
 suppressMessages(library(knitr))
 suppressMessages(library(dplyr))
 options(scipen = 999)
+
 ```
 
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
