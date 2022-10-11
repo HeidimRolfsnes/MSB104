@@ -41,23 +41,14 @@ Pop <- Pop %>%
 names(Pop)
 ```
 
-
 ```{r}
-merge.data.frame (BNP, Pop, by.x = "land", by.y = "geo")
+ BNP2<- BNP %>%
+      select(unit, land,Year, GDP) %>%
+      left_join(Pop, by = c("Year" = "Year_pop"))
+     
 ```
 
-  
 
-```{r}
- BNP <- BNP %>%
- left_join(Pop, select_all()) %>%
-```
 
-)
-
-g_c_5 <- g_c %>%
-  filter(year %in% t1) %>%
-  select(country, name, continent, year, lifeExp, pop, gdpPercap)
-dim(g_c_5)
 ```
 
