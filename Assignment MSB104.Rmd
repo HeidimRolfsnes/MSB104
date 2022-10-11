@@ -54,4 +54,14 @@ mutate(Percapita = GDP / Befolkning) %>%
 na.omit()
 ```
 
+```{r}
+summary(BNP2)
+```
+
+```{r}
+BNP2 %>%
+filter(land > DK) %>%
+	group_by(land) %>%
+	summarise(Percapita = mean(DK))
+```
 
