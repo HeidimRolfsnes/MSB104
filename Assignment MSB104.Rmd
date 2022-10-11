@@ -40,8 +40,6 @@ names(Pop)
 ```
 
 
-
-## 13. Read in the gdp_percapita_us_inflation_adjusted and call it "gdp_pc" Rename life_expectancy_years to lifeExp, population_total to pop and gdppercapita_us_inflation_adjusted to gdpPercap
   
 
 ```{r}
