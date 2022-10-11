@@ -17,10 +17,43 @@ options(scipen = 999)
 ```
 
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
-data<- read.csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
-head(data)
+BNP<- read.csv("nama_10r_3gdp.csv")
+BNP <- BNP %>% 
+      rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", land = "geo") 
 ```
-```{r Population}
-pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
-                 col_types = cols(time = col_date(format = "%Y")))
-````
+
+
+```{r navn}
+names(BNP)
+```
+
+```{r Nytt datasett}
+Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
+Pop <- Pop %>% 
+      rename(Befolkning = "OBS_VALUE",Year_pop = "TIME_PERIOD", land_pop = "geo") 
+ 
+  
+```
+
+```{r}
+names(Pop)
+```
+
+
+
+## 13. Read in the gdp_percapita_us_inflation_adjusted and call it "gdp_pc" Rename life_expectancy_years to lifeExp, population_total to pop and gdppercapita_us_inflation_adjusted to gdpPercap
+  
+
+```{r}
+ BNP <- BNP %>%
+ left_join(Pop, by = c("land_pop" = "OBS_VALUE", "year_pop" = "TIME_PERIOD")) %>%
+```
+
+)
+
+g_c_5 <- g_c %>%
+  filter(year %in% t1) %>%
+  select(country, name, continent, year, lifeExp, pop, gdpPercap)
+dim(g_c_5)
+```
+
