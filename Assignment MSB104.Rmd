@@ -44,11 +44,14 @@ names(Pop)
 ```{r}
  BNP2<- BNP %>%
       select(unit, land,Year, GDP) %>%
-      left_join(Pop, by = c("Year" = "Year_pop"))
+      left_join(Pop, by = c("Year" = "Year_pop", "land" = "geo"))
      
 ```
 
-
-
+```{r Calculate GDP per capita}
+BNP2 <- BNP2 %>%
+mutate(Percapita = GDP / Befolkning) %>%
+na.omit()
 ```
+
 
