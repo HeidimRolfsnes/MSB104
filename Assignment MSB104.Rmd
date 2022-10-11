@@ -19,6 +19,7 @@ options(scipen = 999)
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
 BNP<- read.csv("nama_10r_3gdp.csv")
 BNP <- BNP %>% 
+  select(unit, geo, TIME_PERIOD, OBS_VALUE) %>%
       rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", land = "geo") 
 ```
 
@@ -30,7 +31,8 @@ names(BNP)
 ```{r Nytt datasett}
 Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
 Pop <- Pop %>% 
-      rename(Befolkning = "OBS_VALUE",Year_pop = "TIME_PERIOD", land_pop = "geo") 
+  select(geo, TIME_PERIOD, OBS_VALUE) %>%
+      rename(Befolkning = "OBS_VALUE",Year_pop = "TIME_PERIOD") 
  
   
 ```
@@ -40,11 +42,15 @@ names(Pop)
 ```
 
 
+```{r}
+merge.data.frame (BNP, Pop, by.x = "land", by.y = "geo")
+```
+
   
 
 ```{r}
  BNP <- BNP %>%
- left_join(Pop, by = c("land_pop" = "OBS_VALUE", "year_pop" = "TIME_PERIOD")) %>%
+ left_join(Pop, select_all()) %>%
 ```
 
 )
