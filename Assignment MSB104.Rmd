@@ -103,7 +103,7 @@ filter(Land == "PT")
 	summarise(PT, GDP_per_Capita = mean(Per_capita))
 ```
 
-```{r - denne må me endre}
+```{r - Portugal samendrag}
 summary(PT)
 ```
 
