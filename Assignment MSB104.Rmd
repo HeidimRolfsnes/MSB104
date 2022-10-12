@@ -2,8 +2,9 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r Packages}
@@ -15,6 +16,15 @@ suppressMessages(library(knitr))
 suppressMessages(library(dplyr))
 options(scipen = 999)
 ```
+
+This is a collection of assignments in the subject econometrics MSB104.
+
+In this assignment we are looking at five European countries. Denmark, France, Hungary, Portugal and Slovakia. 
+In the first assignment we have collected data from Eurostats, the data contains GDP and populations for the countries but also at NUTS3 level for the last 20 years. 
+
+We collected 2 datasets, and the first thing we did was to clean the list and remove data that didn’t have any valuables. We changed the names on some of the variables. 
+After that we merged the two datasets into one.
+
 
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
 BNP<- read.csv("nama_10r_3gdp.csv")
@@ -39,6 +49,8 @@ Pop <- Pop %>%
      
 ```
 
+Then we calculated the GDP pr capita. And this we did by dividing the GDP on the population. 
+
 ```{r Calculate GDP per capita}
 BNP2 <- BNP2 %>%
 mutate(Per_capita =   GDP/Population*1000000) %>%
@@ -46,13 +58,11 @@ na.omit()
 #NA variables are removed
 ```
 
-```{r}
-f
-```
+
 
 ```{r Denmark}
 DK <- group_by(BNP2, Land, Year) %>%
-filter(Land "DK")
+filter(Land =="DK")
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
 
