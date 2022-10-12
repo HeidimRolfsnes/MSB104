@@ -20,48 +20,83 @@ options(scipen = 999)
 BNP<- read.csv("nama_10r_3gdp.csv")
 BNP <- BNP %>% 
   select(unit, geo, TIME_PERIOD, OBS_VALUE) %>%
-      rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", land = "geo") 
+      rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", Land = "geo") 
 ```
 
-
-```{r navn}
-names(BNP)
-```
-
-```{r Nytt datasett}
+```{r  Population from Portugal, France, Hungary, Slovakia and Denmark}
 Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
 Pop <- Pop %>% 
   select(geo, TIME_PERIOD, OBS_VALUE) %>%
-      rename(Befolkning = "OBS_VALUE",Year_pop = "TIME_PERIOD") 
+      rename(Population = "OBS_VALUE",Year_pop = "TIME_PERIOD") 
  
   
 ```
 
-```{r}
-names(Pop)
-```
-
-```{r}
+```{r GNP and Population - together}
  BNP2<- BNP %>%
-      select(unit, land,Year, GDP) %>%
-      left_join(Pop, by = c("Year" = "Year_pop", "land" = "geo"))
+      select(unit, Land,Year, GDP) %>%
+      left_join(Pop, by = c("Year" = "Year_pop", "Land" = "geo"))
      
 ```
 
 ```{r Calculate GDP per capita}
 BNP2 <- BNP2 %>%
-mutate(Percapita = GDP / Befolkning) %>%
+mutate(Per_capita =   GDP/Population*1000000) %>%
 na.omit()
+#NA variables are removed
 ```
 
 ```{r}
-summary(BNP2)
+
+```
+
+```{r Denmark}
+DK <- group_by(BNP2, Land, Year) %>%
+filter(Land "DK")
+	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
 
 ```{r}
-BNP2 %>%
-filter(land > DK) %>%
-	group_by(land) %>%
-	summarise(Percapita = mean(DK))
+Summary(DK)
 ```
+
+```{r France}
+FR <- group_by(BNP2, Land, Year) %>%
+filter(Land == "FR")
+	summarise(FR, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(FR)
+```
+
+```{r Hungary}
+HU <- group_by(BNP2, Land, Year) %>%
+filter(Land == "HU")
+	summarise(HU, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(HU)
+```
+
+```{r Slovakia}
+SK <- group_by(BNP2, Land, Year) %>%
+filter(Land == "SK")
+	summarise(SK, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(SK)
+```
+
+```{r Portugal}
+PT <- group_by(BNP2, Land, Year, Population, GDP) %>%
+filter(Land == "PT")
+	summarise(PT, GDP_per_Capita = mean(Per_capita))
+```
+
+```{r - denne må me endre}
+summary(PT)
+```
+
+
+
 
