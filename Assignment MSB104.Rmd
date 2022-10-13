@@ -2,8 +2,9 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r Packages}
@@ -17,11 +18,96 @@ options(scipen = 999)
 
 ```
 
+This is a collection of assignments in the subject econometrics MSB104.
+
+In this assignment we are looking at five European countries. Denmark, France, Hungary, Portugal and Slovakia. 
+In the first assignment we have collected data from Eurostats, the data contains GDP and populations for the countries but also at NUTS3 level for the last 20 years. 
+
+We collected 2 datasets, and the first thing we did was to clean the list and remove data that didn’t have any valuables. We changed the names on some of the variables. 
+After that we merged the two datasets into one.
+
+
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
-data<- read.csv("nama_10r_3gdp__custom_3521535_page_linear.csv")
-head(data)
+BNP<- read.csv("nama_10r_3gdp.csv")
+BNP <- BNP %>% 
+  select(unit, geo, TIME_PERIOD, OBS_VALUE) %>%
+      rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", Land = "geo") 
 ```
-```{r Population}
-pop <- read_csv("demo_r_pjanaggr3__custom_3539873_page_linear.csv",
-                 col_types = cols(time = col_date(format = "%Y")))
-````
+
+```{r  Population from Portugal, France, Hungary, Slovakia and Denmark}
+Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
+Pop <- Pop %>% 
+  select(geo, TIME_PERIOD, OBS_VALUE) %>%
+      rename(Population = "OBS_VALUE",Year_pop = "TIME_PERIOD") 
+ 
+  
+```
+
+```{r GNP and Population - together}
+ BNP2<- BNP %>%
+      select(unit, Land,Year, GDP) %>%
+      left_join(Pop, by = c("Year" = "Year_pop", "Land" = "geo"))
+     
+```
+
+Then we calculated the GDP pr capita. And this we did by dividing the GDP on the population. 
+
+```{r Calculate GDP per capita}
+BNP2 <- BNP2 %>%
+mutate(Per_capita =   GDP/Population*1000000) %>%
+na.omit()
+#NA variables are removed
+```
+
+
+
+```{r Denmark}
+DK <- group_by(BNP2, Land, Year) %>%
+filter(Land =="DK")
+	summarise(DK, GDP_per_Capita = mean(Per_capita))
+```
+
+```{r}
+Summary(DK)
+```
+
+```{r France}
+FR <- group_by(BNP2, Land, Year) %>%
+filter(Land == "FR")
+	summarise(FR, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(FR)
+```
+
+```{r Hungary}
+HU <- group_by(BNP2, Land, Year) %>%
+filter(Land == "HU")
+	summarise(HU, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(HU)
+```
+
+```{r Slovakia}
+SK <- group_by(BNP2, Land, Year) %>%
+filter(Land == "SK")
+	summarise(SK, GDP_per_Capita = mean(Per_capita))
+```
+```{r}
+Summary(SK)
+```
+
+```{r Portugal}
+PT <- group_by(BNP2, Land, Year, Population, GDP) %>%
+filter(Land == "PT")
+	summarise(PT, GDP_per_Capita = mean(Per_capita))
+```
+
+```{r - Portugal samendrag}
+summary(PT)
+```
+
+
+
+
