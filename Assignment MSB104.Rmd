@@ -130,7 +130,7 @@ summary(PT)
 
 
 
-Gini: 
+Gini: (fortsettelse)
 
 ```{r
 ineq(DK, type = "Gini")
