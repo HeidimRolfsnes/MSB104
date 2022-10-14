@@ -14,8 +14,10 @@ suppressMessages(library(tibble))
 suppressMessages(library(readr))
 suppressMessages(library(knitr))
 suppressMessages(library(dplyr))
-suppressMessages(library(DescTools))
+suppressMessages(library(dineq))
+suppressMessages(library(magrittr))
 options(scipen = 999)
+
 ```
 
 This is a collection of assignments in the subject econometrics MSB104.
@@ -115,39 +117,58 @@ filter(Regio_id %in% c("SK010", "SK021","SK022","SK023", "SK031", "SK032", "SK04
 summary(SK)
 ```
 
+## Portugal
+
+Finely we have a look at Portugal.
+
+### Descriptive Statistics GDP per capita & Population
 
 ```{r Portugal}
-PT <- group_by(BNP2, Regio_id, Year) %>%
+#| echo = FALSE
+#Gen data Portugal
+PT <- BNP2 %>%
 filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D","PT11E",	"PT16B",	"PT16D",	"PT16E",	"PT16F",	"PT16G",	"PT16H",	"PT16I",	"PT16J",	"PT170",	"PT181",	"PT184",	"PT185",	"PT186",	"PT187",	"PT200",	"PT300")) %>%
- select("Year", "Regio_id", "Per_capita")
-	pivot_wider(PT,names_from = "Year", values_from = "Per_capita" )
+ select("Year", "Regio_id", "Per_capita","Population") 
+```
+**Country level**
+```{r}
+#| echo = FALSE
 	summarise(PT, GDP_per_Capita = mean(Per_capita))
 ```
-
-<<<<<<< HEAD
+**Regional level (NUTS3)**
 ```{r}
-=======
-```{r - Portugal samendrag}
->>>>>>> bf94a12f5771af2c28cb79867c542ae616ea288c
-summary(PT)
+#| echo = FALSE
+	pivot_wider(PT,names_from = "Year", values_from = "Per_capita" )
+
+# Is that an informative table ?
+
 ```
 
 
+### Descriptive Statistics regional inequity (Gini Nuts2) 
 
-Gini: (fortsettelse)
 
-```{r
-ineq(DK, type = "Gini")
-```
-
-```{r
-BNP3 <- BNP2 %>%  
+```{r Portugal gini}
+#| echo = FALSE
+#Nuts 2 id
+PT %<>%  
   mutate(id_nuts2 = substr(Regio_id,1,4))
+#Nuts 1 id
+PT %<>%  
+  mutate(id_nuts0 = substr(Regio_id,1,2))
+
+#gen weighted gini
+#for all
+gini.wtd(PT$Per_capita, w = PT$Population)
+
+PT  %<>% 
+  group_by(id_nuts2) %>% 
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+  ungroup() # to remove grouping
+
+summary(PT$gini_n2 )
+
 ```
 
 
-```{r
-BNP4 <-BNP2 %>%  
-  mutate(temp_var = nchar(BNP2$Regio_id))
-```
 
