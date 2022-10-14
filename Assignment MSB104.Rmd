@@ -8,6 +8,7 @@ output:
 ---
 
 ```{r Packages}
+#| echo = FALSE
 suppressMessages(library(tidyverse))
 suppressMessages(library(lubridate))
 suppressMessages(library(tibble))
@@ -19,9 +20,10 @@ suppressMessages(library(magrittr))
 options(scipen = 999)
 
 ```
-
+# MSB104 Econometrics
 This is a collection of assignments in the subject econometrics MSB104.
 
+#Assignemnt 1
 In this assignment we are looking at five European countries. Denmark, France, Hungary, Portugal and Slovakia. 
 In the first assignment we have collected data from Eurostats, the data contains GDP and populations for the countries but also at NUTS3 level for the last 20 years. 
 
@@ -30,6 +32,7 @@ After that we merged the two datasets into one.
 
 
 ```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
+#| echo = FALSE
 BNP<- read.csv("nama_10r_3gdp.csv")
 BNP <- BNP %>% 
   select(unit, geo, TIME_PERIOD, OBS_VALUE) %>%
@@ -37,6 +40,7 @@ BNP <- BNP %>%
 ```
 
 ```{r  Population from Portugal, France, Hungary, Slovakia and Denmark}
+#| echo = FALSE
 Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
 Pop <- Pop %>% 
   select(geo, TIME_PERIOD, OBS_VALUE) %>%
@@ -46,6 +50,7 @@ Pop <- Pop %>%
 ```
 
 ```{r GNP and Population - together}
+#| echo = FALSE
  BNP2<- BNP %>%
       select(unit, Regio_id,Year, GDP) %>%
       left_join(Pop, by = c("Year" = "Year_pop", "Regio_id" = "geo"))
@@ -56,6 +61,7 @@ Pop <- Pop %>%
 Then we calculated the GDP pr capita. And this we did by dividing the GDP on the population. 
 
 ```{r Calculate GDP per capita}
+#| echo = FALSE
 BNP2 <- BNP2 %>%
 mutate(Per_capita =   GDP/Population*1000000) %>%
 na.omit()
@@ -64,13 +70,17 @@ na.omit()
 
 We have divided the countries into NUTS3 levels. To get the best possible results, the countries are in their own chunk.
 
+##Denmark
+
+Denmark are missing observations fore some of the years. so there are less data to be collected about then, Denmark is also a small country so there are also not that many NUTS2 regions.  
+
 ```{r Denmark}
+#| echo = FALSE
 DK <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK031", "DK032", "DK041", "DK042", "DK050", "DKZZZ")) %>%
 	 select("Year", "Regio_id", "Per_capita")
 	pivot_wider(DK,names_from = "Year", values_from = "Per_capita" )
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
-
 ```
 
 
@@ -78,8 +88,12 @@ filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK
 summary(DK)
 ```
 
+##France
+
+France is a large country, it has over a hundred NUTS3 regions. 
 
 ```{r France}
+#| echo = FALSE
 FR <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02","FRXXX",	"FRY10",	"FRY20",	"FRY30",	"FRY40",	"FRY50")) %>%
  select("Year", "Regio_id", "Per_capita")
@@ -91,8 +105,15 @@ filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR
 summary(FR)
 ```
 
+In the summary of France there are a hug differense in min and max. this is because France has colonies in other countries that are counted, these colonies are located in Africa and South America which have a negative effect on the overall GDP of France. 'further research then these countries should be removed from the data set.
+
+
+lage en chunk der vi fjerner FRY landene. 
+
+##Hungary
 
 ```{r Hungary}
+#| echo = FALSE
 HU <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU222","HU223","HU231", "HU232", "HU233", "HU311", "HU312", "HU313", "HU321", "HU322", "HU323", "HU331", "HU332", "HU333", "HUXXX")) %>%
  select("Year", "Regio_id", "Per_capita")
@@ -104,8 +125,10 @@ filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU22
 summary(HU)
 ```
 
+##Slovenia
 
 ```{r Slovakia}
+#| echo = FALSE
 SK <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("SK010", "SK021","SK022","SK023", "SK031", "SK032", "SK041", "SK042")) %>%
  select("Year", "Regio_id", "Per_capita")
@@ -121,7 +144,7 @@ summary(SK)
 
 Finely we have a look at Portugal.
 
-### Descriptive Statistics GDP per capita & Population
+i### Descriptive Statistics GDP per capita & Population
 
 ```{r Portugal}
 #| echo = FALSE
@@ -148,7 +171,7 @@ filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D",
 ### Descriptive Statistics regional inequity (Gini Nuts2) 
 
 
-```{r Portugal gini}
+```{r Portugal gini
 #| echo = FALSE
 #Nuts 2 id
 PT %>%  
