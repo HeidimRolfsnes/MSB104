@@ -198,10 +198,10 @@ We are trying to get the Nuts2 regions, but we only get the nuts 3.
 ```{r Denmark gini}
 #| echo = FALSE
 #Nuts 2 id
-DK %>%  
+DK %<>%  
   mutate(id_nuts2 = substr(Regio_id,1,4)) 
 #Nuts 1 id
-DK %>%  
+DK %<>%  
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 #gen weighted gini
@@ -209,21 +209,21 @@ DK %>%
 gini.wtd(DK$Per_capita, w = DK$Population)
 
 
-DK %>% 
-  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+DK %<>% 
+  mutate(gini_n6 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(DK$gini_n2 )
+summary(DK$gini_n6 )
 
 ```
 
 ```{r France gini}
 #| echo = FALSE
 #Nuts 2 id
-FR1 %>%  
+FR1 %<>%  
   mutate(id_nuts2 = substr(Regio_id,1,4)) 
 #Nuts 1 id
-FR1 %>%  
+FR1 %<>%  
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 #gen weighted gini
@@ -231,21 +231,21 @@ FR1 %>%
 gini.wtd(FR1$Per_capita, w = FR1$Population)
 
 
-FR1 %>% 
-  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+FR1 %<>% 
+  mutate(gini_n3 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(FR1$gini_n2 )
+summary(FR1$gini_n3 )
 
 ```
 
 ```{r Hungary gini}
 #| echo = FALSE
 #Nuts 2 id
-HU %>%  
+HU %<>%  
   mutate(id_nuts2 = substr(Regio_id,1,4)) 
 #Nuts 1 id
-HU %>%  
+HU %<>%  
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 #gen weighted gini
@@ -253,11 +253,11 @@ HU %>%
 gini.wtd(HU$Per_capita, w = HU$Population)
 
 
-HU %>% 
-  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+HU %<>% 
+  mutate(gini_n4 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(HU$gini_n2 )
+summary(HU$gini_n4 )
 
 ```
 
@@ -269,10 +269,10 @@ filter (temp_var == 4) %>%
 ```{r Portugal gini}
 #| echo = FALSE
 #Nuts 2 id
-PT %>%  
+PT %<>%  
   mutate(id_nuts2 = substr(Regio_id,1,4)) 
 #Nuts 1 id
-PT %>%  
+PT %<>%  
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 #gen weighted gini
@@ -280,7 +280,7 @@ PT %>%
 gini.wtd(PT$Per_capita, w = PT$Population)
 
 
-PT %>% 
+PT %<>% 
   mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -290,19 +290,19 @@ summary(PT$gini_n2 )
 
 ```{r Slovakia gini}
 #| echo = FALSE
-SK %>%
+SK %<>%
   mutate(id_nuts2 = substr(Regio_id,1,4))
 
-SK %>%
+SK %<>%
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 gini.wtd(SK$Per_capita, w = SK$Population)
 
-SK %>%
-  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+SK %<>%
+  mutate(gini_n5 = gini.wtd(Per_capita, w = Population)) %>%
 ungroup()
 
-summary(SK$gini_n2)
+summary(SK$gini_n5)
 
 ```
 
