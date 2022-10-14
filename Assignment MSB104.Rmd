@@ -184,7 +184,6 @@ summary(SK)
 
 
 
-
 ### Descriptive Statistics regional inequity (Gini Nuts2) 
 
 We are trying to get the Nuts2 regions, but we only get the nuts 3. 
