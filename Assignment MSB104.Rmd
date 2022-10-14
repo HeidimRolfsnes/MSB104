@@ -68,7 +68,9 @@ na.omit()
 #NA variables are removed
 ```
 
-We have divided the countries into NUTS3 levels. To get the best possible results, the countries are in their own chunk.
+We have divided the countries into NUTS3 levels. To get the result by country. we have made a summary of GDP per capita on every contry, by creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities. 
+
+
 
 ##Denmark
 
