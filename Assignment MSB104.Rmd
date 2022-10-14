@@ -23,42 +23,43 @@ options(scipen = 999)
 # MSB104 Econometrics
 This is a collection of assignments in the subject econometrics MSB104.
 
-#Assignemnt 1
-In this assignment we are looking at five European countries. Denmark, France, Hungary, Portugal and Slovakia. 
+#Assignment 1
+In this assignment we are looking at five European countries: Denmark, France, Hungary, Portugal and Slovakia. 
 In the first assignment we have collected data from Eurostats, the data contains GDP and populations for the countries but also at NUTS3 level for the last 20 years. 
 
-We collected 2 datasets, and the first thing we did was to clean the list and remove data that didn’t have any valuables. We changed the names on some of the variables. 
-After that we merged the two datasets into one.
+We collected 2 datasets, and the first thing we did was to clean the list and remove data that didn’t have any valuables. We changed the names on some of the variables and merged the two datasets into one dataset called BNP2.
 
 
-```{r GDP from Portugal, France, Hungary, Slovakia and Denmark}
+```{r GDP from Denmark, France, Hungary, Portugal and Slovakia}
 #| echo = FALSE
 BNP<- read.csv("nama_10r_3gdp.csv")
 BNP <- BNP %>% 
   select(unit, geo, TIME_PERIOD, OBS_VALUE) %>%
       rename(GDP = "OBS_VALUE",Year = "TIME_PERIOD", Regio_id = "geo") 
+
+#In this dataset we can see the GDP from Denmark, France, Hungary, Portugal and Slovakia
 ```
 
-```{r  Population from Portugal, France, Hungary, Slovakia and Denmark}
+```{r  Population from Denmark, France, Hungary, Portugal and Slovakia}
 #| echo = FALSE
 Pop<- read_csv("demo_r_pjanaggr3.csv", show_col_types = FALSE)
 Pop <- Pop %>% 
   select(geo, TIME_PERIOD, OBS_VALUE) %>%
       rename(Population = "OBS_VALUE",Year_pop = "TIME_PERIOD") 
- 
+#In this dataset we can see the population from Denmark, France, Hungary, Portugal and Slovakia
   
 ```
 
-```{r GNP and Population - together}
+```{r GDP and Population - together}
 #| echo = FALSE
  BNP2<- BNP %>%
       select(unit, Regio_id,Year, GDP) %>%
       left_join(Pop, by = c("Year" = "Year_pop", "Regio_id" = "geo"))
-     
+# We took the GDP- and the populationdataset  together in one data, called BNP2
 ```
 
 
-Then we calculated the GDP pr capita. And this we did by dividing the GDP on the population. 
+Then we calculated the GDP pr capita. We did that by divide the GDP and the population. To get the right number we multiplied with a million.
 
 ```{r Calculate GDP per capita}
 #| echo = FALSE
@@ -68,20 +69,23 @@ na.omit()
 #NA variables are removed
 ```
 
-We have divided the countries into NUTS3 levels. To get the result by country. we have made a summary of GDP per capita on every contry, by creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities. 
-
+We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on every country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities. 
 
 
 ##Denmark
 
-Denmark are missing observations fore some of the years. so there are less data to be collected about then, Denmark is also a small country so there are also not that many NUTS2 regions.  
+Denmark are missing observations for some of the years, so there are less data to be collected about them. Denmark is also a small country so there are not that many NUTS2 regions.  
 
 ```{r Denmark}
 #| echo = FALSE
 DK <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK031", "DK032", "DK041", "DK042", "DK050", "DKZZZ")) %>%
-	 select("Year", "Regio_id", "Per_capita")
-	pivot_wider(DK,names_from = "Year", values_from = "Per_capita" )
+	 select("Year", "Regio_id", "Per_capita", "Population")
+```
+
+**Country level**
+
+```{r Mean: GDP Per Capita in Denamrk}
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
 
@@ -98,9 +102,7 @@ France is a large country, it has over a hundred NUTS3 regions.
 #| echo = FALSE
 FR <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02","FRXXX",	"FRY10",	"FRY20",	"FRY30",	"FRY40",	"FRY50")) %>%
- select("Year", "Regio_id", "Per_capita")
-	pivot_wider(FR,names_from = "Year", values_from = "Per_capita" )
-	summarise(FR, GDP_per_Capita = mean(Per_capita))
+ select("Year", "Regio_id", "Per_capita", "Population")
 ```
 
 ```{r}
@@ -114,10 +116,13 @@ In the summary of France there are a hug differense in min and max. this is beca
 #| echo = FALSE
 FR1 <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02","FRXXX")) %>%
- select("Year", "Regio_id", "Per_capita")
-	pivot_wider(FR,names_from = "Year", values_from = "Per_capita" )
-	summarise(FR, GDP_per_Capita = mean(Per_capita))
+ select("Year", "Regio_id", "Per_capita", "Population")
 ````
+
+**Country level**
+```{r Mean: GDP Per Capita in France}
+	summarise(FR, GDP_per_Capita = mean(Per_capita))
+```
 
 ```{r}
 summary(FR1)
@@ -128,8 +133,13 @@ summary(FR1)
 #| echo = FALSE
 HU <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU222","HU223","HU231", "HU232", "HU233", "HU311", "HU312", "HU313", "HU321", "HU322", "HU323", "HU331", "HU332", "HU333", "HUXXX")) %>%
- select("Year", "Regio_id", "Per_capita")
-	pivot_wider(HU,names_from = "Year", values_from = "Per_capita" )
+ select("Year", "Regio_id", "Per_capita", "Population")
+	
+```
+
+**Country level**
+
+```{r Mean: GDP Per Capita in Hungary}
 	summarise(HU, GDP_per_Capita = mean(Per_capita))
 ```
 
@@ -137,14 +147,34 @@ filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU22
 summary(HU)
 ```
 
-##Slovenia
+## Portugal
+
+```{r Portugal}
+#| echo = FALSE
+#Gen data Portugal
+PT <- BNP2 %>%
+filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D","PT11E",	"PT16B",	"PT16D",	"PT16E",	"PT16F",	"PT16G",	"PT16H",	"PT16I",	"PT16J",	"PT170",	"PT181",	"PT184",	"PT185",	"PT186",	"PT187",	"PT200",	"PT300")) %>%
+ select("Year", "Regio_id", "Per_capita", "Population") 
+
+```
+**Country level**
+```{r Mean: GDP Per Capita in Portugal}
+	summarise(PT, GDP_per_Capita = mean(Per_capita))
+```
+**Regional level (NUTS3)**
+
+
+##Slovakia
 
 ```{r Slovakia}
 #| echo = FALSE
 SK <- group_by(BNP2, Regio_id, Year) %>%
 filter(Regio_id %in% c("SK010", "SK021","SK022","SK023", "SK031", "SK032", "SK041", "SK042")) %>%
- select("Year", "Regio_id", "Per_capita")
-	pivot_wider(SK,names_from = "Year", values_from = "Per_capita" )
+ select("Year", "Regio_id", "Per_capita", "Population")
+
+```
+**Country level**
+```{r Mean: GDP Per Capita in Slovakia}
 	summarise(SK, GDP_per_Capita = mean(Per_capita))
 ```
 
@@ -152,38 +182,84 @@ filter(Regio_id %in% c("SK010", "SK021","SK022","SK023", "SK031", "SK032", "SK04
 summary(SK)
 ```
 
-## Portugal
 
-Finely we have a look at Portugal.
-
-i### Descriptive Statistics GDP per capita & Population
-
-```{r Portugal}
-#| echo = FALSE
-#Gen data Portugal
-PT <- BNP2 %>%
-filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D","PT11E",	"PT16B",	"PT16D",	"PT16E",	"PT16F",	"PT16G",	"PT16H",	"PT16I",	"PT16J",	"PT170",	"PT181",	"PT184",	"PT185",	"PT186",	"PT187",	"PT200",	"PT300")) %>%
- select("Year", "Regio_id", "Per_capita","Population") 
-```
-**Country level**
-```{r}
-#| echo = FALSE
-	summarise(PT, GDP_per_Capita = mean(Per_capita))
-```
-**Regional level (NUTS3)**
-```{r}
-#| echo = FALSE
-	pivot_wider(PT,names_from = "Year", values_from = "Per_capita" )
-
-# Is that an informative table ?
-
-```
 
 
 ### Descriptive Statistics regional inequity (Gini Nuts2) 
 
+We are trying to get the Nuts2 regions, but we only get the nuts 3. 
 
-```{r Portugal gini
+```{r Denmark gini}
+#| echo = FALSE
+#Nuts 2 id
+DK %>%  
+  mutate(id_nuts2 = substr(Regio_id,1,4)) 
+#Nuts 1 id
+DK %>%  
+  mutate(id_nuts0 = substr(Regio_id,1,2))
+
+#gen weighted gini
+#for all
+gini.wtd(DK$Per_capita, w = DK$Population)
+
+
+DK %>% 
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+  ungroup() # to remove grouping
+
+summary(DK$gini_n2 )
+
+```
+```{r France gini}
+#| echo = FALSE
+#Nuts 2 id
+FR1 %>%  
+  mutate(id_nuts2 = substr(Regio_id,1,4)) 
+#Nuts 1 id
+FR1 %>%  
+  mutate(id_nuts0 = substr(Regio_id,1,2))
+
+#gen weighted gini
+#for all
+gini.wtd(FR1$Per_capita, w = FR1$Population)
+
+
+FR1 %>% 
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+  ungroup() # to remove grouping
+
+summary(FR1$gini_n2 )
+
+```
+
+```{r Hungary gini}
+#| echo = FALSE
+#Nuts 2 id
+HU %>%  
+  mutate(id_nuts2 = substr(Regio_id,1,4)) 
+#Nuts 1 id
+HU %>%  
+  mutate(id_nuts0 = substr(Regio_id,1,2))
+
+#gen weighted gini
+#for all
+gini.wtd(HU$Per_capita, w = HU$Population)
+
+
+HU %>% 
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+  ungroup() # to remove grouping
+
+summary(HU$gini_n2 )
+
+```
+
+PT2 <-PT %>%  
+  select(Regio_id) 
+filter (temp_var == 4) %>%
+
+
+```{r Portugal gini}
 #| echo = FALSE
 #Nuts 2 id
 PT %>%  
@@ -196,8 +272,8 @@ PT %>%
 #for all
 gini.wtd(PT$Per_capita, w = PT$Population)
 
+
 PT %>% 
-  group_by(id_nuts2) %>% 
   mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -205,5 +281,22 @@ summary(PT$gini_n2 )
 
 ```
 
+```{r Slovakia gini}
+
+SK %>%
+  mutate(id_nuts2 = substr(Regio_id,1,4))
+
+SK %>%
+  mutate(id_nuts0 = substr(Regio_id,1,2))
+
+gini.wtd(SK$Per_capita, w = SK$Population)
+
+SK %>%
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
+ungroup()
+
+summary(SK$gini_n2)
+
+```
 
 
