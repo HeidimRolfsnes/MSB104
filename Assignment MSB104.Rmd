@@ -151,17 +151,17 @@ filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D",
 ```{r Portugal gini}
 #| echo = FALSE
 #Nuts 2 id
-PT %<>%  
-  mutate(id_nuts2 = substr(Regio_id,1,4))
+PT %>%  
+  mutate(id_nuts2 = substr(Regio_id,1,4)) 
 #Nuts 1 id
-PT %<>%  
+PT %>%  
   mutate(id_nuts0 = substr(Regio_id,1,2))
 
 #gen weighted gini
 #for all
 gini.wtd(PT$Per_capita, w = PT$Population)
 
-PT  %<>% 
+PT %>% 
   group_by(id_nuts2) %>% 
   mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
