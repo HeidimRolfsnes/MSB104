@@ -71,6 +71,9 @@ na.omit()
 
 We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on every country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities. 
 
+Brief about what we can find in the summary. We find the min and max. i.e. the smallest and the highest GDP per capita for the country. We also find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.
+ we also find mean which tell us what the average observation for all regions is.
+
 
 ##Denmark
 
@@ -166,6 +169,8 @@ filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D",
 
 ##Slovakia
 
+Slovakia is a country in central Europe. it is similar to Denmark, a country that does not have so many NUTS 3 regions. We therefore have to keep an eye on any outcomes.
+
 ```{r Slovakia}
 #| echo = FALSE
 SK <- group_by(BNP2, Regio_id, Year) %>%
@@ -185,6 +190,8 @@ summary(SK)
 
 
 ### Descriptive Statistics regional inequity (Gini Nuts2) 
+
+A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, will say that there are fewer people who is wealthy, which means that there is a long way between the poor and the rich.
 
 We are trying to get the Nuts2 regions, but we only get the nuts 3. 
 
@@ -209,6 +216,7 @@ DK %>%
 summary(DK$gini_n2 )
 
 ```
+
 ```{r France gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -281,7 +289,7 @@ summary(PT$gini_n2 )
 ```
 
 ```{r Slovakia gini}
-
+#| echo = FALSE
 SK %>%
   mutate(id_nuts2 = substr(Regio_id,1,4))
 
@@ -298,4 +306,16 @@ summary(SK$gini_n2)
 
 ```
 
+Portugal has a Gini of 0,16 which means that they are a good county when it comes to inequaty. 
+
+
+# Discuss briefly if there are noteworthy outliers:
+
+What we have seen is that countries such as Denmark and Slovakia, which do not have as many NUTS 3 regions, do not give us as much data. which means that regions with low GDP will have a big impact.
+
+When we removed the FRY countries in France, we did not get such big differences as when we included them. We assume that this has something to do with where these FRY regions are places in the world. France is a large country with many NUTS 3 regions. which makes it easy to collect data.
+
+Portugal, which is the only country in which we got the Gini, thinks we are in a good position when it comes to equality in the population. the differences between rich and poor are not that great.
+
+since we do not have the opportunity to look at the difference between the other countries, it is difficult to comment at present on how the countries stand against each other
 
