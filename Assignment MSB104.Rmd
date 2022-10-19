@@ -210,6 +210,7 @@ gini.wtd(DK$Per_capita, w = DK$Population)
 
 
 DK %<>% 
+   group_by(id_nuts2, Year) %>%
   mutate(gini_n6 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -232,6 +233,7 @@ gini.wtd(FR1$Per_capita, w = FR1$Population)
 
 
 FR1 %<>% 
+   group_by(id_nuts2, Year) %>%
   mutate(gini_n3 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -254,6 +256,7 @@ gini.wtd(HU$Per_capita, w = HU$Population)
 
 
 HU %<>% 
+   group_by(id_nuts2, Year) %>%
   mutate(gini_n4 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -281,6 +284,7 @@ gini.wtd(PT$Per_capita, w = PT$Population)
 
 
 PT %<>% 
+   group_by(id_nuts2, Year) %>%
   mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
@@ -299,6 +303,7 @@ SK %<>%
 gini.wtd(SK$Per_capita, w = SK$Population)
 
 SK %<>%
+  group_by(id_nuts2, Year) %>%
   mutate(gini_n5 = gini.wtd(Per_capita, w = Population)) %>%
 ungroup()
 
