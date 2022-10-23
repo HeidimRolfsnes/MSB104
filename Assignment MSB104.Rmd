@@ -564,7 +564,6 @@ Lifeexp <- read_csv('demo_r_mlifexp_1_Data.csv') %>%
 ```
 
 
-
 ```{r}
 SK %>%
   filter(Year==2010) %>%
