@@ -18,6 +18,7 @@ suppressMessages(library(dplyr))
 suppressMessages(library(dineq))
 suppressMessages(library(magrittr))
 suppressMessages(library(vtable))
+suppressMessages(library(wooldridge))
 options(scipen = 999)
 
 ```
@@ -93,9 +94,31 @@ na.omit()
 ```
 
 
-We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities. 
-
 Briefly about what we can find in the summary. We find the min and max. i.e. the smallest and the highest GDP per capita for the country. We also find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We will also look at mean which tell us what the average observation for all regions is.
+
+We will further look at GDP, population and GDP per capita in our five countries and what results it gives when we calculate all the NUTS3 regions together
+```{r}
+#| echo = FALSE
+GDP2 <- BNP2 %>%
+filter(unit == "MIO_EUR" & (grepl('DK..', Regio_id) | grepl('FR..', Regio_id) | grepl('HU..', Regio_id)| grepl('PT..', Regio_id) | grepl('SK..', Regio_id))) 
+
+```
+
+```{r Mean: GDP Per Capita in all countries}
+	summarise(GDP2, GDP_per_Capita = mean(Per_capita))
+```
+From the summary we can see that GDP per capita at NUTS3 level is 22805,13
+
+```{r}
+summary(GDP2)
+```
+
+```{r NUTS3 }
+  ggplot(GDP2, aes(x = Regio_id, y= Year, fill=GDP, color= Per_capita)) +
+  geom_point(lwd = .8) +
+   labs(x = "GDPpercapita", y = "Year") 
+```
+We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
 
 Lets start with Denmark and then take the countries alphabetically.
 
@@ -374,6 +397,7 @@ summary(DK$gini_n6 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
 ```{r Outliers in Denmark}
 DKoutliers <- DK %>%
   filter(gini_n6==0) %>%
@@ -565,6 +589,45 @@ filter(UNIT=="YEAR" & SEX == "Total" & (grepl('DK..', GEO) | grepl('FR..', GEO) 
 
 ```
 
+```{r}
+DK %>%
+  filter(Year==2010) %>%
+ggplot(aes(x =id_nuts2, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "id_nuts2", y = "Gini_n6")
+```
+
+```{r}
+DK2<- DK %>%
+  left_join(Education, by = c("Year"))
+DK2<- DK2 %>%
+  mutate(nuts0 = substr(Region2,1,2))
+DK2 %>%
+  filter(Year==2010 & nuts0=="DK") %>%
+ggplot(aes(x =Edu, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+```
+
+```{r}
+FR1 %>%
+  filter(Year==2010) %>%
+ggplot(aes(x =id_nuts2, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "id_nuts2", y = "Gini_n3")
+```
+
+```{r}
+FR2<- FR1 %>%
+  left_join(Education, by = c("Year2"))
+FR2<- FR2 %>%
+  mutate(nuts0 = substr(Region2,1,2))
+FR2 %>%
+  filter(Year==2010 & nuts0=="FR") %>%
+ggplot(aes(x =Edu, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+```
 
 ```{r}
 SK %>%
@@ -576,7 +639,7 @@ ggplot(aes(x =id_nuts2, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
 
 ```{r}
 SK2<- SK %>%
-  left_join(Education, by = c("Year"))
+  left_join(Education, by = c("Year5"))
 SK2<- SK2 %>%
   mutate(nuts0 = substr(Region2,1,2))
 SK2 %>%
