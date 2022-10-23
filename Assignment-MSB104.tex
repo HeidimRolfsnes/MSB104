@@ -135,7 +135,7 @@
 In the subject MSB104 econometrics, this year we will hand in an
 assignment divided into four assignments throughout the semester. The
 assignments must be written and calculated in the software R. We are
-group one and the countries that will be represented in our assignment
+group one and the countries that will be representing in our assignment
 is: Denmark, France, Hungary, Portugal and Slovakia.
 
 \hypertarget{assignment-1}{%
@@ -201,7 +201,7 @@ Population & 3057 & 587529.832 & 477585.739 & 39583 & 263091 & 709496 & 2863272\
 
 To calculate GDP per capita, we have taken GDP and divided it by the
 population. Finally, we have multiplied by one million so that it is
-represented correctly in Euros.
+represented correctly in Euros, also like it is in the unit.
 
 We have divided the countries into NUTS3 levels. To get the result by
 country, we made a summary of GDP per capita on each country. By
@@ -217,8 +217,10 @@ observation between the median and the lowest value, and looks at the
 25\% lowest values from the 75\% highest. The median looks at the value
 that is observed the most times in the middle of the observations. The
 third quartile is then, naturally enough, the value between the median
-and the highest value. we also find mean which tell us what the average
-observation for all regions is.
+and the highest value.We will also look at mean which tell us what the
+average observation for all regions is.
+
+Lets start with Denmark and then take the countries alphabetically.
 
 \#\#Denmark
 
@@ -295,11 +297,11 @@ the same with all of our five countries.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{GDP2 }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{GDPDK }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"DK..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(Year}\SpecialCharTok{==}\DecValTok{2020}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{select}\NormalTok{(Regio\_id, Per\_capita)}
-\FunctionTok{slice\_max}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_max}\NormalTok{(GDPDK, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -314,7 +316,7 @@ the same with all of our five countries.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{slice\_min}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_min}\NormalTok{(GDPDK, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -350,10 +352,10 @@ France is a large country, it has over a hundred NUTS3 regions.
 \end{verbatim}
 
 In the summary of France there are a hug differense in min and max. this
-is because France has colonies in other countries that are counted,
-these colonies are located in Africa and South America which have a
-negative effect on the overall GDP of France. 'further research then
-these countries should be removed from the data set.
+is because France has colonies in other countries that are counted.
+These colonies are located in Africa and South America which have a
+negative effect on the overall GDP of France. For further research these
+countries should be removed from the data set.
 
 \textbf{Country level}
 
@@ -434,11 +436,11 @@ Per_capita & 1896 & 26772.041 & 10672.979 & 8291.874 & 22234.94 & 28372.722 & 11
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{GDP2 }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{GDPFR }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"FR..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(Year}\SpecialCharTok{==}\DecValTok{2020}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{select}\NormalTok{(Regio\_id, Per\_capita)}
-\FunctionTok{slice\_max}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_max}\NormalTok{(GDPFR, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -453,7 +455,7 @@ Per_capita & 1896 & 26772.041 & 10672.979 & 8291.874 & 22234.94 & 28372.722 & 11
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{slice\_min}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_min}\NormalTok{(GDPFR, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -549,11 +551,11 @@ Per_capita & 380 & 8781.693 & 4054.096 & 3772.62 & 6329.585 & 9906.789 & 31013.1
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{GDP2 }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{GDPHU }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"HU..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(Year}\SpecialCharTok{==}\DecValTok{2020}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{select}\NormalTok{(Regio\_id, Per\_capita)}
-\FunctionTok{slice\_max}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_max}\NormalTok{(GDPHU, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -568,7 +570,7 @@ Per_capita & 380 & 8781.693 & 4054.096 & 3772.62 & 6329.585 & 9906.789 & 31013.1
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{slice\_min}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_min}\NormalTok{(GDPHU, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -647,11 +649,11 @@ Per_capita & 475 & 14550.168 & 3603.671 & 7211.8 & 12205.978 & 16277.88 & 27206.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{GDP2 }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{GDPPT }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"PT..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(Year}\SpecialCharTok{==}\DecValTok{2020}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{select}\NormalTok{(Regio\_id, Per\_capita)}
-\FunctionTok{slice\_max}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_max}\NormalTok{(GDPPT, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -666,7 +668,7 @@ Per_capita & 475 & 14550.168 & 3603.671 & 7211.8 & 12205.978 & 16277.88 & 27206.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{slice\_min}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_min}\NormalTok{(GDPPT, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -683,8 +685,8 @@ As we can see above Portugal is\ldots{}
 
 \#\#Slovakia
 
-Slovakia is a country in central Europe. it is similar to Denmark, a
-country that does not have so many NUTS 3 regions. We therefore have to
+Slovakia is a country in central Europe. It is similar to Denmark, a
+country that does not have so many NUTS3 regions. We therefore have to
 keep an eye on any outcomes.
 
 \textbf{Country level}
@@ -766,11 +768,11 @@ Per_capita & 152 & 12493.332 & 8027.857 & 2976.502 & 7829.469 & 13655.488 & 4009
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{GDP2 }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{GDPSK }\OtherTok{\textless{}{-}}\NormalTok{ BNP2}\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"SK..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(Year}\SpecialCharTok{==}\DecValTok{2020}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{select}\NormalTok{(Regio\_id, Per\_capita)}
-\FunctionTok{slice\_max}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_max}\NormalTok{(GDPSK, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -785,7 +787,7 @@ Per_capita & 152 & 12493.332 & 8027.857 & 2976.502 & 7829.469 & 13655.488 & 4009
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{slice\_min}\NormalTok{(GDP2, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\FunctionTok{slice\_min}\NormalTok{(GDPSK, Per\_capita, }\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -805,11 +807,8 @@ As we can see above Slovakia is\ldots{}
 Nuts2)}\label{descriptive-statistics-regional-inequity-gini-nuts2}}
 
 A Gini value must be between 0 and 1 If it is 0, it means that there is
-a little inequality, and closer to 1, will say that there are fewer
-people who is wealthy, which means that there is a long way between the
-poor and the rich.
-
-We are trying to get the Nuts2 regions, but we only get the nuts 3.
+a little inequality, and closer to 1, means that there is a greater
+degree of inequality.
 
 \begin{verbatim}
 ## [1] 0.1564112
@@ -820,6 +819,16 @@ We are trying to get the Nuts2 regions, but we only get the nuts 3.
 ## 0.00000 0.01304 0.05152 0.05645 0.11441 0.12314
 \end{verbatim}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+  \FunctionTok{ggplot}\NormalTok{(DK, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y=}\NormalTok{gini\_n6, }\AttributeTok{fill=}\NormalTok{id\_nuts2, }\AttributeTok{color=}\NormalTok{id\_nuts2)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{lwd =}\NormalTok{ .}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year"}\NormalTok{, }\AttributeTok{y =} \StringTok{"GDP"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-13-1.pdf}
+
 \begin{verbatim}
 ## [1] 0.2157499
 \end{verbatim}
@@ -828,6 +837,16 @@ We are trying to get the Nuts2 regions, but we only get the nuts 3.
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ## 0.00000 0.03983 0.06158 0.08311 0.10279 0.29296
 \end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \FunctionTok{ggplot}\NormalTok{(FR1, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y=}\NormalTok{gini\_n3, }\AttributeTok{fill=}\NormalTok{id\_nuts2, }\AttributeTok{color=}\NormalTok{id\_nuts2)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{lwd =}\NormalTok{ .}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year"}\NormalTok{, }\AttributeTok{y =} \StringTok{"GDP"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-14-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.2851074
@@ -838,8 +857,15 @@ We are trying to get the Nuts2 regions, but we only get the nuts 3.
 ## 0.00000 0.04270 0.05866 0.05461 0.07195 0.12230
 \end{verbatim}
 
-PT2 \textless-PT \%\textgreater\%\\
-select(Regio\_id) filter (temp\_var == 4) \%\textgreater\%
+\begin{Shaded}
+\begin{Highlighting}[]
+  \FunctionTok{ggplot}\NormalTok{(HU, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y=}\NormalTok{gini\_n4, }\AttributeTok{fill=}\NormalTok{id\_nuts2, }\AttributeTok{color=}\NormalTok{id\_nuts2)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{lwd =}\NormalTok{ .}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year"}\NormalTok{, }\AttributeTok{y =} \StringTok{"GDP"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-15-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.1619237
@@ -850,6 +876,16 @@ select(Regio\_id) filter (temp\_var == 4) \%\textgreater\%
 ## 0.00000 0.06682 0.07380 0.06816 0.08043 0.11258
 \end{verbatim}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+  \FunctionTok{ggplot}\NormalTok{(PT, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y=}\NormalTok{gini\_n2, }\AttributeTok{fill=}\NormalTok{id\_nuts2, }\AttributeTok{color=}\NormalTok{id\_nuts2)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{lwd =}\NormalTok{ .}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year"}\NormalTok{, }\AttributeTok{y =} \StringTok{"GDP"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-16-1.pdf}
+
 \begin{verbatim}
 ## [1] 0.3026474
 \end{verbatim}
@@ -859,16 +895,100 @@ select(Regio\_id) filter (temp\_var == 4) \%\textgreater\%
 ## 0.00000 0.04165 0.05632 0.05296 0.07075 0.10909
 \end{verbatim}
 
-Portugal has a Gini of 0,16 which means that they are a good county when
-it comes to inequaty.
+\begin{Shaded}
+\begin{Highlighting}[]
+  \FunctionTok{ggplot}\NormalTok{(SK, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Year, }\AttributeTok{y=}\NormalTok{gini\_n5, }\AttributeTok{fill=}\NormalTok{id\_nuts2, }\AttributeTok{color=}\NormalTok{id\_nuts2)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{lwd =}\NormalTok{ .}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+   \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year"}\NormalTok{, }\AttributeTok{y =} \StringTok{"GDP"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-17-1.pdf}
+Outliers
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#  ggplot(BNP2, aes(x = Year, y=Per\_capita, fill=Regio\_id, color=Regio\_id)) +}
-\CommentTok{\#  geom\_line(lwd = .8) +}
-\CommentTok{\#   labs(x = "Year", y = "GDP per capita")}
+\NormalTok{DKoutliers }\OtherTok{\textless{}{-}}\NormalTok{ DK }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(gini\_n6}\SpecialCharTok{==}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(id\_nuts2)}
+\NormalTok{DKoutliers}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   id_nuts2
+##   <chr>   
+## 1 DK05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FRoutliers }\OtherTok{\textless{}{-}}\NormalTok{ FR1 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(gini\_n3}\SpecialCharTok{==}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(id\_nuts2)}
+\NormalTok{FRoutliers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 1
+##   id_nuts2
+##   <chr>   
+## 1 FRD2    
+## 2 FRE1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{HUoutliers }\OtherTok{\textless{}{-}}\NormalTok{ HU }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(gini\_n4}\SpecialCharTok{==}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(id\_nuts2)}
+\NormalTok{HUoutliers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 1
+##   id_nuts2
+##   <chr>   
+## 1 HU11    
+## 2 HU12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PToutliers }\OtherTok{\textless{}{-}}\NormalTok{ PT }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(gini\_n2}\SpecialCharTok{==}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(id\_nuts2)}
+\NormalTok{PToutliers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 1
+##   id_nuts2
+##   <chr>   
+## 1 PT17    
+## 2 PT20    
+## 3 PT30
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{SKoutliers }\OtherTok{\textless{}{-}}\NormalTok{ SK }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(gini\_n5}\SpecialCharTok{==}\DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(id\_nuts2)}
+\NormalTok{SKoutliers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   id_nuts2
+##   <chr>   
+## 1 SK01
+\end{verbatim}
 
 \hypertarget{discuss-briefly-if-there-are-noteworthy-outliers}{%
 \section{Discuss briefly if there are noteworthy
@@ -884,15 +1004,25 @@ to do with where these FRY regions are places in the world. France is a
 large country with many NUTS 3 regions. which makes it easy to collect
 data.
 
-Portugal, which is the only country in which we got the Gini, thinks we
-are in a good position when it comes to equality in the population. the
-differences between rich and poor are not that great.
-
-since we do not have the opportunity to look at the difference between
-the other countries, it is difficult to comment at present on how the
-countries stand against each other
-
 \hypertarget{assignment-2}{%
 \subsection{Assignment 2}\label{assignment-2}}
+
+At the second assigment we are looking at growth and inequity. We are
+going to estimate the effete if regional development on regional
+inequality, for the year 2010. Then we will disuse the goodness of fit
+of our estimated model. We will plot the relationship between regional
+development and regional inequality and the fitted line corresponding to
+our estimate. We are also going to plot the residuals against the
+predicted values of our model. There will be a discussion about the
+classical assumptions OLS in light of our data and plots and other
+determinants of inequity. We will also go back on Eurostat´s webpages
+and download EurostatLinks to an external site. It will be for our
+subset of countries regional (NUTS2, j) data related to transport
+infrastructure, education and demographics. We are suppose to select on
+variable per category that we would like to explore further in there
+relationship to regional inequality. We will try to estimate a multiple
+linear regression model with our new variables for 2010 and give a small
+interpretation of our findings. In the end we will discuss the overall
+fit of our model and the inference related to our findings.
 
 \end{document}
