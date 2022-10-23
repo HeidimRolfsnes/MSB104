@@ -366,11 +366,7 @@ Population
 ##  Mean   :2014                      Mean   :44209   Mean   :512116  
 ##  3rd Qu.:2017                      3rd Qu.:48033   3rd Qu.:675962  
 ##  Max.   :2020                      Max.   :86083   Max.   :897129</code></pre>
-<p><strong>Regions in Denmark</strong></p>
-<pre class="r"><code>BNP2 %&gt;%
-  filter(grepl(&quot;DK...&quot;, Regio_id)) %&gt;%
-  select(-Regio_id) %&gt;%
-  vtable::st(.)</code></pre>
+<strong>Regions in Denmark</strong>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary Statistics
@@ -609,11 +605,7 @@ slice_max(GDPDK, Per_capita, n=5)</code></pre>
 ##  Mean   :2011                      Mean   : 27290   Mean   : 650912  
 ##  3rd Qu.:2016                      3rd Qu.: 28532   3rd Qu.: 899310  
 ##  Max.   :2020                      Max.   :116235   Max.   :2249975</code></pre>
-<p><strong>Regions in France</strong></p>
-<pre class="r"><code>BNP2 %&gt;%
-  filter(grepl(&quot;FR...&quot;, Regio_id)) %&gt;%
-  select(-Regio_id) %&gt;%
-  vtable::st(.)</code></pre>
+<strong>Regions in France</strong>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary Statistics
@@ -841,11 +833,7 @@ slice_max(GDPFR, Per_capita, n=5)</code></pre>
 ##  Mean   :2011                      Mean   : 8782   Mean   : 498087  
 ##  3rd Qu.:2016                      3rd Qu.: 9907   3rd Qu.: 536534  
 ##  Max.   :2020                      Max.   :31013   Max.   :1759407</code></pre>
-<p><strong>Regions in Hungary</strong></p>
-<pre class="r"><code>BNP2 %&gt;%
-  filter(grepl(&quot;HU...&quot;, Regio_id)) %&gt;%
-  select(-Regio_id) %&gt;%
-  vtable::st(.)</code></pre>
+<strong>Regions in Hungary</strong>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary Statistics
@@ -1061,11 +1049,7 @@ slice_max(GDPHU, Per_capita, n=5)</code></pre>
 ##  Mean   :2011                      Mean   :14416   Mean   : 417150  
 ##  3rd Qu.:2016                      3rd Qu.:16087   3rd Qu.: 376989  
 ##  Max.   :2020                      Max.   :27207   Max.   :2863272</code></pre>
-<p><strong>Regions in Portugal</strong></p>
-<pre class="r"><code>BNP2 %&gt;%
-  filter(grepl(&quot;PT...&quot;, Regio_id)) %&gt;%
-  select(-Regio_id) %&gt;%
-  vtable::st(.)</code></pre>
+<strong>Regions in Portugal</strong>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary Statistics
@@ -1294,11 +1278,7 @@ slice_max(GDPPT, Per_capita, n=5)</code></pre>
 ##  Mean   :2011                      Mean   :12493   Mean   :675337  
 ##  3rd Qu.:2016                      3rd Qu.:13655   3rd Qu.:725896  
 ##  Max.   :2020                      Max.   :40095   Max.   :826244</code></pre>
-<p><strong>Regions in Slovakia</strong></p>
-<pre class="r"><code>BNP2 %&gt;%
-  filter(grepl(&quot;SK...&quot;, Regio_id)) %&gt;%
-  select(-Regio_id) %&gt;%
-  vtable::st(.)</code></pre>
+<strong>Regions in Slovakia</strong>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary Statistics
@@ -1498,9 +1478,14 @@ slice_max(GDPSK, Per_capita, n=5)</code></pre>
 ## 4    SK022   13938.94
 ## 5    SK023   14467.91</code></pre>
 <p>As we can see above Slovakia is…</p>
-<div id="descriptive-statistics-regional-inequity-gini-nuts2" class="section level3">
-<h3>Descriptive Statistics regional inequity (Gini Nuts2)</h3>
+<div id="descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers" class="section level3">
+<h3>Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers</h3>
 <p>A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, means that there is a greater degree of inequality.</p>
+</div>
+</div>
+<div id="denmark" class="section level2">
+<h2>Denmark</h2>
+<p>In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded for the last 20 years. As we also can see is Danmark a small country with few NUTS2 regions.</p>
 <pre><code>## [1] 0.1564112</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ## 0.00000 0.01304 0.05152 0.05645 0.11441 0.12314</code></pre>
@@ -1580,7 +1565,6 @@ SKoutliers</code></pre>
 ##   id_nuts2
 ##   &lt;chr&gt;   
 ## 1 SK01</code></pre>
-</div>
 </div>
 <div id="discuss-briefly-if-there-are-noteworthy-outliers" class="section level1">
 <h1>Discuss briefly if there are noteworthy outliers:</h1>

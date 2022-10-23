@@ -3,8 +3,8 @@ title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
   html_document: default
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r Packages}
@@ -123,6 +123,7 @@ summary(DK)
 
 **Regions in Denmark**
 ```{r}
+#| echo = FALSE
 BNP2 %>%
   filter(grepl("DK...", Regio_id)) %>%
   select(-Regio_id) %>%
@@ -182,6 +183,7 @@ summary(FR1)
 
 **Regions in France**
 ```{r}
+#| echo = FALSE
 BNP2 %>%
   filter(grepl("FR...", Regio_id)) %>%
   select(-Regio_id) %>%
@@ -226,6 +228,7 @@ summary(HU)
 
 **Regions in Hungary**
 ```{r}
+#| echo = FALSE
 BNP2 %>%
   filter(grepl("HU...", Regio_id)) %>%
   select(-Regio_id) %>%
@@ -268,6 +271,7 @@ summary(PT)
 
 **Regions in Portugal**
 ```{r}
+#| echo = FALSE
 BNP2 %>%
   filter(grepl("PT...", Regio_id)) %>%
   select(-Regio_id) %>%
@@ -312,6 +316,7 @@ summary(SK)
 
 **Regions in Slovakia**
 ```{r}
+#| echo = FALSE
 BNP2 %>%
   filter(grepl("SK...", Regio_id)) %>%
   select(-Regio_id) %>%
@@ -334,11 +339,13 @@ slice_min(GDPSK, Per_capita, n=5)
 
 As we can see above Slovakia is...
 
-### Descriptive Statistics regional inequity (Gini Nuts2) 
+### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
 A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, means that there is a greater degree of inequality.
 
+## Denmark 
 
+In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also can see is Danmark a small country with few NUTS2 regions. 
 ```{r Denmark gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -362,12 +369,19 @@ summary(DK$gini_n6 )
 
 ```
 
-```{r}
+```{r NUTS2 in Denmark}
   ggplot(DK, aes(x = Year, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+```{r Outliers in Denmark}
+DKoutliers <- DK %>%
+  filter(gini_n6==0) %>%
+  distinct(id_nuts2)
+DKoutliers
+```
 
+## France
 ```{r France gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -391,12 +405,19 @@ summary(FR1$gini_n3 )
 
 ```
 
-```{r}
+```{r NUTS2 regions in France}
   ggplot(FR1, aes(x = Year, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+```{r}
+FRoutliers <- FR1 %>%
+  filter(gini_n3==0) %>%
+  distinct(id_nuts2)
+FRoutliers
+```
 
+## Hungary
 ```{r Hungary gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -420,12 +441,19 @@ summary(HU$gini_n4 )
 
 ```
 
-```{r}
+```{r NUTS2 regions in Hungary}
   ggplot(HU, aes(x = Year, y=gini_n4, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+```{r}
+HUoutliers <- HU %>%
+  filter(gini_n4==0) %>%
+  distinct(id_nuts2)
+HUoutliers
+```
 
+## Portugal
 
 ```{r Portugal gini}
 #| echo = FALSE
@@ -455,7 +483,14 @@ summary(PT$gini_n2 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+```{r}
+PToutliers <- PT %>%
+  filter(gini_n2==0) %>%
+  distinct(id_nuts2)
+PToutliers
+```
 
+## Slovakia
 ```{r Slovakia gini}
 #| echo = FALSE
 SK %<>%
@@ -480,35 +515,6 @@ summary(SK$gini_n5)
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
-Outliers 
-
-```{r}
-DKoutliers <- DK %>%
-  filter(gini_n6==0) %>%
-  distinct(id_nuts2)
-DKoutliers
-```
-
-```{r}
-FRoutliers <- FR1 %>%
-  filter(gini_n3==0) %>%
-  distinct(id_nuts2)
-FRoutliers
-```
-
-```{r}
-HUoutliers <- HU %>%
-  filter(gini_n4==0) %>%
-  distinct(id_nuts2)
-HUoutliers
-```
-
-```{r}
-PToutliers <- PT %>%
-  filter(gini_n2==0) %>%
-  distinct(id_nuts2)
-PToutliers
-```
 
 ```{r}
 SKoutliers <- SK %>%
@@ -516,13 +522,6 @@ SKoutliers <- SK %>%
   distinct(id_nuts2)
 SKoutliers
 ```
-
-# Discuss briefly if there are noteworthy outliers:
-
-What we have seen is that countries such as Denmark and Slovakia, which do not have as many NUTS 3 regions, do not give us as much data. which means that regions with low GDP will have a big impact.
-
-When we removed the FRY countries in France, we did not get such big differences as when we included them. We assume that this has something to do with where these FRY regions are places in the world. France is a large country with many NUTS 3 regions. which makes it easy to collect data.
-
 
 
 ## Assignment 2 
@@ -532,3 +531,108 @@ There will be a discussion about the classical assumptions OLS in light of our d
 We will also go back on Eurostat´s webpages and  download EurostatLinks to an external site. It will be for our subset of countries regional (NUTS2, j) data related to transport infrastructure, education and demographics. We are suppose to select on variable per category that we would like to explore further in there relationship to regional inequality.
 We will try to estimate a multiple linear regression model with our new variables for 2010 and give a small interpretation of our findings.
 In the end we will discuss the overall fit of our model and the inference related to our findings.
+
+### Data set: 
+
+We want to look at the amount of people who have higher education in the education data set and how many railways lines there is in kilometers when we look in the transport dataset. In the demographic data set we want to see the life expectancy age is in age.
+
+```{r Data set Education }
+#| echo = FALSE
+Education <- read_csv('edat_lfse_04__linear 2.csv') %>%
+  select(unit,isced11,geo,age,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="PC" & isced11=="ED0-2" & age=="Y25-64" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
+  mutate(Edu = OBS_VALUE, Year=TIME_PERIOD, Region2=geo) %>%
+  select(Region2, Year, Edu)
+```
+
+```{r Data set Railways}
+#| echo = FALSE
+Transport <- read_csv('tran_r_net_1_Data.csv') %>%
+  select(UNIT,TIME,GEO,Value,TRA_INFR) %>%
+  filter(UNIT=="Kilometre" & TRA_INFR== "RL" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO)| grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
+  mutate(Railway = Value, Year = TIME, Region2=GEO) %>%
+  select(Region2, Year, Railway)
+```
+
+```{r Data set life expectancy age }
+#| echo = FALSE
+Lifeexp <- read_csv('demo_r_mlifexp_1_Data.csv') %>%
+  select(TIME,GEO,SEX, AGE, UNIT,Value) %>%
+  filter(UNIT=="YEAR" & SEX == "TOTAL" & AGE == "Y25-64" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO)| grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
+  mutate(lea = Value, Year = TIME, Region2=GEO) %>%
+  select(Region2,Year, lea)
+```
+
+
+
+```{r}
+SK %>%
+  filter(Year==2010) %>%
+ggplot(aes(x =id_nuts2, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "id_nuts2", y = "Gini_n5")
+```
+
+```{r}
+SK2<- SK %>%
+  left_join(Education, by = c("Year"))
+SK2<- SK2 %>%
+  mutate(nuts0 = substr(Region2,1,2))
+SK2 %>%
+  filter(Year==2010 & nuts0=="SK") %>%
+ggplot(aes(x =Edu, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+```
+
+```{r}
+DK2010 <- DK %>%
+    filter(Year==2010 & id_nuts0=="DK") 
+FR2010 <- FR1 %>%
+    filter(Year==2010 & id_nuts0=="FR") 
+HU2010 <- HU %>%
+    filter(Year==2010 & id_nuts0=="HU") 
+PT2010 <- PT %>%
+    filter(Year==2010 & id_nuts0=="PT") 
+SK2010 <- SK %>%
+    filter(Year==2010 & id_nuts0=="SK") 
+
+
+MLR_model1 <- function(mlrm)
+lm.1 = lm(gini ~ Edu , mlrdata) 
+
+MLR_model1 <- function(mlrm){
+lm.1 = lm(gini_n5 ~ edu , mlrm) 
+lm.2 = lm(gini_n5 ~ Railway, mlrm)
+lm.3 = lm(gini_n5 ~ edu + Railway, mlrm)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "edu","Railway", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+MLR_model2 <- function(mlrm){
+lm.1 = lm(gini ~ edu , mlrm) 
+lm.2 = lm(gini ~  lea, mlrm)
+lm.3 = lm(gini ~ edu + lea, mlrm)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "edu","lea", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+```
+
+
+Slovakia 
+```{r}
+MLR_model1(SK2010)
+```
+
+```{r}
+MLR_model2(SK2010)
+```

@@ -259,15 +259,6 @@ there are not that many NUTS2 regions.
 
 \textbf{Regions in Denmark}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{BNP2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"DK..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Regio\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  vtable}\SpecialCharTok{::}\FunctionTok{st}\NormalTok{(.)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 
 \caption{\label{tab:unnamed-chunk-3}Summary Statistics}
@@ -406,15 +397,6 @@ countries should be removed from the data set.
 
 \textbf{Regions in France}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{BNP2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"FR..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Regio\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  vtable}\SpecialCharTok{::}\FunctionTok{st}\NormalTok{(.)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 
 \caption{\label{tab:unnamed-chunk-6}Summary Statistics}
@@ -521,15 +503,6 @@ As we can see above France is\ldots{}
 
 \textbf{Regions in Hungary}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{BNP2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"HU..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Regio\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  vtable}\SpecialCharTok{::}\FunctionTok{st}\NormalTok{(.)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 
 \caption{\label{tab:unnamed-chunk-8}Summary Statistics}
@@ -618,15 +591,6 @@ As we can see above Hungary is\ldots{}
 \end{verbatim}
 
 \textbf{Regions in Portugal}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{BNP2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"PT..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Regio\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  vtable}\SpecialCharTok{::}\FunctionTok{st}\NormalTok{(.)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 
@@ -738,15 +702,6 @@ keep an eye on any outcomes.
 
 \textbf{Regions in Slovakia}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{BNP2 }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"SK..."}\NormalTok{, Regio\_id)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Regio\_id) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  vtable}\SpecialCharTok{::}\FunctionTok{st}\NormalTok{(.)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 
 \caption{\label{tab:unnamed-chunk-12}Summary Statistics}
@@ -802,13 +757,23 @@ Per_capita & 152 & 12493.332 & 8027.857 & 2976.502 & 7829.469 & 13655.488 & 4009
 
 As we can see above Slovakia is\ldots{}
 
-\hypertarget{descriptive-statistics-regional-inequity-gini-nuts2}{%
-\subsubsection{Descriptive Statistics regional inequity (Gini
-Nuts2)}\label{descriptive-statistics-regional-inequity-gini-nuts2}}
+\hypertarget{descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers}{%
+\subsubsection{Descriptive Statistics regional inequity (Gini Nuts2) and
+discuss briefly if there are noteworthy
+outliers}\label{descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers}}
 
 A Gini value must be between 0 and 1 If it is 0, it means that there is
 a little inequality, and closer to 1, means that there is a greater
 degree of inequality.
+
+\hypertarget{denmark}{%
+\subsection{Denmark}\label{denmark}}
+
+In Denmark, we can see that the Gini coefficient is 0.15, which shows us
+that there is not a big difference between whealty and poor. We can also
+see that Denmark has a region (DK05) which is an outlier. In this
+region, no data has been recorded for the last 20 years. As we also can
+see is Danmark a small country with few NUTS2 regions.
 
 \begin{verbatim}
 ## [1] 0.1564112
@@ -827,7 +792,7 @@ degree of inequality.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-13-1.pdf}
+\includegraphics{Assignment-MSB104_files/figure-latex/Outliers in Denmark-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.2157499
@@ -846,7 +811,7 @@ degree of inequality.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-14-1.pdf}
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-13-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.2851074
@@ -865,7 +830,7 @@ degree of inequality.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-15-1.pdf}
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-14-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.1619237
@@ -884,7 +849,7 @@ degree of inequality.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-16-1.pdf}
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-15-1.pdf}
 
 \begin{verbatim}
 ## [1] 0.3026474
@@ -903,7 +868,7 @@ degree of inequality.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-17-1.pdf}
+\includegraphics{Assignment-MSB104_files/figure-latex/unnamed-chunk-16-1.pdf}
 Outliers
 
 \begin{Shaded}
