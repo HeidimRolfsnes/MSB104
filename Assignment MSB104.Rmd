@@ -480,14 +480,41 @@ summary(SK$gini_n5)
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
-Portugal has a Gini of 0,16 which means that they are a good county when it comes to inequaty. 
-
+Outliers 
 
 ```{r}
-Denmark <- DK %>%
-  filter(grepl("DK..", id_nuts2))
-Denmark %>%
-  vtable::st(.)
+DKoutliers <- DK %>%
+  filter(gini_n6==0) %>%
+  distinct(id_nuts2)
+DKoutliers
+```
+
+```{r}
+FRoutliers <- FR1 %>%
+  filter(gini_n3==0) %>%
+  distinct(id_nuts2)
+FRoutliers
+```
+
+```{r}
+HUoutliers <- HU %>%
+  filter(gini_n4==0) %>%
+  distinct(id_nuts2)
+HUoutliers
+```
+
+```{r}
+PToutliers <- PT %>%
+  filter(gini_n2==0) %>%
+  distinct(id_nuts2)
+PToutliers
+```
+
+```{r}
+SKoutliers <- SK %>%
+  filter(gini_n5==0) %>%
+  distinct(id_nuts2)
+SKoutliers
 ```
 
 # Discuss briefly if there are noteworthy outliers:
@@ -496,9 +523,7 @@ What we have seen is that countries such as Denmark and Slovakia, which do not h
 
 When we removed the FRY countries in France, we did not get such big differences as when we included them. We assume that this has something to do with where these FRY regions are places in the world. France is a large country with many NUTS 3 regions. which makes it easy to collect data.
 
-Portugal, which is the only country in which we got the Gini, thinks we are in a good position when it comes to equality in the population. the differences between rich and poor are not that great.
 
-since we do not have the opportunity to look at the difference between the other countries, it is difficult to comment at present on how the countries stand against each other
 
 ## Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effete if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
