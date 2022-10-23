@@ -483,6 +483,7 @@ summary(PT$gini_n2 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
 ```{r}
 PToutliers <- PT %>%
   filter(gini_n2==0) %>%
@@ -557,11 +558,25 @@ Transport <- read_csv('tran_r_net_1_Data.csv') %>%
 ```{r Data set life expectancy age }
 #| echo = FALSE
 Lifeexp <- read_csv('demo_r_mlifexp_1_Data.csv') %>%
-  select(TIME,GEO,SEX, AGE, UNIT,Value) %>%
-  filter(UNIT=="YEAR" & SEX == "TOTAL" & AGE == "Y25-64" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO)| grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
-  mutate(lea = Value, Year = TIME, Region2=GEO) %>%
-  select(Region2,Year, lea)
+ 
 ```
+
+```{r}
+data <- ginidata %>%
+  left_join(education, by = c("Year", "nuts2"))
+data <- data %>%
+  left_join(transport, by = c("Year", "nuts2")) 
+  
+data <- data %>%
+  left_join(lifexp, by = c("Year", "nuts2"))
+data <- data %>%
+  mutate(nuts0 = substr(nuts2,1,2))
+data %>%
+  filter(Year==2010 & nuts0=="DE") %>%
+ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+
 
 
 ```{r}
@@ -597,13 +612,10 @@ SK2010 <- SK %>%
     filter(Year==2010 & id_nuts0=="SK") 
 
 
-MLR_model1 <- function(mlrm)
-lm.1 = lm(gini ~ Edu , mlrdata) 
-
-MLR_model1 <- function(mlrm){
-lm.1 = lm(gini_n5 ~ edu , mlrm) 
-lm.2 = lm(gini_n5 ~ Railway, mlrm)
-lm.3 = lm(gini_n5 ~ edu + Railway, mlrm)
+#Estimates 
+lm.1 = lm(Region2 ~ edu , data = Education) 
+lm.2 = lm(Region2 ~ Railway, data = Education)
+lm.3 = lm(Region2 ~ edu + Railway, Education)
 #Gen Table
   huxreg(
   list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3),
@@ -611,14 +623,14 @@ lm.3 = lm(gini_n5 ~ edu + Railway, mlrm)
   coefs = c(Education = "edu","Railway", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
-}
-MLR_model2 <- function(mlrm){
-lm.1 = lm(gini ~ edu , mlrm) 
-lm.2 = lm(gini ~  lea, mlrm)
-lm.3 = lm(gini ~ edu + lea, mlrm)
+  
+#estimates 
+lm.4 = lm(Region2 ~ edu , data = Education) 
+lm.5 = lm(Region2 ~  lea, data = Education)
+lm.6 = lm(Region2 ~ edu + lea, data = Education)
 #Gen Table
   huxreg(
-  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3),
+  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(Education = "edu","lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
@@ -628,10 +640,6 @@ lm.3 = lm(gini ~ edu + lea, mlrm)
 
 
 Slovakia 
-```{r}
-MLR_model1(SK2010)
-```
 
-```{r}
-MLR_model2(SK2010)
-```
+
+
