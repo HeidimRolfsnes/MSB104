@@ -542,8 +542,8 @@ We want to look at the amount of people who have higher education in the educati
 Education <- read_csv('edat_lfse_04__linear 2.csv') %>%
   select(unit,isced11,geo,age,TIME_PERIOD,OBS_VALUE) %>%
   filter(unit=="PC" & isced11=="ED0-2" & age=="Y25-64" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
-  mutate(Edu = OBS_VALUE, Year=TIME_PERIOD, Region2=geo) %>%
-  select(Region2, Year, Edu)
+  mutate(Edu = OBS_VALUE, Year2=TIME_PERIOD, Region2=geo) %>%
+  select(Region2, Year2, Edu)
 ```
 
 ```{r Data set Railways}
@@ -551,32 +551,19 @@ Education <- read_csv('edat_lfse_04__linear 2.csv') %>%
 Transport <- read_csv('tran_r_net_1_Data.csv') %>%
   select(UNIT,TIME,GEO,Value,TRA_INFR) %>%
   filter(UNIT=="Kilometre" & TRA_INFR== "RL" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO)| grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
-  mutate(Railway = Value, Year = TIME, Region2=GEO) %>%
-  select(Region2, Year, Railway)
+  mutate(Railway = Value, Year2 = TIME, Region2=GEO) %>%
+  select(Region2, Year2, Railway)
 ```
 
 ```{r Data set life expectancy age }
 #| echo = FALSE
 Lifeexp <- read_csv('demo_r_mlifexp_1_Data.csv') %>%
- 
+select(TIME,GEO,SEX,AGE,UNIT,Value) %>%
+filter(UNIT=="YEAR" & SEX == "Total" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO) | grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
+   mutate(lea = Value, Year2 = TIME, Region2=GEO) %>%
+  select(Region2,Year2, lea)
+
 ```
-
-```{r}
-data <- ginidata %>%
-  left_join(education, by = c("Year", "nuts2"))
-data <- data %>%
-  left_join(transport, by = c("Year", "nuts2")) 
-  
-data <- data %>%
-  left_join(lifexp, by = c("Year", "nuts2"))
-data <- data %>%
-  mutate(nuts0 = substr(nuts2,1,2))
-data %>%
-  filter(Year==2010 & nuts0=="DE") %>%
-ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
-
 
 
 ```{r}
