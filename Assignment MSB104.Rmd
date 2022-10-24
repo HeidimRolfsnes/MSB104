@@ -35,7 +35,7 @@ In the end of the first assignment we will discuss if there are noteworthy outli
 
 
 ### Dataset
-The dataset "Nama_10r_3gdp" contains GDP for many countries including our five countries on a NUTS3 level. The datset is structured in eight columns and each column present different data values. We are looking for the GDP values and it emerges from the column "OBS_VALUE". The column "GEO" tells us which geographical region the value belongs to.
+The original dataset "Nama_10r_3gdp" contains GDP for many countries. We have only downloaded information on our five countries on a NUTS3 level. The datset is structured in eight columns and each column present different data values. We are looking for the GDP values and it emerges from the column "OBS_VALUE". The column "GEO" tells us which geographical region the value belongs to.
 There is also a column for year named "TIME_PERIOD". We are going to work with these three columns and will start with rename the names of the columns. 
 There are different types of GDP values and the unit is stored in a column named "UNIT".
 We have chosen to use values where unit is MIO_EUR. This unit represents the GDP value in million Euros.
@@ -64,7 +64,7 @@ Pop <- Pop %>%
   
 ```
 
-We made a new data set called BNP2 (Norwegian word for GDP and a number). In this data set we will gather the information we need from the other two data sets and compile it into one data set.  
+We made a new data set called BNP2 (Norwegian word for GDP and a number). In this data set we will gather the information we need from the other two data sets and combine them into one data set. This will do it easier in our ongoing research.  
 
 ```{r Make one datset with GDP and Population}
 #| echo = FALSE
@@ -96,7 +96,7 @@ na.omit()
 
 Briefly about what we can find in the summary. We find the min and max. i.e. the smallest and the highest GDP per capita for the country. We also find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We will also look at mean which tell us what the average observation for all regions is.
 
-We will further look at GDP, population and GDP per capita in our five countries and what results it gives when we calculate all the NUTS3 regions together
+We will further look at GDP, population and GDP per capita in our five countries and what results it gives when we calculate all the NUTS3 regions together.
 ```{r}
 #| echo = FALSE
 GDP2 <- BNP2 %>%
@@ -112,6 +112,10 @@ From the summary we can see that GDP per capita at NUTS3 level is 22805,13
 ```{r}
 summary(GDP2)
 ```
+
+It is not easy to draw any conclusion from this summary. We see that there is a very big difference in GDP as the lowest value is 750 while the highest is 251 623. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 630. The same we can se in Population and Per_capita. 
+
+To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we have the opportunity to exclude regions that stand out.
 
 ```{r NUTS3 }
   ggplot(GDP2, aes(x = Regio_id, y= Year, fill=GDP, color= Per_capita)) +
