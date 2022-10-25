@@ -382,7 +382,6 @@ DKoutliers <- DK %>%
   distinct(id_nuts2)
 DKoutliers
 ```
-
 ## France
 ```{r France gini}
 #| echo = FALSE
