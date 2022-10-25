@@ -37,8 +37,7 @@ In the end of the first assignment we will discuss if there are noteworthy outli
 ### Dataset
 The original dataset "Nama_10r_3gdp" contains GDP for many countries. We have only downloaded information on our five countries on a NUTS3 level. The datset is structured in eight columns and each column present different data values. We are looking for the GDP values and it emerges from the column "OBS_VALUE". The column "GEO" tells us which geographical region the value belongs to.
 There is also a column for year named "TIME_PERIOD". We are going to work with these three columns and will start with rename the names of the columns. 
-There are different types of GDP values and the unit is stored in a column named "UNIT".
-We have chosen to use values where unit is MIO_EUR. This unit represents the GDP value in million Euros.
+There are different types of GDP values and the unit is stored in a column named "UNIT", we have chosen to use values where unit is MIO_EUR. This unit represents the GDP value in million Euros.
 
 
 ```{r Dataset GDP and rename obs_value, time_period and geo}
@@ -64,7 +63,7 @@ Pop <- Pop %>%
   
 ```
 
-We made a new data set called BNP2 (Norwegian word for GDP and a number). In this data set we will gather the information we need from the other two data sets and combine them into one data set. This will do it easier in our ongoing research.  
+We made a new dataset called BNP2 (Norwegian word for GDP and a number). In this dataset we will gather the information we need from the other two datasets and combine them into one dataset. This will do it easier in our ongoing research.  
 
 ```{r Make one datset with GDP and Population}
 #| echo = FALSE
@@ -83,7 +82,7 @@ BNP2 %>%
 
 ### GDP per Capita 
 
-To calculate GDP per capita, we have taken GDP and divided it by the population. Finally, we have multiplied by one million so that it is represented correctly in Euros, also like it is in the unit.
+To calculate GDP per capita, we have taken GDP and divided it by the population. And then we have multiplied by one million, so that it is represented correctly in Euros, also like it is in the unit.
 
 ```{r Calculate GDP per capita}
 #| echo = FALSE
@@ -94,41 +93,46 @@ na.omit()
 ```
 
 
-Briefly about what we can find in the summary. We find the min and max. i.e. the smallest and the highest GDP per capita for the country. We also find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We will also look at mean which tell us what the average observation for all regions is.
+Briefly about what we found in the summary. We found the min and the max values. i.e. the smallest and the highest GDP per capita for the country. We also found 1st quartile and 3rd quartile. The first quartile was the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We have also look at mean which told us what the average observation for all regions was.
 
-We will further look at GDP, population and GDP per capita in our five countries and what results it gives when we calculate all the NUTS3 regions together.
+And then we further look at GDP, population and GDP per capita in our five countries and what results it gaves us when we calculate all the NUTS3 regions together.
 ```{r}
 #| echo = FALSE
 GDP2 <- BNP2 %>%
 filter(unit == "MIO_EUR" & (grepl('DK..', Regio_id) | grepl('FR..', Regio_id) | grepl('HU..', Regio_id)| grepl('PT..', Regio_id) | grepl('SK..', Regio_id))) 
-
 ```
 
 ```{r Mean: GDP Per Capita in all countries}
 	summarise(GDP2, GDP_per_Capita = mean(Per_capita))
 ```
-From the summary we can see that GDP per capita at NUTS3 level is 22805,13
+From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 805,13 Euro. since we don't have any other values to compare with we can't say if this is good or bad. 
 
 ```{r}
 summary(GDP2)
 ```
 
-It is not easy to draw any conclusion from this summary. We see that there is a very big difference in GDP as the lowest value is 750 while the highest is 251 623. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 630. The same we can se in Population and Per_capita. 
+It wasn't easy to draw any conclusion from this summary above. We can see that there is a very big difference in GDP as the lowest value is 750,8 while the highest is 251 623,3. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 630. Population and Per_capita gave us the same results, with a very low minimum and a high maximum value. 
 
-To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we have the opportunity to exclude regions that stand out in futher assignments. We will also look at a spesific year in each country to compare results with.  
 
-```{r NUTS3 }
-  ggplot(GDP2, aes(x = Regio_id, y= Year, fill=GDP, color= Per_capita)) +
+```{r NUTS3}
+  ggplot(GDP2, aes(x = Year, y= Per_capita, fill= Regio_id, color= Regio_id)) +
   geom_point(lwd = .8) +
-   labs(x = "GDPpercapita", y = "Year") 
+   labs(x = "Year", y = "Per_capita") 
 ```
-We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
 
-Lets start with Denmark and then we take the countries alphabetically.
+This ggplot shows GDP pr capita for all our countries. over the last 20 years. 
+it shows that ....
+
+
+To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we had the opportunity to exclude regions that stand out in futher assignments. We will also look at a spesific year for all the country to compare results with.
+
+To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
+
+We startet with Denmark and then we took the countries alphabetically.
 
 ##Denmark
 
-Denmark is also a small country so there are not that many NUTS2 regions.  
+Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions.   Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
 
 ```{r Denmark}
 #| echo = FALSE
@@ -142,24 +146,16 @@ filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK
 ```{r Mean: GDP Per Capita in Denamrk}
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
-
+This summarise above shows total GDP per capita for the last 14 years. It is 44,208.62, which is higher than the one we found for all the countries combined. Which means that Denmark has a higher GDP per capita than the average for our countries.
 
 ```{r}
 summary(DK)
 ```
+Denmark has no data from before 2007, so there are less data to be collected. When we look at the summary above, we see that Denmark has had an increase in both GDP per capita and population over the past 14 years.
 
 **Regions in Denmark**
-```{r}
-#| echo = FALSE
-BNP2 %>%
-  filter(grepl("DK...", Regio_id)) %>%
-  select(-Regio_id) %>%
-  vtable::st(.)
-```
 
-Denmark are missing observations for some of the years, so there are less data to be collected about them.
-
-To make it even more specific, we can choose to look at a specific year, and find out which regions are most whealty that year and which regions come out poorly that exact year. We choose 2020, which is the last year that is included in the calculation, and therefore closest to 2022, which we are in today. We have also chosen to look at the 5 richest and the 5 poorest regions to see if there are major differences. We will do the same with all of our five countries. 
+To make it even more specific, we chose to look at a specific year, and find out which regions are most whealty that year and which regions come out poorly that exact year. We choose 2020, which is the last year that is included in the calculation, and therefore closest to 2022, which we are in today. We also chose to look at the 5 richest and the 5 poorest regions to see if there were major differences. We will do the same with all of our five countries. 
 
 ```{r the whealtiest regions in Denmark}
 GDPDK <- BNP2%>%
@@ -169,20 +165,22 @@ GDPDK <- BNP2%>%
 slice_max(GDPDK, Per_capita, n=5)
 ```
 
-
 ```{r The poorest regions in Denmark}
 slice_min(GDPDK, Per_capita, n=5)
 ```
 
-As we can see above Denmark is...
+Denmark has 11 Nuts 3 regions, so chosing five from each category may be to much, but in the larger countries we will se a bigger difference. 
+The five Whealties regions in Denamrk are kobenhagen (DK011), Kobenhagen area (DK012), Sydjylland (DK032), Vestjylland (DK041) and Østjylland (DK042). 
+the poorest regions in Denmark are Vest- og Sydjælland (DK022), Bornholm (DK014), Østsjælland (DK021), Fyn (DK031) and NordJylland (DK050)
+
+There are not big difference in the different regions. It is Copenhagen and the surrounding area that stand out the most, but since it is the capital of Denmark, we believe that most rich people live there. 
 
 ##France
-
-France is a large country, it has over a hundred NUTS3 regions. 
+France is a country in Western Europe, and also has colonies in other parts of the world. Paris is the capital of France. France has the largest land areas in the EU, something we see again in that they have over a hundred nuts in 3 regions. 
 
 ```{r France}
 #| echo = FALSE
-FR <- group_by(BNP2, Regio_id, Year) %>%
+FR <- BNP2 %>%
 filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02","FRXXX",	"FRY10",	"FRY20",	"FRY30",	"FRY40",	"FRY50")) %>%
  select("Year", "Regio_id", "Per_capita", "Population")
 ```
@@ -191,34 +189,28 @@ filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR
 summary(FR)
 ```
 
-In the summary of France there are a hug differense in min and max. this is because France has colonies in other countries that are counted. These colonies are located in Africa and South America which have a negative effect on the overall GDP of France. For further research these countries should be removed from the data set.
-
+In the summary of France there was a hug differense in min and max. this is because France has colonies in other countries that are in cluded. These colonies are located in Africa and South America which have a negative effect on the overall GDP of France. For further research we have chosen to remove these regions from the data set.
 
 ```{r France without the FRY regions}
 #| echo = FALSE
-FR1 <- group_by(BNP2, Regio_id, Year) %>%
+FR1 <- BNP2 %>%
 filter(Regio_id %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02","FRXXX")) %>%
  select("Year", "Regio_id", "Per_capita", "Population")
 ```
 
 **Country level**
 ```{r Mean GDP Per Capita in France}
-	summarise(FR, GDP_per_Capita = mean(Per_capita))
+	summarise(FR1, GDP_per_Capita = mean(Per_capita))
 ```
+Now we have removed the colony regions. This summarise above shows total GDP per capita for the last 18 years. It is 27 289,7 which is lower than the one we found for all the countries combined. Which means that france has a lower GDP per capita than the average for our countries.  
 
 ```{r}
 summary(FR1)
 ```	
 
-**Regions in France**
-```{r}
-#| echo = FALSE
-BNP2 %>%
-  filter(grepl("FR...", Regio_id)) %>%
-  select(-Regio_id) %>%
-  vtable::st(.)
-```
+In the summary above, we see that France has had an big increase in both GDP per capita and population over the past 18 years. We see a fairly large increase from the 3rd quartile to max. Something we will look at more closely when we look at the richest and poorest regions. 
 
+**Regions in France**
 
 ```{r The whealtiest regions in France}
 GDPFR <- BNP2%>%
@@ -228,18 +220,19 @@ GDPFR <- BNP2%>%
 slice_max(GDPFR, Per_capita, n=5)
 ```
 
-
 ```{r The poorest regions in France}
 slice_min(GDPFR, Per_capita, n=5)
 ```
 
-As we can see above France is...
+The five wheltiest regions are Paris (FR101), Hauts-de-seine (FR105), Rhône (FRK26), Essonne(FR104), Haute-Garonne(FRJ23). Paris og Hauts-de-seine stands out clarly from the other tree regions with a large GDP pr capita.
+The five poorest regions Creuse (FRI22), Ariège (FRj21), Meuse(FRF32), Gers(FRJ24) and Aisne (FRE21) these regions have quite the same GDP pr capita. 
 
 ##Hungary
+Hungary is a country in central Europe, the country's capital is Budapest.
 
 ```{r Hungary}
 #| echo = FALSE
-HU <- group_by(BNP2, Regio_id, Year) %>%
+HU <- BNP2 %>%
 filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU222","HU223","HU231", "HU232", "HU233", "HU311", "HU312", "HU313", "HU321", "HU322", "HU323", "HU331", "HU332", "HU333", "HUXXX")) %>%
  select("Year", "Regio_id", "Per_capita", "Population")
 	
@@ -250,20 +243,14 @@ filter(Regio_id %in% c("HU110", "HU120","HU211","HU212", "HU213", "HU221", "HU22
 ```{r Mean: GDP Per Capita in Hungary}
 	summarise(HU, GDP_per_Capita = mean(Per_capita))
 ```
+This summarise above shows total GDP per capita for the last 18 years. It is 8 781,69 which is very low than the one we found for all the countries combined. Which means that Hungary has a low GDP per capita than the average for our countries.
 
 ```{r}
 summary(HU)
 ```
+In the summary above, we see that Hungary has had an increase in both GDP per capita and population over the past years. We see a fairly large increase from the 3rd quartile to max. Something we will look at more closely when we look at the richest and poorest regions.
 
 **Regions in Hungary**
-```{r}
-#| echo = FALSE
-BNP2 %>%
-  filter(grepl("HU...", Regio_id)) %>%
-  select(-Regio_id) %>%
-  vtable::st(.)
-```
-
 
 ```{r The whealtiest regions in Hungary}
 GDPHU <- BNP2%>%
@@ -273,14 +260,14 @@ GDPHU <- BNP2%>%
 slice_max(GDPHU, Per_capita, n=5)
 ```
 
-
 ```{r The poorest regions in Hungary}
 slice_min(GDPHU, Per_capita, n=5)
 ```
 
-As we can see above Hungary is...
+Hungary has 20 regions. the five Whelties is Budapest (HU110), Gyôr-Moson.Sopron (hu221), Fejèr (HU211), Komàrom-Esztergom (hu211) and Vas (HU222). Budapest is the richest region, while the other four are more even. The poorest regions are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323), Bèkès(HU332), Somogy (HU232) and Jàsz-Nagykun-Szolnok(HU322). Nògràd have very low GDP pr capita. and stands out compared to the others.  
 
 ## Portugal
+Portugal is a country in southern Europe. Lisbon is the capital.
 
 ```{r Portugal}
 #| echo = FALSE
@@ -294,19 +281,14 @@ filter(Regio_id %in% c("PT111","PT112","PT119","PT11A","PT11B","PT11C", "PT11D",
 ```{r Mean: GDP Per Capita in Portugal}
 	summarise(PT, GDP_per_Capita = mean(Per_capita))
 ```
+This summarise above shows total GDP per capita for the last 20 years. It is 14 415,77 which is lower than the one we found for all the countries combined. Which means that Portugal has a low GDP per capita than the average for our countries.
+
 ```{r}
 summary(PT)
 ```
+In the summary above, we see that Portugal has had an increase in both GDP per capita and population over the past years. Population has had a big increase, and we see a huge difference from 3rd quartile until max in population.  
 
 **Regions in Portugal**
-```{r}
-#| echo = FALSE
-BNP2 %>%
-  filter(grepl("PT...", Regio_id)) %>%
-  select(-Regio_id) %>%
-  vtable::st(.)
-```
-
 
 ```{r The whealtiest regions in Portugal}
 GDPPT <- BNP2%>%
@@ -316,57 +298,47 @@ GDPPT <- BNP2%>%
 slice_max(GDPPT, Per_capita, n=5)
 ```
 
-
 ```{r The poorest regions in Portugal}
 slice_min(GDPPT, Per_capita, n=5)
 ```
 
-As we can see above Portugal is...
+Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT181), Algarve (PT150), Região de Leiria (PT16F) and Região de Aveiro (PT16D). We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B), Beiras e Serra da Estrela (PT16J), Douro (PT11D) and Alto Alentejo (PT186). There are not large differences between the richest and poorest regions.     
 
 ##Slovakia
 
-Slovakia is a country in central Europe. It is similar to Denmark, a country that does not have so many NUTS3 regions. We therefore have to keep an eye on any outcomes.
+Slovakia is a country in central Europe. It is similar to Denmark, a country that does not have so many NUTS3 regions. We therefore have to keep an eye on any outcomes. The capital in Slovakia is Bratislava. 
 
 ```{r Slovakia}
 #| echo = FALSE
-SK <- group_by(BNP2, Regio_id, Year) %>%
+SK <- BNP2 %>%
 filter(Regio_id %in% c("SK010", "SK021","SK022","SK023", "SK031", "SK032", "SK041", "SK042")) %>%
  select("Year", "Regio_id", "Per_capita", "Population")
-
 ```
 **Country level**
 ```{r Mean: GDP Per Capita in Slovakia}
 	summarise(SK, GDP_per_Capita = mean(Per_capita))
 ```
+This summarise above shows total GDP per capita for the last 20 years. It is 12 493,33 which is lower than the one we found for all the countries combined. Which means that Slovakia has a lower GDP per capita than the average for our countries.
 
 ```{r}
 summary(SK)
 ```
+In the summary above, we see that Slovakia has had an increase in both GDP per capita and population over the past years. GDP pr capita has had a big increase, and we see a difference from 3rd quartile until max in population. In poplutaion we can se a Steady development.  
 
 **Regions in Slovakia**
-```{r}
-#| echo = FALSE
-BNP2 %>%
-  filter(grepl("SK...", Regio_id)) %>%
-  select(-Regio_id) %>%
-  vtable::st(.)
-```
-
-
 ```{r The whealtiest regions in Slovakia}
 GDPSK <- BNP2%>%
   filter(grepl("SK...", Regio_id)) %>%
   filter(Year==2020) %>%
   select(Regio_id, Per_capita)
-slice_max(GDPSK, Per_capita, n=5)
+slice_max(GDPSK, Per_capita, n=3)
 ```
-
 
 ```{r The poorest regions in Slovakia}
-slice_min(GDPSK, Per_capita, n=5)
+slice_min(GDPSK, Per_capita, n=3)
 ```
 
-As we can see above Slovakia is...
+Slovakia has 8 regions. Therefore we have only looked at 3 regions in each category. The three Whealtiest. Bratislava (SK010), Trnava (SK021) and Zilina (SK031). again we see that the capital has a significantly higher GDP per capita than the other regions. the poorest regions are Presov (SK041), Banska Bystrica (SK032) and Kosice (SK042). the lowest is slightly lower than the other.  
 
 ### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
