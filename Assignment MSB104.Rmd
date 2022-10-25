@@ -2,8 +2,8 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  html_document: default
   word_document: default
+  html_document: default
   pdf_document: default
 ---
 
@@ -115,7 +115,7 @@ summary(GDP2)
 
 It is not easy to draw any conclusion from this summary. We see that there is a very big difference in GDP as the lowest value is 750 while the highest is 251 623. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 630. The same we can se in Population and Per_capita. 
 
-To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we have the opportunity to exclude regions that stand out.
+To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we have the opportunity to exclude regions that stand out in futher assignments. We will also look at a spesific year in each country to compare results with.  
 
 ```{r NUTS3 }
   ggplot(GDP2, aes(x = Regio_id, y= Year, fill=GDP, color= Per_capita)) +
@@ -124,11 +124,11 @@ To get a better picture of the different countries and the opportunity to see if
 ```
 We have divided the countries into NUTS3 levels. To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
 
-Lets start with Denmark and then take the countries alphabetically.
+Lets start with Denmark and then we take the countries alphabetically.
 
 ##Denmark
 
-Denmark are missing observations for some of the years, so there are less data to be collected about them. Denmark is also a small country so there are not that many NUTS2 regions.  
+Denmark is also a small country so there are not that many NUTS2 regions.  
 
 ```{r Denmark}
 #| echo = FALSE
@@ -156,6 +156,8 @@ BNP2 %>%
   select(-Regio_id) %>%
   vtable::st(.)
 ```
+
+Denmark are missing observations for some of the years, so there are less data to be collected about them.
 
 To make it even more specific, we can choose to look at a specific year, and find out which regions are most whealty that year and which regions come out poorly that exact year. We choose 2020, which is the last year that is included in the calculation, and therefore closest to 2022, which we are in today. We have also chosen to look at the 5 richest and the 5 poorest regions to see if there are major differences. We will do the same with all of our five countries. 
 
