@@ -80,7 +80,7 @@ BNP2 %>%
 ```
 
 
-### GDP per Capita 
+## GDP per Capita 
 
 To calculate GDP per capita, we have taken GDP and divided it by the population. And then we have multiplied by one million, so that it is represented correctly in Euros, also like it is in the unit.
 
@@ -130,7 +130,7 @@ To get the result by country, we made a summary of GDP per capita on each countr
 
 We startet with Denmark and then we took the countries alphabetically.
 
-##Denmark
+###Denmark
 
 Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions.   Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
 
@@ -142,8 +142,9 @@ filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK
 ```
 
 **Country level**
+ 
 
-```{r Mean: GDP Per Capita in Denamrk}
+```{r Mean: GDP Per Capita in Denmark}
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
 This summarise above shows total GDP per capita for the last 14 years. It is 44,208.62, which is higher than the one we found for all the countries combined. Which means that Denmark has a higher GDP per capita than the average for our countries.
@@ -175,7 +176,7 @@ the poorest regions in Denmark are Vest- og Sydjælland (DK022), Bornholm (DK014
 
 There are not big difference in the different regions. It is Copenhagen and the surrounding area that stand out the most, but since it is the capital of Denmark, we believe that most rich people live there. 
 
-##France
+###France
 France is a country in Western Europe, and also has colonies in other parts of the world. Paris is the capital of France. France has the largest land areas in the EU, something we see again in that they have over a hundred nuts in 3 regions. 
 
 ```{r France}
@@ -227,7 +228,7 @@ slice_min(GDPFR, Per_capita, n=5)
 The five wheltiest regions are Paris (FR101), Hauts-de-seine (FR105), Rhône (FRK26), Essonne(FR104), Haute-Garonne(FRJ23). Paris og Hauts-de-seine stands out clarly from the other tree regions with a large GDP pr capita.
 The five poorest regions Creuse (FRI22), Ariège (FRj21), Meuse(FRF32), Gers(FRJ24) and Aisne (FRE21) these regions have quite the same GDP pr capita. 
 
-##Hungary
+###Hungary
 Hungary is a country in central Europe, the country's capital is Budapest.
 
 ```{r Hungary}
@@ -266,7 +267,7 @@ slice_min(GDPHU, Per_capita, n=5)
 
 Hungary has 20 regions. the five Whelties is Budapest (HU110), Gyôr-Moson.Sopron (hu221), Fejèr (HU211), Komàrom-Esztergom (hu211) and Vas (HU222). Budapest is the richest region, while the other four are more even. The poorest regions are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323), Bèkès(HU332), Somogy (HU232) and Jàsz-Nagykun-Szolnok(HU322). Nògràd have very low GDP pr capita. and stands out compared to the others.  
 
-## Portugal
+### Portugal
 Portugal is a country in southern Europe. Lisbon is the capital.
 
 ```{r Portugal}
@@ -304,7 +305,7 @@ slice_min(GDPPT, Per_capita, n=5)
 
 Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT181), Algarve (PT150), Região de Leiria (PT16F) and Região de Aveiro (PT16D). We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B), Beiras e Serra da Estrela (PT16J), Douro (PT11D) and Alto Alentejo (PT186). There are not large differences between the richest and poorest regions.     
 
-##Slovakia
+###Slovakia
 
 Slovakia is a country in central Europe. It is similar to Denmark, a country that does not have so many NUTS3 regions. We therefore have to keep an eye on any outcomes. The capital in Slovakia is Bratislava. 
 
@@ -340,11 +341,11 @@ slice_min(GDPSK, Per_capita, n=3)
 
 Slovakia has 8 regions. Therefore we have only looked at 3 regions in each category. The three Whealtiest. Bratislava (SK010), Trnava (SK021) and Zilina (SK031). again we see that the capital has a significantly higher GDP per capita than the other regions. the poorest regions are Presov (SK041), Banska Bystrica (SK032) and Kosice (SK042). the lowest is slightly lower than the other.  
 
-### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
+## Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
 A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, means that there is a greater degree of inequality.
 
-## Denmark 
+### Denmark 
 
 In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also can see is Danmark a small country with few NUTS2 regions. 
 ```{r Denmark gini}
@@ -382,7 +383,7 @@ DKoutliers <- DK %>%
   distinct(id_nuts2)
 DKoutliers
 ```
-## France
+### France
 ```{r France gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -418,7 +419,7 @@ FRoutliers <- FR1 %>%
 FRoutliers
 ```
 
-## Hungary
+### Hungary
 ```{r Hungary gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -447,6 +448,7 @@ summary(HU$gini_n4 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
 ```{r}
 HUoutliers <- HU %>%
   filter(gini_n4==0) %>%
@@ -454,7 +456,7 @@ HUoutliers <- HU %>%
 HUoutliers
 ```
 
-## Portugal
+### Portugal
 
 ```{r Portugal gini}
 #| echo = FALSE
@@ -492,7 +494,7 @@ PToutliers <- PT %>%
 PToutliers
 ```
 
-## Slovakia
+### Slovakia
 ```{r Slovakia gini}
 #| echo = FALSE
 SK %<>%
@@ -526,7 +528,8 @@ SKoutliers
 ```
 
 
-## Assignment 2 
+
+# Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effete if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
 We will plot the relationship between regional development and regional inequality and the fitted line corresponding to our estimate. We are also going to plot the residuals against the predicted values of our model.
 There will be a discussion about the classical assumptions OLS in light of our data and plots and other determinants of inequity.
