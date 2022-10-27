@@ -2,8 +2,8 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  word_document: default
   html_document: default
+  word_document: default
   pdf_document: default
 ---
 
@@ -214,7 +214,7 @@ In the summary above, we see that France has had an big increase in both GDP per
 **Regions in France**
 
 ```{r The whealtiest regions in France}
-GDPFR <- BNP2%>%
+GDPFR <- FR1%>%
   filter(grepl("FR...", Regio_id)) %>%
   filter(Year==2020) %>%
   select(Regio_id, Per_capita)
@@ -268,7 +268,7 @@ slice_min(GDPHU, Per_capita, n=5)
 Hungary has 20 regions. the five Whelties is Budapest (HU110), Gyôr-Moson.Sopron (hu221), Fejèr (HU211), Komàrom-Esztergom (hu211) and Vas (HU222). Budapest is the richest region, while the other four are more even. The poorest regions are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323), Bèkès(HU332), Somogy (HU232) and Jàsz-Nagykun-Szolnok(HU322). Nògràd have very low GDP pr capita. and stands out compared to the others.  
 
 ### Portugal
-Portugal is a country in southern Europe. Lisbon is the capital.
+Portugal is a country in southern Europe. Lisbon is the capital. Portugal also has two archipelagos, each representing a different region.
 
 ```{r Portugal}
 #| echo = FALSE
@@ -343,11 +343,15 @@ Slovakia has 8 regions. Therefore we have only looked at 3 regions in each categ
 
 ## Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
-A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, means that there is a greater degree of inequality.
+Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level. 
+
+A Gini coefficient must be between 0 and 1. If it's 0, it means that there is little inequality, and if it's closer to 1, it means that there is a greater degree of inequality between rich and poor. We calculate a Gini coefficient by looking at how much wealth and income there is in a country and then how it is distributed among the population.
+when we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers. Outliers are values that are either very high or very low compared to the other data we have.
+
+First out is Denmark. 
 
 ### Denmark 
 
-In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also can see is Danmark a small country with few NUTS2 regions. 
 ```{r Denmark gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -383,6 +387,10 @@ DKoutliers <- DK %>%
   distinct(id_nuts2)
 DKoutliers
 ```
+
+In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also have seen is that Denmark is a small country with few NUTS2 regions Which doesn't givs us much data to work with.
+The Outliers region is Nordjylland, which only has one single province.
+
 ### France
 ```{r France gini}
 #| echo = FALSE
@@ -418,6 +426,9 @@ FRoutliers <- FR1 %>%
   distinct(id_nuts2)
 FRoutliers
 ```
+
+In France, we can see that the Gini coefficient is 0.21, which shows us that France has a slightly higher gini than Denmark had, which means that the inequality is slightly greater in France. We can also see that France has two regions which are outliers Upper Normandy (FRD2) and Nord-Pas-de-Calais (FRE1).  
+
 
 ### Hungary
 ```{r Hungary gini}
@@ -455,6 +466,7 @@ HUoutliers <- HU %>%
   distinct(id_nuts2)
 HUoutliers
 ```
+In Hungary , we can see that the Gini coefficient is 0.28, which shows us that Hungary has a higher gini than both denmark and France had, which means that the inequality is slightly greater in Hungary. We can also see that Hungary has two regions which are outliers Budabest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking in.   
 
 ### Portugal
 
@@ -493,6 +505,7 @@ PToutliers <- PT %>%
   distinct(id_nuts2)
 PToutliers
 ```
+In Portugal, we can see that the Gini coefficient is 0.16, which shows us that there is not a big difference between whealty and poor. We can also see that Portugal has tree regions Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30) which are outliers. Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers.  In all these tre regions, no data has been recorded for the last 20 years. Portugal doesn't have many NUTS 2 regions, and when three of them have no value, there is not much confidence in the result we get.
 
 ### Slovakia
 ```{r Slovakia gini}
@@ -526,7 +539,10 @@ SKoutliers <- SK %>%
   distinct(id_nuts2)
 SKoutliers
 ```
+In Slovakia, we can see that the Gini coefficient is 0.30, which is the highest Gini we have found for our countries. Slovakia has on region that is an outliers which are (SK01). That leavs only Slovakia with three regions from which we obtain data. which is not a lot of data.
 
+To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
+Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
 
 
 # Assignment 2 
@@ -577,7 +593,7 @@ ggplot(aes(x =id_nuts2, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n6")
 ```
 
-```{r}
+```{r
 DK2<- DK %>%
   left_join(Education, by = c("Year"))
 DK2<- DK2 %>%
@@ -597,7 +613,7 @@ ggplot(aes(x =id_nuts2, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n3")
 ```
 
-```{r}
+```{r
 FR2<- FR1 %>%
   left_join(Education, by = c("Year2"))
 FR2<- FR2 %>%
@@ -617,7 +633,7 @@ ggplot(aes(x =id_nuts2, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n5")
 ```
 
-```{r}
+```{r
 SK2<- SK %>%
   left_join(Education, by = c("Year5"))
 SK2<- SK2 %>%
