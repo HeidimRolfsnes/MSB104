@@ -2,8 +2,8 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  word_document: default
   html_document: default
+  word_document: default
   pdf_document: default
 ---
 
@@ -80,7 +80,7 @@ BNP2 %>%
 ```
 
 
-### GDP per Capita 
+## GDP per Capita 
 
 To calculate GDP per capita, we have taken GDP and divided it by the population. And then we have multiplied by one million, so that it is represented correctly in Euros, also like it is in the unit.
 
@@ -130,7 +130,7 @@ To get the result by country, we made a summary of GDP per capita on each countr
 
 We startet with Denmark and then we took the countries alphabetically.
 
-##Denmark
+###Denmark
 
 Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions.   Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
 
@@ -142,8 +142,9 @@ filter(Regio_id %in% c("DK011", "DK012", "DK013", "DK014", "DK021", "DK022", "DK
 ```
 
 **Country level**
+ 
 
-```{r Mean: GDP Per Capita in Denamrk}
+```{r Mean: GDP Per Capita in Denmark}
 	summarise(DK, GDP_per_Capita = mean(Per_capita))
 ```
 This summarise above shows total GDP per capita for the last 14 years. It is 44,208.62, which is higher than the one we found for all the countries combined. Which means that Denmark has a higher GDP per capita than the average for our countries.
@@ -175,7 +176,7 @@ the poorest regions in Denmark are Vest- og Sydjælland (DK022), Bornholm (DK014
 
 There are not big difference in the different regions. It is Copenhagen and the surrounding area that stand out the most, but since it is the capital of Denmark, we believe that most rich people live there. 
 
-##France
+###France
 France is a country in Western Europe, and also has colonies in other parts of the world. Paris is the capital of France. France has the largest land areas in the EU, something we see again in that they have over a hundred nuts in 3 regions. 
 
 ```{r France}
@@ -213,7 +214,7 @@ In the summary above, we see that France has had an big increase in both GDP per
 **Regions in France**
 
 ```{r The whealtiest regions in France}
-GDPFR <- BNP2%>%
+GDPFR <- FR1%>%
   filter(grepl("FR...", Regio_id)) %>%
   filter(Year==2020) %>%
   select(Regio_id, Per_capita)
@@ -227,7 +228,7 @@ slice_min(GDPFR, Per_capita, n=5)
 The five wheltiest regions are Paris (FR101), Hauts-de-seine (FR105), Rhône (FRK26), Essonne(FR104), Haute-Garonne(FRJ23). Paris og Hauts-de-seine stands out clarly from the other tree regions with a large GDP pr capita.
 The five poorest regions Creuse (FRI22), Ariège (FRj21), Meuse(FRF32), Gers(FRJ24) and Aisne (FRE21) these regions have quite the same GDP pr capita. 
 
-##Hungary
+###Hungary
 Hungary is a country in central Europe, the country's capital is Budapest.
 
 ```{r Hungary}
@@ -266,8 +267,8 @@ slice_min(GDPHU, Per_capita, n=5)
 
 Hungary has 20 regions. the five Whelties is Budapest (HU110), Gyôr-Moson.Sopron (hu221), Fejèr (HU211), Komàrom-Esztergom (hu211) and Vas (HU222). Budapest is the richest region, while the other four are more even. The poorest regions are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323), Bèkès(HU332), Somogy (HU232) and Jàsz-Nagykun-Szolnok(HU322). Nògràd have very low GDP pr capita. and stands out compared to the others.  
 
-## Portugal
-Portugal is a country in southern Europe. Lisbon is the capital.
+### Portugal
+Portugal is a country in southern Europe. Lisbon is the capital. Portugal also has two archipelagos, each representing a different region.
 
 ```{r Portugal}
 #| echo = FALSE
@@ -304,7 +305,7 @@ slice_min(GDPPT, Per_capita, n=5)
 
 Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT181), Algarve (PT150), Região de Leiria (PT16F) and Região de Aveiro (PT16D). We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B), Beiras e Serra da Estrela (PT16J), Douro (PT11D) and Alto Alentejo (PT186). There are not large differences between the richest and poorest regions.     
 
-##Slovakia
+###Slovakia
 
 Slovakia is a country in central Europe. It is similar to Denmark, a country that does not have so many NUTS3 regions. We therefore have to keep an eye on any outcomes. The capital in Slovakia is Bratislava. 
 
@@ -340,13 +341,17 @@ slice_min(GDPSK, Per_capita, n=3)
 
 Slovakia has 8 regions. Therefore we have only looked at 3 regions in each category. The three Whealtiest. Bratislava (SK010), Trnava (SK021) and Zilina (SK031). again we see that the capital has a significantly higher GDP per capita than the other regions. the poorest regions are Presov (SK041), Banska Bystrica (SK032) and Kosice (SK042). the lowest is slightly lower than the other.  
 
-### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
+## Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
-A Gini value must be between 0 and 1 If it is 0, it means that there is a little inequality, and closer to 1, means that there is a greater degree of inequality.
+Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level. 
 
-## Denmark 
+A Gini coefficient must be between 0 and 1. If it's 0, it means that there is little inequality, and if it's closer to 1, it means that there is a greater degree of inequality between rich and poor. We calculate a Gini coefficient by looking at how much wealth and income there is in a country and then how it is distributed among the population.
+when we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers. Outliers are values that are either very high or very low compared to the other data we have.
 
-In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also can see is Danmark a small country with few NUTS2 regions. 
+First out is Denmark. 
+
+### Denmark 
+
 ```{r Denmark gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -382,7 +387,11 @@ DKoutliers <- DK %>%
   distinct(id_nuts2)
 DKoutliers
 ```
-## France
+
+In Denmark, we can see that the Gini coefficient is 0.15, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also have seen is that Denmark is a small country with few NUTS2 regions Which doesn't givs us much data to work with.
+The Outliers region is Nordjylland, which only has one single province.
+
+### France
 ```{r France gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -418,7 +427,10 @@ FRoutliers <- FR1 %>%
 FRoutliers
 ```
 
-## Hungary
+In France, we can see that the Gini coefficient is 0.21, which shows us that France has a slightly higher gini than Denmark had, which means that the inequality is slightly greater in France. We can also see that France has two regions which are outliers Upper Normandy (FRD2) and Nord-Pas-de-Calais (FRE1).  
+
+
+### Hungary
 ```{r Hungary gini}
 #| echo = FALSE
 #Nuts 2 id
@@ -447,14 +459,16 @@ summary(HU$gini_n4 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
 ```{r}
 HUoutliers <- HU %>%
   filter(gini_n4==0) %>%
   distinct(id_nuts2)
 HUoutliers
 ```
+In Hungary , we can see that the Gini coefficient is 0.28, which shows us that Hungary has a higher gini than both denmark and France had, which means that the inequality is slightly greater in Hungary. We can also see that Hungary has two regions which are outliers Budabest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking in.   
 
-## Portugal
+### Portugal
 
 ```{r Portugal gini}
 #| echo = FALSE
@@ -491,8 +505,9 @@ PToutliers <- PT %>%
   distinct(id_nuts2)
 PToutliers
 ```
+In Portugal, we can see that the Gini coefficient is 0.16, which shows us that there is not a big difference between whealty and poor. We can also see that Portugal has tree regions Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30) which are outliers. Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers.  In all these tre regions, no data has been recorded for the last 20 years. Portugal doesn't have many NUTS 2 regions, and when three of them have no value, there is not much confidence in the result we get.
 
-## Slovakia
+### Slovakia
 ```{r Slovakia gini}
 #| echo = FALSE
 SK %<>%
@@ -524,9 +539,12 @@ SKoutliers <- SK %>%
   distinct(id_nuts2)
 SKoutliers
 ```
+In Slovakia, we can see that the Gini coefficient is 0.30, which is the highest Gini we have found for our countries. Slovakia has on region that is an outliers which are (SK01). That leavs only Slovakia with three regions from which we obtain data. which is not a lot of data.
 
+To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
+Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
 
-## Assignment 2 
+# Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effete if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
 We will plot the relationship between regional development and regional inequality and the fitted line corresponding to our estimate. We are also going to plot the residuals against the predicted values of our model.
 There will be a discussion about the classical assumptions OLS in light of our data and plots and other determinants of inequity.
@@ -574,7 +592,7 @@ ggplot(aes(x =id_nuts2, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n6")
 ```
 
-```{r}
+```{r
 DK2<- DK %>%
   left_join(Education, by = c("Year"))
 DK2<- DK2 %>%
@@ -594,7 +612,7 @@ ggplot(aes(x =id_nuts2, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n3")
 ```
 
-```{r}
+```{r
 FR2<- FR1 %>%
   left_join(Education, by = c("Year2"))
 FR2<- FR2 %>%
@@ -614,7 +632,7 @@ ggplot(aes(x =id_nuts2, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
    labs(x = "id_nuts2", y = "Gini_n5")
 ```
 
-```{r}
+```{r
 SK2<- SK %>%
   left_join(Education, by = c("Year5"))
 SK2<- SK2 %>%
