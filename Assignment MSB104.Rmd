@@ -368,22 +368,22 @@ gini.wtd(DK$Per_capita, w = DK$Population)
 
 DK %<>% 
    group_by(id_nuts2, Year) %>%
-  mutate(gini_n6 = gini.wtd(Per_capita, w = Population)) %>%
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(DK$gini_n6 )
+summary(DK$gini_n2 )
 
 ```
 
 ```{r NUTS2 in Denmark}
-  ggplot(DK, aes(x = Year, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
+  ggplot(DK, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
 
 ```{r Outliers in Denmark}
 DKoutliers <- DK %>%
-  filter(gini_n6==0) %>%
+  filter(gini_n2==0) %>%
   distinct(id_nuts2)
 DKoutliers
 ```
@@ -408,21 +408,21 @@ FR1 %<>%
 
 FR1 %<>% 
    group_by(id_nuts2, Year) %>%
-  mutate(gini_n3 = gini.wtd(Per_capita, w = Population)) %>%
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(FR1$gini_n3 )
+summary(FR1$gini_n2 )
 
 ```
 
 ```{r NUTS2 regions in France}
-  ggplot(FR1, aes(x = Year, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
+  ggplot(FR1, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
 ```{r}
 FRoutliers <- FR1 %>%
-  filter(gini_n3==0) %>%
+  filter(gini_n2==0) %>%
   distinct(id_nuts2)
 FRoutliers
 ```
@@ -447,22 +447,22 @@ gini.wtd(HU$Per_capita, w = HU$Population)
 
 HU %<>% 
    group_by(id_nuts2, Year) %>%
-  mutate(gini_n4 = gini.wtd(Per_capita, w = Population)) %>%
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
   ungroup() # to remove grouping
 
-summary(HU$gini_n4 )
+summary(HU$gini_n2 )
 
 ```
 
 ```{r NUTS2 regions in Hungary}
-  ggplot(HU, aes(x = Year, y=gini_n4, fill=id_nuts2, color=id_nuts2)) +
+  ggplot(HU, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
 
 ```{r}
 HUoutliers <- HU %>%
-  filter(gini_n4==0) %>%
+  filter(gini_n2==0) %>%
   distinct(id_nuts2)
 HUoutliers
 ```
@@ -520,22 +520,22 @@ gini.wtd(SK$Per_capita, w = SK$Population)
 
 SK %<>%
   group_by(id_nuts2, Year) %>%
-  mutate(gini_n5 = gini.wtd(Per_capita, w = Population)) %>%
+  mutate(gini_n2 = gini.wtd(Per_capita, w = Population)) %>%
 ungroup()
 
-summary(SK$gini_n5)
+summary(SK$gini_n2)
 
 ```
 
 ```{r}
-  ggplot(SK, aes(x = Year, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
+  ggplot(SK, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
 
 ```{r}
 SKoutliers <- SK %>%
-  filter(gini_n5==0) %>%
+  filter(gini_n2==0) %>%
   distinct(id_nuts2)
 SKoutliers
 ```
@@ -545,7 +545,7 @@ To summarize what has been done in assignment 1, we have calculated GDP per capi
 Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
 
 # Assignment 2 
-At the second assigment we are looking at growth and inequity. We are going to estimate the effete if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
+At the second assigment we are looking at growth and inequity. We are going to estimate the effect if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
 We will plot the relationship between regional development and regional inequality and the fitted line corresponding to our estimate. We are also going to plot the residuals against the predicted values of our model.
 There will be a discussion about the classical assumptions OLS in light of our data and plots and other determinants of inequity.
 We will also go back on Eurostat´s webpages and  download EurostatLinks to an external site. It will be for our subset of countries regional (NUTS2, j) data related to transport infrastructure, education and demographics. We are suppose to select on variable per category that we would like to explore further in there relationship to regional inequality.
@@ -554,35 +554,77 @@ In the end we will discuss the overall fit of our model and the inference relate
 
 ### Data set: 
 
-We want to look at the amount of people who have higher education in the education data set and how many railways lines there is in kilometers when we look in the transport dataset. In the demographic data set we want to see the life expectancy age is in age.
+We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset. In the demographic data set we want to look at the life expectancy age.
+
+
 
 ```{r Data set Education }
 #| echo = FALSE
-Education <- read_csv('edat_lfse_04__linear 2.csv') %>%
+Education <- read_csv('education.csv',show_col_types = FALSE )
+Education <- Education %>%
   select(unit,isced11,geo,age,TIME_PERIOD,OBS_VALUE) %>%
   filter(unit=="PC" & isced11=="ED0-2" & age=="Y25-64" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
   mutate(Edu = OBS_VALUE, Year2=TIME_PERIOD, Region2=geo) %>%
   select(Region2, Year2, Edu)
 ```
 
-```{r Data set Railways}
+```{r Data set Motorways}
 #| echo = FALSE
-Transport <- read_csv('tran_r_net_1_Data.csv') %>%
-  select(UNIT,TIME,GEO,Value,TRA_INFR) %>%
-  filter(UNIT=="Kilometre" & TRA_INFR== "RL" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO)| grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
-  mutate(Railway = Value, Year2 = TIME, Region2=GEO) %>%
-  select(Region2, Year2, Railway)
+Transport <- read_csv('transport.csv',show_col_types = FALSE )%>%
+  filter(unit=="Kilometre" & tra_infr== "MWAY" & TIME_PERIOD ==2010 &(grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
+   select(unit,tra_infr, geo, TIME_PERIOD,OBS_VALUE) %>%
+  mutate(Road=OBS_VALUE, Year2=TIME_PERIOD, Region2=geo) %>%
+  select(Region2, Year2, Road)
 ```
 
 ```{r Data set life expectancy age }
 #| echo = FALSE
-Lifeexp <- read_csv('demo_r_mlifexp_1_Data.csv') %>%
-select(TIME,GEO,SEX,AGE,UNIT,Value) %>%
-filter(UNIT=="YEAR" & SEX == "Total" & (grepl('DK..', GEO) | grepl('FR..', GEO) | grepl('HU..', GEO) | grepl('PT..', GEO) | grepl('SK..', GEO))) %>%
-   mutate(lea = Value, Year2 = TIME, Region2=GEO) %>%
+Lifeexp <- read_csv('Life.csv',show_col_types = FALSE) 
+Lifeexp <- Lifeexp %>%
+select(unit,geo,sex,age,TIME_PERIOD,OBS_VALUE) %>%
+filter(unit=="YEAR" & sex == "Total" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo) | grepl('PT..', geo) | grepl('SK..', geo))) %>%
+   mutate(lea = OBS_VALUE, Year2 = TIME_PERIOD, Region2=geo) %>%
   select(Region2,Year2, lea)
 
 ```
+
+### Growth and inequity
+
+```{r}
+# re-generate gdp per capita on a nuts2 level
+Per_capita2 <- gini_n2 %>%
+  # select rows with MIO_EUR and the regions we need
+  filter(Year=="2010" & unit =='MIO_EUR' & (grepl('DK..', Region) |     grepl('FR..', Region) | grepl('HU..', Region)|     grepl('PT..', Region) | grepl('SK..', Region))) %>%
+  # select only columns we need
+  select(Year2, Region2, GDP, unit) %>%
+  left_join(Pop, by=c("Year","Region"),
+            suffix = c("","Population")) %>%
+   # only rows with TOTAL and T from the population data
+  filter(age=='TOTAL' & sex=='T') %>%
+  mutate(gdp_nuts2 =  GDP / Population* 1000000) %>%
+  mutate(nuts_id2 = Regio_id) %>%
+  select(Year2, nuts_id2, gdp_nuts2)
+# join in our data with new variables
+Year2010 <- gini_n2 %>%
+  left_join(Education, by = c("Year", "nuts_id2")) %>%
+  left_join(Rransport, by = c("Year", "nuts_id2")) %>%
+  left_join(Lifexp, by = c("Year", "nuts_id2")) %>%
+  left_join(percapita2, by = c("Year", "nuts_id2")) %>%
+  # level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_nuts2)) %>%
+  # create column to easily filter by country
+  mutate(nuts_id0 = substr(nuts_id2,1,2)) %>%
+  filter(Year2==2010)
+Year2010 %>%
+  st(.)
+
+
+
+
+
+
+
+
 
 ```{r}
 DK %>%
