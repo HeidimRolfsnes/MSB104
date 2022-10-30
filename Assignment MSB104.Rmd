@@ -422,6 +422,7 @@ summary(FR1$gini_n2 )
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
 ```{r}
 FRoutliers <- FR1 %>%
   filter(gini_n2==0) %>%
@@ -652,7 +653,6 @@ edu.Gini.lm <- lm(Edu ~Gini + lea, data=BNP2010)
 summary(edu.Gini.lm)
 ```
 
- 
  
 
 
