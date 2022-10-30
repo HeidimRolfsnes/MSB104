@@ -2,8 +2,8 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  html_document: default
   word_document: default
+  html_document: default
   pdf_document: default
 ---
 
@@ -376,6 +376,7 @@ summary(DK$gini_n2 )
 ```
 
 ```{r NUTS2 in Denmark}
+#| echo = FALSE
   ggplot(DK, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -416,6 +417,7 @@ summary(FR1$gini_n2 )
 ```
 
 ```{r NUTS2 regions in France}
+#| echo = FALSE
   ggplot(FR1, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -455,6 +457,7 @@ summary(HU$gini_n2 )
 ```
 
 ```{r NUTS2 regions in Hungary}
+#| echo = FALSE
   ggplot(HU, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -494,6 +497,7 @@ summary(PT$gini_n2 )
 ```
 
 ```{r}
+#| echo = FALSE
   ggplot(PT, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -528,6 +532,7 @@ summary(SK$gini_n2)
 ```
 
 ```{r}
+#| echo = FALSE
   ggplot(SK, aes(x = Year, y=gini_n2, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -557,176 +562,98 @@ In the end we will discuss the overall fit of our model and the inference relate
 We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset. In the demographic data set we want to look at the life expectancy age.
 
 
-
+### Growth and inequity
 ```{r Data set Education }
 #| echo = FALSE
 Education <- read_csv('education.csv',show_col_types = FALSE )
 Education <- Education %>%
   select(unit,isced11,geo,age,TIME_PERIOD,OBS_VALUE) %>%
   filter(unit=="PC" & isced11=="ED0-2" & age=="Y25-64" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
-  mutate(Edu = OBS_VALUE, Year2=TIME_PERIOD, Region2=geo) %>%
-  select(Region2, Year2, Edu)
+  mutate(Edu = OBS_VALUE, Year=TIME_PERIOD, id_nuts2=geo) %>%
+  select(id_nuts2, Year, Edu)
 ```
 
 ```{r Data set Motorways}
 #| echo = FALSE
 Transport <- read_csv('transport.csv',show_col_types = FALSE )%>%
-  filter(unit=="Kilometre" & tra_infr== "MWAY" & TIME_PERIOD ==2010 &(grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo)| grepl('PT..', geo) | grepl('SK..', geo))) %>%
-   select(unit,tra_infr, geo, TIME_PERIOD,OBS_VALUE) %>%
-  mutate(Road=OBS_VALUE, Year2=TIME_PERIOD, Region2=geo) %>%
-  select(Region2, Year2, Road)
+  mutate(Road=OBS_VALUE, Year=TIME_PERIOD, id_nuts2=geo) %>%
+  select(id_nuts2, Year, Road)
 ```
 
 ```{r Data set life expectancy age }
 #| echo = FALSE
-Lifeexp <- read_csv('Life.csv',show_col_types = FALSE) 
-Lifeexp <- Lifeexp %>%
-select(unit,geo,sex,age,TIME_PERIOD,OBS_VALUE) %>%
-filter(unit=="YEAR" & sex == "Total" & (grepl('DK..', geo) | grepl('FR..', geo) | grepl('HU..', geo) | grepl('PT..', geo) | grepl('SK..', geo))) %>%
-   mutate(lea = OBS_VALUE, Year2 = TIME_PERIOD, Region2=geo) %>%
-  select(Region2,Year2, lea)
-
-```
-
-### Growth and inequity
-
-```{r}
-# re-generate gdp per capita on a nuts2 level
-Per_capita2 <- gini_n2 %>%
-  # select rows with MIO_EUR and the regions we need
-  filter(Year=="2010" & unit =='MIO_EUR' & (grepl('DK..', Region) |     grepl('FR..', Region) | grepl('HU..', Region)|     grepl('PT..', Region) | grepl('SK..', Region))) %>%
-  # select only columns we need
-  select(Year2, Region2, GDP, unit) %>%
-  left_join(Pop, by=c("Year","Region"),
-            suffix = c("","Population")) %>%
-   # only rows with TOTAL and T from the population data
-  filter(age=='TOTAL' & sex=='T') %>%
-  mutate(gdp_nuts2 =  GDP / Population* 1000000) %>%
-  mutate(nuts_id2 = Regio_id) %>%
-  select(Year2, nuts_id2, gdp_nuts2)
-# join in our data with new variables
-Year2010 <- gini_n2 %>%
-  left_join(Education, by = c("Year", "nuts_id2")) %>%
-  left_join(Rransport, by = c("Year", "nuts_id2")) %>%
-  left_join(Lifexp, by = c("Year", "nuts_id2")) %>%
-  left_join(percapita2, by = c("Year", "nuts_id2")) %>%
-  # level of economic development = log(gdp per capita)
-  mutate(log_gdppc = log(gdp_nuts2)) %>%
-  # create column to easily filter by country
-  mutate(nuts_id0 = substr(nuts_id2,1,2)) %>%
-  filter(Year2==2010)
-Year2010 %>%
-  st(.)
-
-
-
-
-
-
-
-
-
-```{r}
-DK %>%
-  filter(Year==2010) %>%
-ggplot(aes(x =id_nuts2, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "id_nuts2", y = "Gini_n6")
-```
-
-```{r
-DK2<- DK %>%
-  left_join(Education, by = c("Year"))
-DK2<- DK2 %>%
-  mutate(nuts0 = substr(Region2,1,2))
-DK2 %>%
-  filter(Year==2010 & nuts0=="DK") %>%
-ggplot(aes(x =Edu, y=gini_n6, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
+Lifeexp <- read_csv('Life.csv' ,show_col_types = FALSE) %>%
+mutate(lea = OBS_VALUE, Year = TIME_PERIOD, id_nuts2=geo) %>%
+  select(id_nuts2, Year, lea)
 ```
 
 ```{r}
-FR1 %>%
-  filter(Year==2010) %>%
-ggplot(aes(x =id_nuts2, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "id_nuts2", y = "Gini_n3")
-```
+#| echo = FALSE
+BNP3 <- BNP2 %>%
+  mutate(id_nuts2 = substr(Regio_id,1,4))%>%
+  mutate(Gini = GDP / Population * 1000000) %>%
+select(id_nuts2, Year, Population, GDP, Per_capita, Gini)
 
-```{r
-FR2<- FR1 %>%
-  left_join(Education, by = c("Year2"))
-FR2<- FR2 %>%
-  mutate(nuts0 = substr(Region2,1,2))
-FR2 %>%
-  filter(Year==2010 & nuts0=="FR") %>%
-ggplot(aes(x =Edu, y=gini_n3, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
+# new dataset to 
 ```
+mutate(id_nuts2 = substr(Regio_id,1,4))%>%
+select(id_nuts2, Year, Population, GDP, per_capita)%>%
+filter(Year==2010)%>%
 
 ```{r}
-SK %>%
-  filter(Year==2010) %>%
-ggplot(aes(x =id_nuts2, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "id_nuts2", y = "Gini_n5")
-```
-
-```{r
-SK2<- SK %>%
-  left_join(Education, by = c("Year5"))
-SK2<- SK2 %>%
-  mutate(nuts0 = substr(Region2,1,2))
-SK2 %>%
-  filter(Year==2010 & nuts0=="SK") %>%
-ggplot(aes(x =Edu, y=gini_n5, fill=id_nuts2, color=id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
-```
-
-```{r}
-DK2010 <- DK %>%
-    filter(Year==2010 & id_nuts0=="DK") 
-FR2010 <- FR1 %>%
-    filter(Year==2010 & id_nuts0=="FR") 
-HU2010 <- HU %>%
-    filter(Year==2010 & id_nuts0=="HU") 
-PT2010 <- PT %>%
-    filter(Year==2010 & id_nuts0=="PT") 
-SK2010 <- SK %>%
-    filter(Year==2010 & id_nuts0=="SK") 
-
-
-#Estimates 
-lm.1 = lm(Region2 ~ edu , data = Education) 
-lm.2 = lm(Region2 ~ Railway, data = Education)
-lm.3 = lm(Region2 ~ edu + Railway, Education)
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "edu","Railway", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
+#| echo = FALSE
+BNP2010 <- BNP3 %>%
+  filter(Year == 2010)%>%
+left_join(Education, by = c("id_nuts2", "Year"))%>%
+left_join(Lifeexp, by = c("id_nuts2", "Year"))%>%
+left_join(Transport, by = c("id_nuts2", "Year"))%>%
   
-#estimates 
-lm.4 = lm(Region2 ~ edu , data = Education) 
-lm.5 = lm(Region2 ~  lea, data = Education)
-lm.6 = lm(Region2 ~ edu + lea, data = Education)
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "edu","lea", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
+  mutate(Nuts0 = substr(id_nuts2, 1,2))
+```
+
+```{r}
+BNP2010 %>%
+  st(.)
 ```
 
 
-Slovakia 
+```{r}
+#| echo = FALSE
+BNP2010 <- BNP2010 %>%
+  filter(Gini > 0)
+```
+
+```{r}
+#| echo = FALSE
+Denmark2010 <- BNP2010 %>%
+  filter(Nuts0=="DK") 
+France2010 <- BNP2010 %>%
+  filter(Nuts0=="FR")
+Hungary2010 <- BNP2010 %>%
+  filter(Nuts0=="HU")
+Portugal2010 <- BNP2010 %>%
+  filter(Nuts0=="PT")
+Slovakia2010 <- BNP2010 %>%
+  filter(Nuts0=="SK")
+```
+
+
+
+```{r}
+plot(Population ~ lea , data = BNP2010)
+```
+
+
+Does Education has any thin to do with Gini and life expectancy
+
+```{r}
+edu.Gini.lm <- lm(Edu ~Gini + lea, data=BNP2010) 
+
+summary(edu.Gini.lm)
+```
+
+ 
+ 
 
 
 
