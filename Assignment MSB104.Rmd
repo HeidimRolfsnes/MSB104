@@ -2,8 +2,8 @@
 title: "Econometriscs assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  word_document: default
   html_document: default
+  word_document: default
   pdf_document: default
 ---
 
@@ -608,7 +608,8 @@ BNP2010 <- BNP3 %>%
 left_join(Education, by = c("id_nuts2", "Year"))%>%
 left_join(Lifeexp, by = c("id_nuts2", "Year"))%>%
 left_join(Transport, by = c("id_nuts2", "Year"))%>%
-  
+  #economic development = log(Per_capita)
+mutate (log_bnppc=log(Per_capita)) %>%
   mutate(Nuts0 = substr(id_nuts2, 1,2))
 ```
 
@@ -641,19 +642,140 @@ Slovakia2010 <- BNP2010 %>%
 
 
 ```{r}
-plot(Population ~ lea , data = BNP2010)
+#| echo = FALSE
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata){
+  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
+ bnpcap1 <- lm_bnpcap$coefficients[1]
+  bnpcap2 <- lm_bnpcap$coefficients[2]
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2, label=id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata){
+  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
+  bnpcap1 <- lm_bnpcap$coefficients[1]
+  bnpcap2 <- lm_bnpcap$coefficients[2]
+  lmdata$predicted <- predict(lm_bnpcap)
+  lmdata$residuals <- residuals(lm_bnpcap)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend=log_bnppc,yend=predicted)) +
+    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
 ```
-
-
-Does Education has any thin to do with Gini and life expectancy
 
 ```{r}
-edu.Gini.lm <- lm(Edu ~Gini + lea, data=BNP2010) 
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
+lm.1 = lm(Gini ~ log_bnppc, data = Denmark2010)
+lm.2 = lm(Gini ~ log_bnppc, data = France2010)
+lm.3 = lm(Gini ~ log_bnppc, data = Hungary2010)
+lm.4 = lm(Gini ~ log_bnppc, data = Portugal2010)
+lm.5 = lm(Gini ~ log_bnppc, data = Slovakia2010)
+lm.6 = lm(Gini ~ log_bnppc, data = BNP2010)
 
-summary(edu.Gini.lm)
+#Gen Table
+  huxreg(
+  list("Denmark" = lm.1, "France" = lm.2, "Hungary" = lm.3, "Portugal" = lm.4, "Slovakia" = lm.5, "Total" = lm.6),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_bnppc = "log_bnppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
 ```
 
- 
+```{r}
+#| label: fig-lm-Denmark
+#| fig-cap: Estimate for Denmark
+lm_function_plot(Denmark2010)
+```
+
+```{r}
+#| label: fig-estimate-France
+#| fig-cap: Estimate for France
+lm_function_plot(France2010)
+```
+
+```{r}
+#| label: fig-estimate-Hungary
+#| fig-cap: Estimate for Hungary
+lm_function_plot(Hungary2010)
+```
+
+```{r}
+#| label: fig-estimate-Portugal
+#| fig-cap: Estimate for Portugal
+lm_function_plot(Portugal2010)
+```
+
+```{r}
+#| label: fig-estimate-Slovakia
+#| fig-cap: Estimate for Slovakia
+lm_function_plot(Slovakia2010)
+```
+```{r}
+#| label: fig-residuals-Denmark
+#| fig-cap: Residuals Denmark
+lm_residuals_plot(Denmark2010)
+```
+
+```{r}
+#| label: fig-residuals-France
+#| fig-cap: Residuals France
+lm_residuals_plot(France2010)
+```
+
+```{r}
+#| label: fig-residuals-Hungary
+#| fig-cap: Residuals Hungary
+lm_residuals_plot(Hungary2010)
+```
+
+```{r}
+#| label: fig-residuals-Portugal
+#| fig-cap: Residuals Portugal 
+lm_residuals_plot(Portugal2010)
+```
+
+```{r}
+#| label: fig-residuals-Slovakia 
+#| fig-cap: Residuals Slovakia
+lm_residuals_plot(Slovakia2010)
+```
+```{r}
+BNP2010 %>%
+  filter(Year==2010 & nuts0=="DK") %>%
+ggplot(aes(x =edu, y=Gini, fill=id_nuts2, color=id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+
+```
 
 
+```{r}
 
+multi_linear_regression_model_1 <- function(mlrdata){
+lm.1 = lm(Gini ~ edu , mlrdata) 
+lm.2 = lm(Gini ~  Road, mlrdata)
+lm.3 = lm(Gini ~ edu + Road, mlrdata)
+lm.4 = lm(Gini ~  lea, mlrdata)
+lm.5 = lm(Gini ~ edu + Lea, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "edu","Road", Lifeexp = "lifeexpectancyage", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+
+```
