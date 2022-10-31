@@ -105,7 +105,7 @@ filter(unit == "MIO_EUR" & (grepl('DK..', Regio_id) | grepl('FR..', Regio_id) | 
 ```{r Mean: GDP Per Capita in all countries}
 	summarise(GDP2, GDP_per_Capita = mean(Per_capita))
 ```
-From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 805,13 Euro. since we don't have any other values to compare with we can't say if this is good or bad. 
+From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 805,13 Euro. We take this as a starting point when we look at the countries separately. 
 
 ```{r}
 summary(GDP2)
@@ -132,7 +132,7 @@ We startet with Denmark and then we took the countries alphabetically.
 
 ###Denmark
 
-Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions.   Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
+Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions. Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
 
 ```{r Denmark}
 #| echo = FALSE
@@ -548,7 +548,7 @@ SKoutliers
 In Slovakia, we can see that the Gini coefficient is 0.30, which is the highest Gini we have found for our countries. Slovakia has on region that is an outliers which are (SK01). That leavs only Slovakia with three regions from which we obtain data. which is not a lot of data.
 
 To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
-Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
+Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16 compare to the other countries in our sample. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
 
 # Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effect if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
@@ -632,7 +632,6 @@ Portugal2010 <- BNP2010 %>%
 Slovakia2010 <- BNP2010 %>%
   filter(Nuts0=="SK")
 ```
-
 
 
 ```{r}
