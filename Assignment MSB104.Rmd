@@ -155,7 +155,6 @@ France is a country in Western Europe, and also has colonies in other parts of t
 #| echo = FALSE
 gdppop%>%
      filter(grepl("FR...", Region)) %>%
-    filter(Year==2010) %>%
      select(Year, gdp_per_capita, Region) %>%
      ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
      geom_point(lwd = .8) +
