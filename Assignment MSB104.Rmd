@@ -185,8 +185,6 @@ gdpfr1  %>%
 slice_max(gdpfr1, gdp_per_capita, n=3)
 
 ```
-```
-
 
 
 ```{r The poorest regions in France}
@@ -324,9 +322,6 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
-
-
-
 
 
 ```{r Outliers in Denmark}
