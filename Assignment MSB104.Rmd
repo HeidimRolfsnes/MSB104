@@ -500,43 +500,6 @@ Portugal2010 <- gdppop2010 %>%
 ```
 
 
-<<<<<<< HEAD
-=======
-```{r}
-#| echo = FALSE
-# create a function to calculate lmr 
-lm_function_plot <- function(lmdata){
-  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
- bnpcap1 <- lm_bnpcap$coefficients[1]
-  bnpcap2 <- lm_bnpcap$coefficients[2]
- 
-   # create plot 
-  lmdata %>%
-    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2, label=id_nuts2)) +
-    geom_point(lwd = .8) +
-    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
-    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
-    labs(x = "log(GDP per capita)", y = "Gini")
-}
-# create a function to calculate lmr2
-lm_residuals_plot <- function(lmdata){
-  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
-  bnpcap1 <- lm_bnpcap$coefficients[1]
-  bnpcap2 <- lm_bnpcap$coefficients[2]
-  lmdata$predicted <- predict(lm_bnpcap)
-  lmdata$residuals <- residuals(lm_bnpcap)
-  
-  # create plot2
-  lmdata %>%
-    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2)) +
-    geom_point(lwd = .8) +
-    geom_segment(aes(xend=log_bnppc,yend=predicted)) +
-    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
-    labs(x = "log(GDP per capita)", y = "Gini")
-}
-```
-
->>>>>>> 73c7e4c16bf71f4ff85edd22e8c317add168cc0c
 ```{r lm all}
 lm.1 = lm(Gini ~ gdp_per_capita, data = Denmark2010)
 lm.2 = lm(Gini ~ gdp_per_capita, data = France2010)
