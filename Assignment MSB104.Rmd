@@ -85,7 +85,11 @@ filter(unit == "MIO_EUR" & (grepl('DK..', Region) | grepl('FR..', Region) | grep
 ```{r Mean: GDP Per Capita in all countries}
 	summarise(gdppop, GDP_per_Capita = mean(gdp_per_capita))
 ```
+<<<<<<< HEAD
 From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
+=======
+From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 805,13 Euro. We take this as a starting point when we look at the countries separately. 
+>>>>>>> 73c7e4c16bf71f4ff85edd22e8c317add168cc0c
 
 ```{r}
 summary(gdppop)
@@ -100,7 +104,11 @@ To get the result by country, we made a summary of GDP per capita on each countr
 
 Since Hungary and Slovakia have few nuts3 regions we chose to put them together. 
 
+<<<<<<< HEAD
 ### Denmark
+=======
+Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions. Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark 
+>>>>>>> 73c7e4c16bf71f4ff85edd22e8c317add168cc0c
 
 Denmark is a small country in Scandinavia,and they don't have many NUTS2 regions. Denmark consists of many islands, on which the regions are divided. Kobenhagen is the capital of Denmark.  
 
@@ -406,7 +414,7 @@ In Portugal, we can see that the Gini coefficient is 0.16, which shows us that t
 In Slovakia, we can see that the Gini coefficient is 0.30, which is the highest Gini we have found for our countries. Slovakia has on region that is an outliers which are (SK01). That leavs only Slovakia with three regions from which we obtain data. which is not a lot of data.
 
 To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
-Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
+Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16 compare to the other countries in our sample. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
 
 # Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effect if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
@@ -497,6 +505,43 @@ Portugal2010 <- gdppop2010 %>%
 ```
 
 
+<<<<<<< HEAD
+=======
+```{r}
+#| echo = FALSE
+# create a function to calculate lmr 
+lm_function_plot <- function(lmdata){
+  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
+ bnpcap1 <- lm_bnpcap$coefficients[1]
+  bnpcap2 <- lm_bnpcap$coefficients[2]
+ 
+   # create plot 
+  lmdata %>%
+    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2, label=id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
+# create a function to calculate lmr2
+lm_residuals_plot <- function(lmdata){
+  lm_bnpcap <- lm(Gini ~ log_bnppc, data = lmdata)
+  bnpcap1 <- lm_bnpcap$coefficients[1]
+  bnpcap2 <- lm_bnpcap$coefficients[2]
+  lmdata$predicted <- predict(lm_bnpcap)
+  lmdata$residuals <- residuals(lm_bnpcap)
+  
+  # create plot2
+  lmdata %>%
+    ggplot(aes(x =log_bnppc, y=Gini, fill=id_nuts2, color=id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend=log_bnppc,yend=predicted)) +
+    geom_abline(intercept = bnpcap1, slope = bnpcap2, color="yellow", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
+```
+
+>>>>>>> 73c7e4c16bf71f4ff85edd22e8c317add168cc0c
 ```{r lm all}
 lm.1 = lm(Gini ~ gdp_per_capita, data = Denmark2010)
 lm.2 = lm(Gini ~ gdp_per_capita, data = France2010)
