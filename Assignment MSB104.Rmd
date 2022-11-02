@@ -1,5 +1,5 @@
 ---
-title: "Econometriscs assignment"
+title: "Econometrics assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
   html_document: default
@@ -20,7 +20,7 @@ suppressMessages(library(vtable))
 suppressMessages(library(wooldridge))
 suppressMessages(library(huxtable))
 options(scipen = 999)
-
+knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
 # Assignment 1
 In the subject MSB104 econometrics, this year we will hand in an assignment divided into four assignments throughout the semester. The assignments must be written and calculated in the software R. We are group one and the countries that will be representing in our assignment is: Denmark, France, Hungary, Portugal and Slovakia.
@@ -105,22 +105,22 @@ Since Hungary and Slovakia have few nuts3 regions we chose to look at them toget
 
 ### Denmark
   
-```{r Denmark}
+```{r GDP in Denmark}
+#| echo = FALSE
 gdppop%>%
      filter(grepl("DK...", Region)) %>%
      select(Year, gdp_per_capita, Region) %>%
      ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
      geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP Per capita") 
+   labs(title = 'GDP per capita in Denmark', x = "Year", y = "GDP Per capita") 
 ```
 Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions. Kobenhagen is the capital of Denmark, and as we can see above it stand out together with the surrounding region. we can se that the region around the capital has had a higher growth. Capital cities are often richer than other regions. we can see that in Denmark as well. 
-
-**Regions in Denmark**
 
 To get an overview, we have chosen to look at 2010 for all the regions in Denmark to see which regions are the richest and least wealties.
 
 
 ```{r the whealtiest regions in Denmark}
+#| echo = FALSE
 gdpdk <- gdppop%>%
   filter(grepl("DK...", Region)) %>%
   filter(Year==2010) %>%
@@ -129,6 +129,7 @@ slice_max(gdpdk, gdp_per_capita, n=3)
 ```
 
 ```{r The poorest regions in Denmark}
+#| echo = FALSE
 slice_min(gdpdk, gdp_per_capita, n=3)
 
 ```
@@ -145,14 +146,14 @@ Denmark has 11 nuts3 regions, it is the capital and the surrounding region that 
 
 ### France
 
-```{r France}
+```{r GDP in France}
 #| echo = FALSE
 gdppop%>%
      filter(grepl("FR...", Region)) %>%
      select(Year, gdp_per_capita, Region) %>%
      ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
      geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP Per capita")
+   labs(title = 'GDP per capita in France', x = "Year", y = "GDP Per capita")
 ```
 
 ```{r}
@@ -166,52 +167,62 @@ France is a country in Western Europe, they also have colonies in other parts of
 
 Since France has so many nuts3 regions, it is not so easy to distinguish the different regions. We see that here too the capital Paris stands out. When we made a summary, we see that there is a difference in min and max. When we look more closely at the numbers, we can see that this may be due to France having colonies in other countries that are included. These colonies are located in Africa and South America which has a negative effect on France's overall GDP. For further research, we have chosen to remove these regions from the data set.
 
-```{r France without the FRY regions}
+```{r Take away the FRY regions}
 #| echo = FALSE
-gdpfr1 <- gdppop %>%
-filter(Region %in% c("FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "FR108", "FRB01", "FRB02", "FRB03", "FRB04", "FRB05", "FRB06" , "FRC11", "FRC12","FRC13", "FRC14", "FRC21", "FRC22, FRC23", "FRC24", "FRD11", "FRD12","FRD13", "FRD21", "FRD22, FRE11", "FRE12", "FRE21", "FRE22", "FRE23","FRF11", "FRF12", "FRF21", "FRF22, FRF23", "FRF24", "FRF31", "FRF32", "FRF33","FRF34", "FRG01", "FRG02", "FRG03, FRG04", "FRG05", "FRH01", "FRH02", "FRF03, FRH04", "FRI11", "FRI12", "FRI13", "FRI14, FRI15", "FRI21", "FRI22", "FRI23, FRI31", "FRI32", "FRI33", "FRI34","FRJ11", "FRJ12",	"FRJ13",	"FRJ14",	"FRJ15",	"FRJ21",	"FRJ22",	"FRJ23",	"FRJ24",	"FRJ25",	"FRJ26",	"FRJ27"	,"FRJ28",	"FRK11",	"FRK12",	"FRK13",	"FRK14",	"FRK21",	"FRK22",	"FRK23",	"FRK24",	"FRK25",	"FRK26",	"FRK27",	"FRK28",	"FRL01",	"FRL02",	"FRL03",	"FRL04",	"FRL05",	"FRL06",	"FRM01",	"FRM02")) %>%
- select("Year", "Region", "gdp_per_capita", "Population")
+gdppop <- gdppop %>%
+  filter(Region != 'FRY10') %>%
+   filter(Region != 'FRY20') %>%
+   filter(Region != 'FRY30') %>%
+   filter(Region != 'FRY40') %>%
+   filter(Region != 'FRY50') 
 ```
 
-***Heidi: We need to take away the FRY regions in the rest of the assignement, any easyer way to get in into gdppop in sted of using gdpfr1?***
-
-**Regions in France**
+```{r France without the FRY regions}
+#| echo = FALSE
+gdppop%>%
+     filter(grepl("FR...", Region)) %>%
+     select(Year, gdp_per_capita, Region) %>%
+     ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
+     geom_point(lwd = .8) +
+   labs(title = 'GDP per capita in France', x = "Year", y = "GDP Per capita")
+```
 
 ```{r The whealtiest regions in France}
-gdpfr1 <- gdpfr1  %>%
+#| echo = FALSE
+gdpfr <- gdppop %>%
+  filter(grepl("FR...", Region)) %>%
   filter(Year==2010) %>%
   select(Year, Region, gdp_per_capita)
-slice_max(gdpfr1, gdp_per_capita, n=3)
+slice_max(gdpfr, gdp_per_capita, n=3)
 ```
 
 
 ```{r The poorest regions in France}
-slice_min(gdpfr1, gdp_per_capita, n=3)
+#| echo = FALSE
+slice_min(gdpfr, gdp_per_capita, n=3)
 ```
 
 ```{r}
 #| echo = FALSE
-gdpfr1 %>%
+gdpfr %>%
 summary()
 ```
 
-France now have 82 nuts3 regions. The three wealtiest regions are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
-The three poorest regions Creuse (FRI22), Ariège (FRj21) and  Meuse(FRF32). These regions have quite the same GDP pr capita. 
+France now have 96 nuts3 regions. The three wealtiest regions are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
+The three poorest regions Creuse (FRI22), Ariège (FRJ21) and  Meuse(FRF32). These regions have quite the same GDP pr capita. 
 
-### Hungary ans Slovakia
+### Hungary and Slovakia
 
-```{r Hungary and Slovakia}
+```{r GDP in Hungary and Slovakia}
 #| echo = FALSE
 gdppop %>%
      filter (grepl('HU..', Region) | grepl('SK..', Region)) %>%
      select(Year, gdp_per_capita, Region) %>%
      ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
      geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP Per capita")
+   labs(title = 'GDP per capita in Hungary and Slovakia ', x = "Year", y = "GDP Per capita")
 ```
 Hungary and Slovakia are both countries in Central Europe, here we see that the capitals Bratislava and Budapest both had great growth until 2008. Then Budabest went down a little while Bratislava had a larger increase. the rest of the regions have had an more steady growth.
-
-**Regions in Hungary and Slovakia in 2010**
 
 ```{r The whealtiest regions in Hungary and Slovakia}
 #| echo = FALSE
@@ -222,9 +233,8 @@ filter(grepl('HU..', Region) | grepl('SK..', Region)) %>%
 slice_max(gdphusk, gdp_per_capita, n=3)
 ```
 
- 
-
 ```{r The poorest regions in Hungary and Slovakia}
+#| echo = FALSE
 slice_min(gdphusk, gdp_per_capita, n=3)
 ```
 
@@ -240,18 +250,18 @@ There is a difference of approximately 25,000 Euro between the whelties and poor
 
 ### Portugal
 
-```{r Portugal}
+```{r GDP in Portugal}
 #| echo = FALSE
 gdppop%>%
      filter(grepl("PT...", Region)) %>%
      select(Year, gdp_per_capita, Region) %>%
      ggplot(aes(x = Year, y= gdp_per_capita, fill= Region, color= Region)) +
      geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP Per capita") 
+   labs(title = 'GDP per capita in Portugal', x = "Year", y = "GDP Per capita") 
 ```
 
-Portugal is a country in southern Europe. Lisbon is the capital. Portugal also has two archipelagos, each representing a different region.
-We see steady growth in all the regions, all have had a slight decline between 2010-2012, after that there has been an increase. we also see that in Portugal the capital stands out as the richest region.
+Portugal is a country in southern Europe. Portugal also has two archipelagos, each representing a different region.
+We see steady growth in all the regions, all have had a slight decline between 2010-2012, after that there has been an increase. We also see that in Portugal the capital Lisbon stands out as the richest region.
 
 
 ```{r the whealtiest regions in Portugal}
@@ -264,6 +274,7 @@ slice_max(gdppt, gdp_per_capita, n=3)
 ```
 
 ```{r The poorest regions in Portugal}
+#| echo = FALSE
 slice_min(gdppt, gdp_per_capita, n=3)
 ```
 
@@ -274,7 +285,6 @@ summary()
 ```
 
 Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150). We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J). There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.     
-
 
 In all the countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants. Paris has managed to have the highest GDP per capita and the poorest regions can be found in Hungary.
  
@@ -315,8 +325,8 @@ select(gini_n2) %>%
 st()
 ```
 
-
-First, we look at all the regions in the selected countries. We have 49 observations. The total Gini for all countries for all years is 0.28. We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. 
+First, we look at all the regions in the selected countries. We have 46 observations. The total Gini for all countries for all years is 0.28. This Gini is for all 5 countries over the last 20 years. We think that it will be a bit "washed away" and will therefore look at each individual country. 
+We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. To look more specifically at the countries, we have chosen to only look at the year 2010.
 
 ```{r NUTS2 in Denmark}
 #| echo = FALSE
@@ -324,8 +334,8 @@ gdppop %>%
 filter(nuts0 == "DK") %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
 ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Year", y = "Gini")
+  geom_line(lwd = .8) +
+   labs(title = 'Nuts 2 - Gini in Denmark', x = "Year", y = "Gini")
 ```
 
 ```{r}
@@ -345,8 +355,9 @@ dkoutliers <- gdppop %>%
 dkoutliers
 ```
 
-In Denmark, we can see that the Gini coefficient is, which shows us that there is not a big difference between whealty and poor. We can also see that Denmark has a region (DK05) which is an outlier. In this region, no data has been recorded over 0 for the last 20 years. As we also have seen is that Denmark is a small country with few NUTS2 regions Which doesn't givs us much data to work with.
-The Outliers region is Nordjylland, which only has one single province.
+In the graph above, you can see that there are two regions that have varied quite a bit over the past 20 years. They still stay below 0.025, which shows that there is little difference between rich and poor in these regions. Another region that stands out is DK01. It is a bit further up the graph than the other regions. Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.
+
+In Denmark, the Gini coefficients are between 0 and 0,11. Denmark has a region Nordjylland (DK05) which is an outlier. In this region, no data has been recorded in 2010.  Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
 
 ### France
 
@@ -356,8 +367,8 @@ gdppop %>%
 filter(nuts0 == "FR") %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
 ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Year", y = "Gini")
+  geom_line(lwd = .8) +
+   labs(title = 'Nuts 2 - Gini in France', x = "Year", y = "Gini") 
 
 ```
 
@@ -372,6 +383,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 
 
 ```{r Outliers in France}
+#| echo = FALSE
 froutliers <- gdppop %>%
   filter(nuts0 == "FR") %>%
   filter(gini_n2==0) %>%
@@ -379,7 +391,9 @@ froutliers <- gdppop %>%
 froutliers
 ```
 
-In France, we can see that the Gini coefficient is 0.21, which shows us that France has a slightly higher gini than Denmark had, which means that the inequality is slightly greater in France. We can also see that France has two regions which are outliers Upper Normandy (FRD2) and Nord-Pas-de-Calais (FRE1).  
+In France, there are so many regions that it is difficult to see the regions properly in the graph above. What is shown well is that the vast majority of regions follow each other evenly by being below 0.1. There are still some that stand out and we can see that FR10 is the highest with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020
+
+In France, the Gini coefficients are between 0,02 and 0,26, which shows us that France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France.France doesn´t have any outliers, after we took away the FRY regions, 
 
 
 ### Hungary and Slovakia
@@ -391,19 +405,43 @@ gdppop %>%
 filter(grepl('HU..', Region) | grepl('SK..', Region)) %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
 ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Year", y = "Gini")
+  geom_line(lwd = .8) +
+   labs(title = 'Nuts 2 - Gini in Hungary and Slovakia', x = "Year", y = "Gini")
 
 ```
 
+```{r}
+#| echo = FALSE
+gdppop %>%
+filter(nuts0 == "HU") %>%
+select(Year,nuts2, gini_n2) %>%
+distinct(nuts2, Year,.keep_all =TRUE) %>%
+  filter(Year==2010)
+```
+
+```{r}
+#| echo = FALSE
+gdppop %>%
+filter(nuts0 == "SK") %>%
+select(Year,nuts2, gini_n2) %>%
+distinct(nuts2, Year,.keep_all =TRUE) %>%
+  filter(Year==2010)
+```
+
 ```{r Outliers in Hungary and Slovakia}
+#| echo = FALSE
 huskoutliers <- gdppop %>%
    filter (grepl('HU..', Region) | grepl('SK..', Region)) %>%
   filter(gini_n2==0) %>%
   distinct(nuts2)
 huskoutliers
 ```
-In Hungary , we can see that the Gini coefficient is 0.28, which shows us that Hungary has a higher gini than both denmark and France had, which means that the inequality is slightly greater in Hungary. We can also see that Hungary has two regions which are outliers Budabest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking in.   
+
+Hungary and Slovakia have large fluctuations in their regions. One of the regions with the most fluctuations is HU22 where we can see that they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12. Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.
+
+In Hungary, the Gini coefficient are between 0 and 0,08. Hungary has two regions which are outliers Budapest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking into.   
+
+In Slovakia,the Gini coefficient are also between 0 and 0,08. Slovakia has on region that is an outliers which are (SK01). It leaves only Slovakia with three regions from which we obtain data. 
 
 ### Portugal
 
@@ -413,26 +451,38 @@ gdppop %>%
 filter(nuts0 == "PT") %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
 ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Year", y = "Gini")
+  geom_line(lwd = .8) +
+   labs(title = 'Nuts 2 - Gini in Portugal', x = "Year", y = "Gini")
 
 ```
 
+```{r}
+#| echo = FALSE
+gdppop %>%
+filter(nuts0 == "PT") %>%
+select(Year,nuts2, gini_n2) %>%
+distinct(nuts2, Year,.keep_all =TRUE) %>%
+  filter(Year==2010)
+```
+
 ```{r Outliers in Portugal}
+#| echo = FALSE
 ptoutliers <- gdppop %>%
   filter(nuts0 == "PT") %>%
   filter(gini_n2==0) %>%
   distinct(nuts2)
 ptoutliers
 ```
-In Portugal, we can see that the Gini coefficient is 0.16, which shows us that there is not a big difference between whealty and poor. We can also see that Portugal has tree regions Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30) which are outliers. Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers.  In all these tre regions, no data has been recorded for the last 20 years. Portugal doesn't have many NUTS 2 regions, and when three of them have no value, there is not much confidence in the result we get.
+In the graph for Portugal, we can see that the Gini in several of the regions has been declining over the past 20 years. That is to say, the differences between rich and poor have narrowed over the years. PT18 stands out somewhat in that there are strong fluctuations over the years.
 
-### Slovakia
+In Portugal, the Gini coefficient are between 0 and 0,08. Portugal has four regions, Algarve (PT15) Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30). Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers. Portugal doesn't have many NUTS 2 regions, and when four of them have no value, there is not much confidence in the result we get.
 
-In Slovakia, we can see that the Gini coefficient is 0.30, which is the highest Gini we have found for our countries. Slovakia has on region that is an outliers which are (SK01). That leavs only Slovakia with three regions from which we obtain data. which is not a lot of data.
+
+### Discuss briefly if there are noteworthy outliers
 
 To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
-Then we calculated the Gini coefficient for all the nuts 2 regions in our countries. Again we saw that Denmark came out best with a Gini of 0.15. Slovakia had the highest Gini at 0.30. Portugal which only had 6 NUTS 2 regions were 3 of these outliers, they got a pretty good Gini of 0.16 compare to the other countries in our sample. but we doubt whether this is a valid result, since we had so limited regions that had data. All countries had regions that were outliers. In some of the countries there were small regions, while in other countries it was the capitals that were the outliers.
+
+When we look at outliers for our countries, we can not find any outliers in France, but we do find in all the other countries. All the regions that are outliners are regions that have only one province, in Hungary, Slovakia and Portugal (HU11, HU12, SK01, PT15 and PT 17) the outliers are linked to the capitals. Capitals are often large areas, which only have one region. Portugal also has two island groups (PT20 and PT30) that come up as outliers, these are small regions. The last region that has outliners can be found in Denmark (DK05), this is a small region.
 
 # Assignment 2 
 At the second assigment we are looking at growth and inequity. We are going to estimate the effect if regional development on regional inequality, for the year 2010. Then we will disuse the goodness of fit of our estimated model.
@@ -540,7 +590,7 @@ lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
 
 
 ***AE - How do we find the cofficients? ***
-```{r}
+``{r}
 #Save coefficients
 b1_total <- lm.5$coefficients[1]
 b2_total <- lm.5$coefficients[2]
@@ -550,23 +600,23 @@ b2_total <- lm.5$coefficients[2]
   ylim(-0.3, 0.5) +
   geom_point(aes(x = gdp_per_capita, y = Gini)) +
   geom_abline(intercept = b1_total, slope = b2_total)
-```
+
 
 
 
 next... 
 
 
-```{r}
+```{r
 BNP2010 %>%
   filter(Year==2010 & nuts0=="DK") %>%
 ggplot(aes(x =edu, y=Gini, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
-```
 
 
-```{r}
+
+```{r
 multi_linear_regression_model_1 <- function(mlrdata){
 lm.1 = lm(Gini ~ edu , mlrdata) 
 lm.2 = lm(Gini ~  Road, mlrdata)
