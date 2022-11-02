@@ -327,6 +327,7 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
+
 ```{r}
 #| echo = FALSE
 gdppop %>%
@@ -335,7 +336,6 @@ select(Year,nuts2, gini_n2) %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
   filter(Year==2010)
 ```
-
 
 ```{r Outliers in Denmark}
 dkoutliers <- gdppop %>%
