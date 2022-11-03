@@ -3,7 +3,7 @@ title: "Econometrics assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
   html_document: default
-  
+  pdf_document: default
 ---
 
 ```{r Packages}
@@ -79,8 +79,9 @@ And then we further look at GDP, population and GDP per capita in our five count
 ```{r}
 #| echo = FALSE
 gdppop %>%
-filter(unit == "MIO_EUR" & (grepl('DK..', Region) | grepl('FR..', Region) | grepl('HU..', Region)| grepl('PT..', Region) | grepl('SK..', Region))) 
+filter(unit == "MIO_EUR" & (grepl('DK..', Region) | grepl('FR..', Region) | grepl('HU..', Region)| grepl('PT..', Region) | grepl('SK..', Region))) %>% 	summarise( GDP_per_Capita = mean(gdp_per_capita)) 
 ```
+
 
 ```{r Mean: GDP Per Capita in all countries}
 	summarise(gdppop, GDP_per_Capita = mean(gdp_per_capita))
