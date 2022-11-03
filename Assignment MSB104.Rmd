@@ -19,6 +19,7 @@ suppressMessages(library(magrittr))
 suppressMessages(library(vtable))
 suppressMessages(library(wooldridge))
 suppressMessages(library(huxtable))
+suppressMessages(library(lmtest))
 options(scipen = 999)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -57,7 +58,7 @@ gdppop <- BNP %>%
 ```{r}
 #| echo = FALSE
 gdppop %>%
-  vtable::st(.)
+  vtable::st()
 ```
 
 ## GDP per Capita 
@@ -80,11 +81,6 @@ And then we further look at GDP, population and GDP per capita in our five count
 #| echo = FALSE
 gdppop %>%
 filter(unit == "MIO_EUR" & (grepl('DK..', Region) | grepl('FR..', Region) | grepl('HU..', Region)| grepl('PT..', Region) | grepl('SK..', Region))) %>% 	summarise( GDP_per_Capita = mean(gdp_per_capita)) 
-```
-
-
-```{r Mean: GDP Per Capita in all countries}
-	summarise(gdppop, GDP_per_Capita = mean(gdp_per_capita))
 ```
 
 From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
@@ -119,7 +115,7 @@ Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions
 
 To get an overview, we have chosen to look at 2010 for all the regions in Denmark to see which regions are the richest and least wealties.
 
-
+The whealtiest regions in Denmark
 ```{r the whealtiest regions in Denmark}
 #| echo = FALSE
 gdpdk <- gdppop%>%
@@ -128,7 +124,7 @@ gdpdk <- gdppop%>%
   select(Year, Region, gdp_per_capita)
 slice_max(gdpdk, gdp_per_capita, n=3)
 ```
-
+The poorest regions in Denmark
 ```{r The poorest regions in Denmark}
 #| echo = FALSE
 slice_min(gdpdk, gdp_per_capita, n=3)
@@ -187,7 +183,7 @@ gdppop%>%
      geom_point(lwd = .8) +
    labs(title = 'GDP per capita in France', x = "Year", y = "GDP Per capita")
 ```
-
+The whealtiest regions in France
 ```{r The whealtiest regions in France}
 #| echo = FALSE
 gdpfr <- gdppop %>%
@@ -197,7 +193,7 @@ gdpfr <- gdppop %>%
 slice_max(gdpfr, gdp_per_capita, n=3)
 ```
 
-
+The poorest regions in France
 ```{r The poorest regions in France}
 #| echo = FALSE
 slice_min(gdpfr, gdp_per_capita, n=3)
@@ -205,8 +201,7 @@ slice_min(gdpfr, gdp_per_capita, n=3)
 
 ```{r}
 #| echo = FALSE
-gdpfr %>%
-summary()
+summary(gdpfr)
 ```
 
 France now have 96 nuts3 regions. The three wealtiest regions are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
@@ -225,6 +220,7 @@ gdppop %>%
 ```
 Hungary and Slovakia are both countries in Central Europe, here we see that the capitals Bratislava and Budapest both had great growth until 2008. Then Budabest went down a little while Bratislava had a larger increase. the rest of the regions have had an more steady growth.
 
+The whealtiest regions in Hungary and Slovakia
 ```{r The whealtiest regions in Hungary and Slovakia}
 #| echo = FALSE
 gdphusk <- gdppop%>%
@@ -233,7 +229,7 @@ filter(grepl('HU..', Region) | grepl('SK..', Region)) %>%
   select(Year, Region, gdp_per_capita)
 slice_max(gdphusk, gdp_per_capita, n=3)
 ```
-
+The poorest regions in Hungary and Slovakia
 ```{r The poorest regions in Hungary and Slovakia}
 #| echo = FALSE
 slice_min(gdphusk, gdp_per_capita, n=3)
@@ -264,7 +260,7 @@ gdppop%>%
 Portugal is a country in southern Europe. Portugal also has two archipelagos, each representing a different region.
 We see steady growth in all the regions, all have had a slight decline between 2010-2012, after that there has been an increase. We also see that in Portugal the capital Lisbon stands out as the richest region.
 
-
+The whealtiest regions in Portugal
 ```{r the whealtiest regions in Portugal}
 #| echo = FALSE
 gdppt <- gdppop%>%
@@ -273,7 +269,7 @@ gdppt <- gdppop%>%
   select(Region, gdp_per_capita)
 slice_max(gdppt, gdp_per_capita, n=3)
 ```
-
+The poorest regions in Portugal
 ```{r The poorest regions in Portugal}
 #| echo = FALSE
 slice_min(gdppt, gdp_per_capita, n=3)
@@ -315,16 +311,15 @@ gdppop <- gdppop %<>%
    group_by(nuts2, Year) %>%
   mutate(gini_n2= gini.wtd(gdp_per_capita, w = Population)) %>%
   ungroup() # to remove grouping
-```
 
-```{r}
-gdppop %>% 
+gdppop  %>% 
   #| echo = FALSE
   filter(Year == 2010) %>% 
    distinct(nuts2, Year,.keep_all = TRUE) %>%
 select(gini_n2) %>%
 st()
 ```
+
 
 First, we look at all the regions in the selected countries. We have 46 observations. The total Gini for all countries for all years is 0.28. This Gini is for all 5 countries over the last 20 years. We think that it will be a bit "washed away" and will therefore look at each individual country. 
 We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. To look more specifically at the countries, we have chosen to only look at the year 2010.
@@ -347,8 +342,9 @@ select(Year,nuts2, gini_n2) %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
   filter(Year==2010)
 ```
-
+Outliers in Denmark
 ```{r Outliers in Denmark}
+#| echo = FALSE
 dkoutliers <- gdppop %>%
   filter(nuts0 == "DK") %>%
   filter(gini_n2==0) %>%
@@ -382,7 +378,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
   filter(Year==2010)
 ```
 
-
+Outliers in France
 ```{r Outliers in France}
 #| echo = FALSE
 froutliers <- gdppop %>%
@@ -428,7 +424,7 @@ select(Year,nuts2, gini_n2) %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
   filter(Year==2010)
 ```
-
+Outliers in Hungary and Slovakia
 ```{r Outliers in Hungary and Slovakia}
 #| echo = FALSE
 huskoutliers <- gdppop %>%
@@ -465,7 +461,7 @@ select(Year,nuts2, gini_n2) %>%
 distinct(nuts2, Year,.keep_all =TRUE) %>%
   filter(Year==2010)
 ```
-
+Outliers in Portugal
 ```{r Outliers in Portugal}
 #| echo = FALSE
 ptoutliers <- gdppop %>%
@@ -559,6 +555,17 @@ gdppop2010 %>%
   st(.)
 ```
 
+```{r}
+reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
+coeftest(reg,  )
+```
+
+```{r}
+reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
+coefficients(reg,vcov=hccm )
+```
+
+
 
 ```{r}
 #| echo = FALSE
@@ -602,6 +609,9 @@ b2_total <- lm.5$coefficients[2]
   geom_point(aes(x = gdp_per_capita, y = Gini)) +
   geom_abline(intercept = b1_total, slope = b2_total)
 
+```{r}
+
+```
 
 
 
