@@ -524,25 +524,25 @@ gdppop2010 <- gdppop %>%
   mutate(nuts2 = substr(Region,1,4))%>%
   group_by(nuts2, Year) %>%
   mutate(Gini = gini.wtd(gdp_per_capita, w = Population),
-         gdp_n2 = sum(GDP, na.rm=T),
-         pop_n2 = sum(Population, na.rm=T)) %>%
+         gdp_n3 = sum(GDP, na.rm=T),
+         pop_n3 = sum(Population, na.rm=T)) %>%
+  mutate(gdp_n2 = sum(gdp_n3),pop_n2 = sum(pop_n3))%>%
   ungroup() %>%
   #Keeping only 1 obs per NUTS 2
     distinct(Year, nuts2,Gini,gdp_n2,pop_n2) %>%
   mutate(gdp_per_capita = gdp_n2/pop_n2*1000000)
-
 ```
 
 
 ## Growth and inequity
 
-Further in the thesis, we will look at growth and inequity in the regions at Nuts2 level. we will look at the development in the regions in relation to the economy. if there is great inequality in the world, rich countries will become richer and poor countries will become poorer. which will create an underclass, where people will have less education and poorer living conditions.
+Further in the thesis, we will look at growth and inequity in the regions at Nuts2 level. We will look at the development in the regions in relation to the economy. if there is great inequality in the world, rich countries will become richer and poor countries will become poorer. which will create an underclass, where people will have less education and poorer living conditions.
 
 
 ```{r New variables}
 #| echo = FALSE
 gdppop2010 <- gdppop2010 %>%
-left_join(Education, by = c("nuts2", "Year"))%>%
+left_join(Education, by = c("Year", "nuts2" ))%>%
 left_join(Lifeexp, by = c("nuts2", "Year"))%>%
 left_join(Transport, by = c("nuts2", "Year"))%>%
   #economic development = (gdp_per_capita)
@@ -555,12 +555,28 @@ gdppop2010 %>%
   st(.)
 ```
 
+## Estimate the effete of regional development on regional inequality GINI for the year 2010
+
+
 ```{r}
+ggplot()+
+  geom_point(data = gdppop2010, mapping = aes(x = gdp_per_capita, y = Gini))
+#for alle land
+```
+
+```{r}
+
+
+```
+
+
+
+```{r
 reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
 coeftest(reg,  )
 ```
 
-```{r}
+```{r
 reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
 coefficients(reg,vcov=hccm )
 ```
@@ -569,6 +585,8 @@ coefficients(reg,vcov=hccm )
 
 ```{r}
 #| echo = FALSE
+gdppop2010 <- gdppop2010%>%
+  filter(Gini > 0)
 Denmark2010 <- gdppop2010 %>%
   filter(nuts0=="DK") 
 France2010 <- gdppop2010 %>%
@@ -589,7 +607,7 @@ lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
 
 #Gen Table
   huxreg(
-  list("Denmark" = lm.1, "France" = lm.2, "HungarySlovakia" = lm.3, "Portugal" = lm.4, "Total" = lm.5),
+  list("Denmark" = lm.1, "France" = lm.2, "Hungary_Slovakia" = lm.3, "Portugal" = lm.4, "Total" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(gdp_per_capita = "gdp_per_capita", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
@@ -598,18 +616,19 @@ lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
 
 
 ***AE - How do we find the cofficients? ***
-``{r}
+```{r}
 #Save coefficients
 b1_total <- lm.5$coefficients[1]
 b2_total <- lm.5$coefficients[2]
 
-  ggplot() +
+```
+
+```{r}
+ggplot() +
   xlim(0, 15) +
   ylim(-0.3, 0.5) +
   geom_point(aes(x = gdp_per_capita, y = Gini)) +
   geom_abline(intercept = b1_total, slope = b2_total)
-
-```{r}
 
 ```
 
