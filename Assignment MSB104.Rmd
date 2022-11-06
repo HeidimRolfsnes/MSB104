@@ -560,8 +560,8 @@ gdppop2010 %>%
 
 ```{r}
 ggplot()+
-  geom_point(data = gdppop2010, mapping = aes(x = gdp_per_capita, y = Gini))
-#for alle land
+  geom_line(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))
+#for alle land i 2010
 ```
 
 ```{r}
@@ -571,22 +571,15 @@ ggplot()+
 
 
 
-```{r
-reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
-coeftest(reg,  )
-```
 
-```{r
-reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
-coefficients(reg,vcov=hccm )
-```
 
 
 
 ```{r}
 #| echo = FALSE
 gdppop2010 <- gdppop2010%>%
-  filter(Gini > 0)
+  filter(Gini > 0)%>%
+mutate(Gini_2 = Gini * 100000)
 Denmark2010 <- gdppop2010 %>%
   filter(nuts0=="DK") 
 France2010 <- gdppop2010 %>%
@@ -599,11 +592,11 @@ Portugal2010 <- gdppop2010 %>%
 
 
 ```{r lm all}
-lm.1 = lm(Gini ~ gdp_per_capita, data = Denmark2010)
-lm.2 = lm(Gini ~ gdp_per_capita, data = France2010)
-lm.3 = lm(Gini ~ gdp_per_capita, data = HungarySlovakia2010)
-lm.4 = lm(Gini ~ gdp_per_capita, data = Portugal2010)
-lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
+lm.1 = lm(Gini_2 ~ gdp_per_capita, data = Denmark2010)
+lm.2 = lm(Gini_2 ~ gdp_per_capita, data = France2010)
+lm.3 = lm(Gini_2 ~ gdp_per_capita, data = HungarySlovakia2010)
+lm.4 = lm(Gini_2 ~ gdp_per_capita, data = Portugal2010)
+lm.5 = lm(Gini_2 ~ gdp_per_capita, data = gdppop2010)
 
 #Gen Table
   huxreg(
@@ -618,17 +611,12 @@ lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
 ***AE - How do we find the cofficients? ***
 ```{r}
 #Save coefficients
-b1_total <- lm.5$coefficients[1]
-b2_total <- lm.5$coefficients[2]
+b1_total <- lm.2$coefficients[1]
+b2_total <- lm.2$coefficients[2]
 
 ```
 
 ```{r}
-ggplot() +
-  xlim(0, 15) +
-  ylim(-0.3, 0.5) +
-  geom_point(aes(x = gdp_per_capita, y = Gini)) +
-  geom_abline(intercept = b1_total, slope = b2_total)
 
 ```
 
@@ -662,4 +650,13 @@ lm.5 = lm(Gini ~ edu + Lea, mlrdata)
 }
 ```
 
+test på skolen
+```{r
+reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
+coeftest(reg,  )
+```
 
+```{r
+reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
+coefficients(reg,vcov=hccm )
+```
