@@ -615,6 +615,7 @@ b2_total <- lm.5$coefficients[2]
 
 
 
+
 next... 
 
 
