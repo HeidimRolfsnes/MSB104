@@ -560,6 +560,7 @@ The gini value goes from 0 to 1. Where 0 is a perfect equality and 1 is unequali
 When the gini is 0, it is understandable to think there is missing som data for 2010. Further we will use filter to take away the gini´s who are zero. 
 
 ```{r}
+#| echo = FALSE
 gdppop2010 <- gdppop2010 %>%
   filter(Gini > 0)
 Denmark2010 <- gdppop2010 %>%
@@ -571,11 +572,17 @@ HungarySlovakia2010 <- gdppop2010 %>%
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
 ggplot()+
-  geom_line(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))
+  geom_point(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))
 #for alle land i 2010
 ```
+
+In this ggplot, we can see how the Gini is distributed per country.
+We can see that France has a point that stands out from the others, while the other countries have most of their points between 0 and 0.1. what we have to be observant about is that the countries Denmark, Hungary, Portugal and Slovakia don't have so many observations after we divided the countries into Nuts2 levels. 
+
+
 ```{r}
-# create function to calculate linear regression model
+#| echo = FALSE
+# creating a function to when we are calculating linear regression model
 lm_function_plot <- function(lmdata){
   lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
@@ -617,20 +624,29 @@ To estimate the the effecte between a regional development and regional inequali
 $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$
 
 
+this equation tells us what the regional inequality will be when the regional development is = 0 The slope of the curve will show us how much inequality will change for each increase in development.
+
 ```{r}
-ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") + 
-  labs(x = "GDP per capita 2010", Y = "Gini")
+
 ```
 
 
 ```{r}
 #| echo = FALSE
+ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point (lwd=.8) +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+In this ggplot we look at the relationship between Gini and GDP per capita in 2010. We can see that very few of the points hit the line when we look at all the countries together.
 
+
+
+```{r}
+#| echo = FALSE
 gdppop2010 <- gdppop2010%>%
   filter(Gini > 0)%>%
-mutate(Gini_2 = Gini * 100000)
+mutate(Gini2 = Gini * 100000)
 Denmark2010 <- gdppop2010 %>%
   filter(nuts0=="DK") 
 France2010 <- gdppop2010 %>%
@@ -640,11 +656,11 @@ HungarySlovakia2010 <- gdppop2010 %>%
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
 
-lm.1 = lm(Gini_2 ~ gdp_per_capita, data = Denmark2010)
-lm.2 = lm(Gini_2 ~ gdp_per_capita, data = France2010)
-lm.3 = lm(Gini_2 ~ gdp_per_capita, data = HungarySlovakia2010)
-lm.4 = lm(Gini_2 ~ gdp_per_capita, data = Portugal2010)
-lm.5 = lm(Gini_2 ~ gdp_per_capita, data = gdppop2010)
+lm.1 = lm(Gini2 ~ gdp_per_capita, data = Denmark2010)
+lm.2 = lm(Gini2 ~ gdp_per_capita, data = France2010)
+lm.3 = lm(Gini2 ~ gdp_per_capita, data = HungarySlovakia2010)
+lm.4 = lm(Gini2 ~ gdp_per_capita, data = Portugal2010)
+lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
 
 #Gen Table
   huxreg(
@@ -655,13 +671,16 @@ lm.5 = lm(Gini_2 ~ gdp_per_capita, data = gdppop2010)
   )
 ```
 
-As we can see from the formula above...... 
+when we look in the table above we can see the impact regional development (X) has on regional inequality (Y). this means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. 
 
 ### Discuss the goodness of fit of our estiamted model 
 
+When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can lie between 1 and 0, where R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. if it is 0, the independent variable has no influence on the dependent variable. (Forskningsmetode - s.345)
+ We can see that Denmark and France have a high R2 value, Denamrk with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completely trust this result. France, on the other hand, has 22 observations, the more observations the better the result.
+ when we look at all the countries together, we see that both R2 is only 0.122, we can see that in the context of
 ### Plots the residuals against the predicted values of our model
 ```{r}
-
+#| echo = FALSE
 ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -669,6 +688,7 @@ ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
 ```
 
 ```{r}
+#| echo = FALSE
 ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -676,7 +696,7 @@ ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
 ```
 
 ```{r}
-
+#| echo = FALSE
 ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -685,6 +705,7 @@ ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
 
 
 ```{r}
+#| echo = FALSE
 ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -702,8 +723,8 @@ ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
 ### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
 
 ```{r}
+#| echo = FALSE
 mlrdata <- Denmark2010
-
 lm.7 = lm(Gini2 ~ Edu , mlrdata) 
 lm.8 = lm(Gini2 ~  Road, mlrdata)
 lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
@@ -724,6 +745,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
 
 
 ```{r}
+#| echo = FALSE
 mlrdata <- France2010
 
 lm.7 = lm(Gini2 ~ Edu , mlrdata) 
@@ -745,6 +767,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
 ```
 
 ```{r}
+#| echo = FALSE
 mlrdata <- HungarySlovakia2010
 
 lm.7 = lm(Gini2 ~ Edu , mlrdata) 
@@ -766,6 +789,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
 ```
 
 ```{r}
+#| echo = FALSE
 mlrdata <- Portugal2010
 
 lm.7 = lm(Gini2 ~ Edu , mlrdata) 
