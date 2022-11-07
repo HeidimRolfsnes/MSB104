@@ -673,6 +673,7 @@ lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
 
 when we look in the table above we can see the impact regional development (X) has on regional inequality (Y). this means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. 
 
+
 ### Discuss the goodness of fit of our estiamted model 
 
 When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can lie between 1 and 0, where R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. if it is 0, the independent variable has no influence on the dependent variable. (Forskningsmetode - s.345)
