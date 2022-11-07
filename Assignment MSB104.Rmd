@@ -492,7 +492,7 @@ In the end we will discuss the overall fit of our model and the inference relate
 
 ### Data set: 
 
-We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset. In the demographic data set we want to look at the life expectancy age.
+We will start the assignment 2 with getting the data set from Eurostat. We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset. In the demographic data set we want to look at the life expectancy age.
 
 ```{r Data set Education }
 #| echo = FALSE
@@ -506,7 +506,7 @@ Education <- Education %>%
 
 ```{r Data set Motorways}
 #| echo = FALSE
-Transport <- read_csv('Dataset/transport.csv',show_col_types = FALSE )%>%
+Transport <- read_csv('Dataset/Transport.csv',show_col_types = FALSE )%>%
   mutate(Road=OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2, Year, Road)
 ```
@@ -518,7 +518,8 @@ mutate(lea = OBS_VALUE, Year = TIME_PERIOD, nuts2=geo) %>%
   select(nuts2, Year, lea)
 ```
 
-```{r}
+
+```{r GDP per capita for nuts 2}
 #| echo = FALSE
 gdppop2010 <- gdppop %>%
   mutate(nuts2 = substr(Region,1,4))%>%
@@ -536,8 +537,10 @@ gdppop2010 <- gdppop %>%
 
 ## Growth and inequity
 
-Further in the thesis, we will look at growth and inequity in the regions at Nuts2 level. We will look at the development in the regions in relation to the economy. if there is great inequality in the world, rich countries will become richer and poor countries will become poorer. which will create an underclass, where people will have less education and poorer living conditions.
+Further in the assignment, we will look at growth and inequity in the countries at Nuts2 level.  
 
+
+Before we go further we want to make new variables for the data set. Moving forward we will make linear models (lm) and a form of regression that is simple. A simple regression model will show us the relationship between two variables (R for everyone s. 265). By using this model we can find the Y value when X = 0. 
 
 ```{r New variables}
 #| echo = FALSE
@@ -548,44 +551,16 @@ left_join(Transport, by = c("nuts2", "Year"))%>%
   #economic development = (gdp_per_capita)
   mutate(nuts0 = substr(nuts2,1,2)) %>%
 filter(Year == 2010)
-```
 
-```{r}
 gdppop2010 %>%
   st(.)
 ```
 
-## Estimate the effete of regional development on regional inequality GINI for the year 2010
-
-
-```{r}
-ggplot()+
-  geom_point(data = gdppop2010, mapping = aes(x = gdp_per_capita, y = Gini))
-#for alle land
-```
+The gini value goes from 0 to 1. Where 0 is a perfect equality and 1 is unequality. As we can see in the summary there are gini.... 
+When the gini is 0, it is understandable to think there is missing som data for 2010. Further we will use filter to take away the gini´s who are zero. 
 
 ```{r}
-
-
-```
-
-
-
-```{r
-reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
-coeftest(reg,  )
-```
-
-```{r
-reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
-coefficients(reg,vcov=hccm )
-```
-
-
-
-```{r}
-#| echo = FALSE
-gdppop2010 <- gdppop2010%>%
+gdppop2010 <- gdppop2010 %>%
   filter(Gini > 0)
 Denmark2010 <- gdppop2010 %>%
   filter(nuts0=="DK") 
@@ -595,15 +570,74 @@ HungarySlovakia2010 <- gdppop2010 %>%
  filter(grepl('HU..', nuts2) | grepl('SK..', nuts2))
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
+
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =gdppc, y=Gini, fill=nuts2, color=nuts2, label=nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="red", size=0.8) + 
+    labs(x = "(GDP per capita)", y = "Gini")
+}
+
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+
+  lmdata$predicted <- predict(lm_gdppc)
+  lmdata$residuals <- residuals(lm_gdppc)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =gdppc, y=gini, fill=nuts2, color=nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend=gdppc,yend=predicted)) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="red", size=0.8) + 
+    labs(x = "(GDP per capita)", y = "Gini")
+}
 ```
 
 
-```{r lm all}
-lm.1 = lm(Gini ~ gdp_per_capita, data = Denmark2010)
-lm.2 = lm(Gini ~ gdp_per_capita, data = France2010)
-lm.3 = lm(Gini ~ gdp_per_capita, data = HungarySlovakia2010)
-lm.4 = lm(Gini ~ gdp_per_capita, data = Portugal2010)
-lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
+## Estimate the effecte of regional development on regional inequality GINI for the year 2010
+
+To estimate the the effecte between a regional development and regional inequality we can use the formula: 
+
+$$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$
+
+```{r}
+ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+
+
+```{r}
+#| echo = FALSE
+gdppop2010 <- gdppop2010 %>% 
+  mutate(Gini2 = Gini * 100000)
+Denmark2010 <- gdppop2010 %>%
+  filter(nuts0=="DK") 
+France2010 <- gdppop2010 %>%
+  filter(nuts0=="FR")
+HungarySlovakia2010 <- gdppop2010 %>%
+ filter(grepl('HU..', nuts2) | grepl('SK..', nuts2))
+Portugal2010 <- gdppop2010 %>%
+  filter(nuts0=="PT")
+
+lm.1 = lm(Gini2 ~ gdp_per_capita, data = Denmark2010)
+lm.2 = lm(Gini2 ~ gdp_per_capita, data = France2010)
+lm.3 = lm(Gini2 ~ gdp_per_capita, data = HungarySlovakia2010)
+lm.4 = lm(Gini2 ~ gdp_per_capita, data = Portugal2010)
+lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
 
 #Gen Table
   huxreg(
@@ -614,27 +648,147 @@ lm.5 = lm(Gini ~ gdp_per_capita, data = gdppop2010)
   )
 ```
 
+As we can see from the formula above...... 
 
-***AE - How do we find the cofficients? ***
+### Discuss the goodness of fit of our estiamted model 
+
+### Plots the residuals against the predicted values of our model
 ```{r}
-#Save coefficients
-b1_total <- lm.5$coefficients[1]
-b2_total <- lm.5$coefficients[2]
+ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+
+```{r}
+ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+
+```{r}
+ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+
+```{r}
+ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(x = "GDP per capita 2010", Y = "Gini")
+```
+
+### Discuss the classical assumptions OLS in light of your data and plots
+
+
+
+
+## Other determinants of inequity
+
+
+### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
+
+```{r}
+mlrdata <- Denmark2010
+
+lm.7 = lm(Gini2 ~ Edu , mlrdata) 
+lm.8 = lm(Gini2 ~  Road, mlrdata)
+lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~  lea, mlrdata)
+lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+
+
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+
+```
+
+
+```{r}
+mlrdata <- France2010
+
+lm.7 = lm(Gini2 ~ Edu , mlrdata) 
+lm.8 = lm(Gini2 ~  Road, mlrdata)
+lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~  lea, mlrdata)
+lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+
+
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
 
 ```
 
 ```{r}
-ggplot() +
-  xlim(0, 15) +
-  ylim(-0.3, 0.5) +
-  geom_point(aes(x = gdp_per_capita, y = Gini)) +
-  geom_abline(intercept = b1_total, slope = b2_total)
+mlrdata <- HungarySlovakia2010
+
+lm.7 = lm(Gini2 ~ Edu , mlrdata) 
+lm.8 = lm(Gini2 ~  Road, mlrdata)
+lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~  lea, mlrdata)
+lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+
+
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
 
 ```
 
+```{r}
+mlrdata <- Portugal2010
 
-next... 
+lm.7 = lm(Gini2 ~ Edu , mlrdata) 
+lm.8 = lm(Gini2 ~  lea, mlrdata)
+lm.9 = lm(Gini2 ~ Edu + lea, mlrdata)
 
+
+
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(Education = "Edu", Lifeexp = "lea", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+
+```
+
+Road har ingen tall n/A observasjoner 
+
+### Discuss the overall fit of your model
+
+### Discuss the inference related to your findings
+
+
+
+
+A slope coeffisient tells us the expected change in Yi when Xi increases by one 
+
+OLS the OLS estimator chooses the parameters beta1 and beta2 that minimize the residual sum of squares (RSS)
+
+
+# Assignment 3 
 
 ```{r
 BNP2010 %>%
@@ -643,23 +797,13 @@ ggplot(aes(x =edu, y=Gini, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 
-
+Lecture
 
 ```{r
-multi_linear_regression_model_1 <- function(mlrdata){
-lm.1 = lm(Gini ~ edu , mlrdata) 
-lm.2 = lm(Gini ~  Road, mlrdata)
-lm.3 = lm(Gini ~ edu + Road, mlrdata)
-lm.4 = lm(Gini ~  lea, mlrdata)
-lm.5 = lm(Gini ~ edu + Lea, mlrdata)
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "edu","Road", Lifeexp = "lifeexpectancyage", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
+reg <- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010)
+coeftest(reg,  )
 ```
 
-
+```{r
+reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
+coefficients(reg,vcov=hccm )
