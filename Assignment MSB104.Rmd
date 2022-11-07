@@ -571,7 +571,9 @@ HungarySlovakia2010 <- gdppop2010 %>%
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
 ggplot()+
-  geom_point(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))
+  geom_point(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))+
+  labs(title = "Gini for all countries 2010")
+
 #for alle land i 2010
 ```
 
@@ -629,7 +631,8 @@ This equation tells us what the regional inequality will be when the regional de
 ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point (lwd=.8) +
   geom_smooth(method = "lm") + 
-  labs(x = "GDP per capita 2010", Y = "Gini")
+  labs(x = "GDP per capita 2010", Y = "Gini")+
+  labs(title = "Gini and GDP per capita in 2010 for all countries")
 ```
 In this ggplot we look at the relationship between Gini and GDP per capita in 2010 for all countries. We can see that very few of the points hit the line when we look at all the countries together.
 
@@ -678,7 +681,7 @@ When we look at all the countries together, we can see that both R2 is only 0.12
 ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") +
-  labs(x = "GDP per capita 2010", Y = "Gini")
+  labs(title = "Gini and GDP per capita for Denmark", x = "GDP per capita 2010", Y = "Gini")
 ```
 
 ```{r}
@@ -686,7 +689,7 @@ ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
 ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
-  labs(x = "GDP per capita 2010", Y = "Gini")
+  labs(title = "Gini and GDP per capita for France",x = "GDP per capita 2010", Y = "Gini")
 ```
 
 ```{r}
@@ -694,7 +697,7 @@ ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
 ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
-  labs(x = "GDP per capita 2010", Y = "Gini")
+  labs(title = "Gini and GDP per capita for Hungary and Slovakia",x = "GDP per capita 2010", Y = "Gini")
 ```
 
 
@@ -703,18 +706,20 @@ ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
 ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
-  labs(x = "GDP per capita 2010", Y = "Gini")
+  labs(title = "Gini and GDP per capita for Portugal",x = "GDP per capita 2010", Y = "Gini")
 ```
 
 ### Plot the residuals against the predicted values of our model
 
 ```{r Residuals for all countries}
+#| echo = FALSE
 lm_residuals_plot(gdppop2010) +
   labs(title = "Residuals for all countries")
 ```
 When we look at all the countries together, we can see that few of the regions follow the residual line. There is great variation both between countries and regions.
 
 ```{r Residuals for France }
+#| echo = FALSE
 lm_residuals_plot(France2010) +
 labs(title = "Residuals for France")
 ```
@@ -724,6 +729,7 @@ As we said earlier we are now only looking at France because it has 22 observati
 ### Discuss the classical assumptions OLS in light of your data and plots
 
 ```{r}
+#| echo = FALSE
 ols = lm_function_plot(gdppop2010)
 par(mfrow = c(2,2))
 plot(ols) +
@@ -731,6 +737,7 @@ plot(ols) +
 ```
 
 ```{r}
+#| echo = FALSE
 olsfr = lm_function_plot(France2010)
 par(mfrow = c(2,2))
 plot(olsfr) + 
@@ -758,13 +765,13 @@ When we look at the graph for France the line is not flat at all, which means it
 
 Assumption 6:The error term is normally distributed (optional)
 
-```{r normal q-q plot}
-qqnorm(res)
-qqline(res)
+```{r normal q-q plot
+qqnorm(ols)
+qqline(ols)
 
 #ols won´t work
-```
-When we look at the normal Q-Q plot it doesn´t appear to normal values. 
+``
+When we look at the normal Q-Q plot it doesn´t appear to show normal values. 
 
 https://www.datasciencecentral.com/7-classical-assumptions-of-ordinary-least-squares-ols-linear/
 
@@ -802,7 +809,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
 
 ```
 
-In Denmark 
+In Denmark, we can see that models 1, 2 and 4 all have a negative effect when it comes to the variables being dependent on each other. in model 5, where we look at education and life expectancy, we can see a positive effect. the same in model 6 with motorway and life expectancy. when we look at R2, this is high on model 3. but since we only have 4 observations from Denmark, it is not possible to draw any conclusion as to whether these variables are relevant to each other
 
 ```{r}
 #| echo = FALSE
@@ -825,6 +832,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
   )
 
 ```
+France is the country with the most observations. Here we can see that both models 2,4 and 6 have positive effects on the Gini. But all R2 are quite low so we cannot say with certainty that these variables have any effect on the Gini
 
 ```{r}
 #| echo = FALSE
@@ -847,6 +855,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
   )
 
 ```
+Again we have chosen to merge Hungary and Slovakia when we are going to do this multiple regression analysis. here we can see that models 4 and 5 have a positive effect on Gini. Model 5, which has education and life expectancy as variables, both values are positive but they have a rather low R2, which means that they do not have such a strong correlation anyway.
 
 ```{r}
 #| echo = FALSE
@@ -867,14 +876,21 @@ lm.9 = lm(Gini2 ~ Edu + lea, mlrdata)
   )
 
 ```
-
-
-Road har ingen tall n/A observasjoner 
+Portugal had no observations on the Motorway, we have therefore removed this variable from these observations. we are then left with three models. and we can see that all the models are positive, model 1 has a higher R2 than model 2 has. while model 3 has a perfect 1. but since we only have 3 observations we cannot put much faith in this R2.
 
 ### Discuss the overall fit of your model
 
+France is the only country with many observations in 2010, and it will probably give us the best basis for looking at whether the model fits our model or not. We want to find out whether education and the number of km have an effect on inequalities in France and whether these variables have a connection to how wealthy the various regions are.
+
 ### Discuss the inference related to your findings
 
+We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010. France has the most observations, therefore we see it as the most relevant to use. Portugal, among other things, does not have observations on motorways.
+
+```{r}
+lm(Gini2 ~ Edu, data=France2010)%>% 
+  tidy%>%
+  kable(., digits=2)
+```
 
 
 
