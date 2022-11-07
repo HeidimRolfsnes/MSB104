@@ -539,7 +539,6 @@ gdppop2010 <- gdppop %>%
 
 Further in the assignment, we will look at growth and inequity in the countries at Nuts2 level.  
 
-
 Before we go further we want to make new variables for the data set. Moving forward we will make linear models (lm) and a form of regression that is simple. A simple regression model will show us the relationship between two variables (R for everyone s. 265). By using this model we can find the Y value when X = 0. 
 
 ```{r New variables}
@@ -557,7 +556,7 @@ gdppop2010 %>%
 ```
 
 The gini value goes from 0 to 1. Where 0 is a perfect equality and 1 is unequality. As we can see in the summary there are gini.... 
-When the gini is 0, it is understandable to think there is missing som data for 2010. Further we will use filter to take away the gini´s who are zero. 
+When the gini is 0, it is likely to believe there is missing som data for 2010. Further we will use filter to take away the gini´s who are zero. 
 
 ```{r}
 #| echo = FALSE
@@ -577,20 +576,19 @@ ggplot()+
 ```
 
 In this ggplot, we can see how the Gini is distributed per country.
-We can see that France has a point that stands out from the others, while the other countries have most of their points between 0 and 0.1. what we have to be observant about is that the countries Denmark, Hungary, Portugal and Slovakia don't have so many observations after we divided the countries into Nuts2 levels. 
-
+We can see that France has a point that stands out from the others, while the other countries have most of their points between 0 and 0.1. What we have to be observant about is that the countries Denmark, Hungary, Portugal and Slovakia don't have so many observations after we divided the countries into Nuts2 levels, that´s why we choose to look onlu look at France by itself and the alle the countries when we move forward in the assignment.
 
 ```{r}
 #| echo = FALSE
 # creating a function to when we are calculating linear regression model
 lm_function_plot <- function(lmdata){
-  lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
+  lm_gdppc <- lm(Gini ~ gdp_per_capita, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
 
   # create plot for l.reg. model
   lmdata %>%
-    ggplot(aes(x =gdppc, y=Gini, fill=nuts2, color=nuts2, label=nuts2)) +
+    ggplot(aes(x =gdp_per_capita, y=Gini, fill=nuts2, color=nuts2, label=nuts2)) +
     geom_point(lwd = .8) +
     geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
     geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="red", size=0.8) + 
@@ -599,7 +597,7 @@ lm_function_plot <- function(lmdata){
 
 # create function to calculate linear regression model
 lm_residuals_plot <- function(lmdata){
-  lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
+  lm_gdppc <- lm(Gini ~ gdp_per_capita, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
 
@@ -608,9 +606,9 @@ lm_residuals_plot <- function(lmdata){
   
   # create plot for l.reg. model
   lmdata %>%
-    ggplot(aes(x =gdppc, y=gini, fill=nuts2, color=nuts2)) +
+    ggplot(aes(x =gdp_per_capita, y=Gini, fill=nuts2, color=nuts2)) +
     geom_point(lwd = .8) +
-    geom_segment(aes(xend=gdppc,yend=predicted)) +
+    geom_segment(aes(xend=gdp_per_capita,yend=predicted)) +
     geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="red", size=0.8) + 
     labs(x = "(GDP per capita)", y = "Gini")
 }
@@ -623,12 +621,7 @@ To estimate the the effecte between a regional development and regional inequali
 
 $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$
 
-
-this equation tells us what the regional inequality will be when the regional development is = 0 The slope of the curve will show us how much inequality will change for each increase in development.
-
-```{r}
-
-```
+This equation tells us what the regional inequality will be when the regional development is = 0 The slope of the curve will show us how much inequality will change for each increase in development.
 
 
 ```{r}
@@ -638,8 +631,7 @@ ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_smooth(method = "lm") + 
   labs(x = "GDP per capita 2010", Y = "Gini")
 ```
-In this ggplot we look at the relationship between Gini and GDP per capita in 2010. We can see that very few of the points hit the line when we look at all the countries together.
-
+In this ggplot we look at the relationship between Gini and GDP per capita in 2010 for all countries. We can see that very few of the points hit the line when we look at all the countries together.
 
 
 ```{r}
@@ -671,20 +663,21 @@ lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
   )
 ```
 
-when we look in the table above we can see the impact regional development (X) has on regional inequality (Y). this means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. 
+When we look at the table above we can see the impact regional development (X) has on regional inequality (Y). This means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. 
 
 
 ### Discuss the goodness of fit of our estiamted model 
 
-When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can lie between 1 and 0, where R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. if it is 0, the independent variable has no influence on the dependent variable. (Forskningsmetode - s.345)
- We can see that Denmark and France have a high R2 value, Denamrk with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completely trust this result. France, on the other hand, has 22 observations, the more observations the better the result.
- when we look at all the countries together, we see that both R2 is only 0.122, we can see that in the context of
+When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can be between 0 and 1. When R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. If it is 0, the independent variable has no influence on the dependent variable (Forskningsmetode - s.345).
+ We can see that Denmark and France have a high R2 value, Denmark with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completely trust this result. France, on the other hand, has 22 observations, the more observations the better outcome of the result  .
+When we look at all the countries together, we can see that both R2 is only 0.122, we can see that in the context of......
+
 ### Plots the residuals against the predicted values of our model
 ```{r}
 #| echo = FALSE
 ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
-  geom_smooth(method = "lm") + 
+  geom_smooth(method = "lm") +
   labs(x = "GDP per capita 2010", Y = "Gini")
 ```
 
@@ -713,15 +706,80 @@ ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
   labs(x = "GDP per capita 2010", Y = "Gini")
 ```
 
+### Plot the residuals against the predicted values of our model
+
+```{r Residuals for all countries}
+lm_residuals_plot(gdppop2010) +
+  labs(title = "Residuals for all countries")
+```
+When we look at all the countries together, we can see that few of the regions follow the residual line. There is great variation both between countries and regions.
+
+```{r Residuals for France }
+lm_residuals_plot(France2010) +
+labs(title = "Residuals for France")
+```
+
+As we said earlier we are now only looking at France because it has 22 observations and are more trustworthy then the others. We are also looking at all countries together. When we look at the graph for all the countries and at the one for France, we can see in both graphs that there are some of France´s regions that stands out.The best is when the points are on the line, but as we see above most of the regions are above or below the line which means there is a large variation between the regions. In the graph, we can also see that France has a much steeper curve than when we look at all the countries together. With a steeper curve, one must have more GDP to increase the Gini.
+
 ### Discuss the classical assumptions OLS in light of your data and plots
 
+```{r}
+ols = lm_function_plot(gdppop2010)
+par(mfrow = c(2,2))
+plot(ols) +
+  labs(title = "OLS for all countries")
+```
 
+```{r}
+olsfr = lm_function_plot(France2010)
+par(mfrow = c(2,2))
+plot(olsfr) + 
+  labs(title = "OLS for France")
+```
+
+For linear regression there are seven OLS assumptions that are classical. To produce the the best estimates we usually use the first six assumptions.
+
+Assumption 1: The regression model is linear in the coefficients and the error term
+
+When we look at all the countries it is close to linear, but when we look at France who have the most nuts2 regions we can see that 
+
+Assumption 2:The error term has a population mean of zero
+
+We can see that there are variations in the X variable both in France and in all the countries combined. which may indicate that we have fulfilled the second requirement for OLS
+Assumption 3:All independent variables are uncorrelated with the error term
+
+The third assumption is about having a random dataset, even if we have made changes such as removing regions in France, we will still say that we have a random dataset based on the population.
+
+Assumption 4:Observations of the error term are uncorrelated with each other
+
+Assumption 5:The error term has a constant variance (no heteroscedasticity)
+
+When we look at the graph for France the line is not flat at all, which means it is heteroscedasticity. 
+
+Assumption 6:The error term is normally distributed (optional)
+
+```{r normal q-q plot}
+qqnorm(res)
+qqline(res)
+
+#ols won´t work
+```
+When we look at the normal Q-Q plot it doesn´t appear to normal values. 
+
+https://www.datasciencecentral.com/7-classical-assumptions-of-ordinary-least-squares-ols-linear/
 
 
 ## Other determinants of inequity
 
+We have chosen to look at km, education and life expectancy. We want to see what the new variables have to say on the Gini.
 
 ### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
+
+In a multiple linear regression model, we use several variables to see the effect of an increase in gini (Y). We can use the formula: 
+
+$$
+Y_i = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i}+... + \beta_kX_{ki}+u_i
+$$
 
 ```{r}
 #| echo = FALSE
@@ -744,6 +802,7 @@ lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
 
 ```
 
+In Denmark 
 
 ```{r}
 #| echo = FALSE
@@ -821,7 +880,7 @@ Road har ingen tall n/A observasjoner
 
 A slope coeffisient tells us the expected change in Yi when Xi increases by one 
 
-OLS the OLS estimator chooses the parameters beta1 and beta2 that minimize the residual sum of squares (RSS)
+
 
 
 # Assignment 3 
