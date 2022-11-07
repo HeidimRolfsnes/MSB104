@@ -570,7 +570,11 @@ HungarySlovakia2010 <- gdppop2010 %>%
  filter(grepl('HU..', nuts2) | grepl('SK..', nuts2))
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
-
+ggplot()+
+  geom_line(data = gdppop2010, mapping = aes(x = Gini , y = nuts0))
+#for alle land i 2010
+```
+```{r}
 # create function to calculate linear regression model
 lm_function_plot <- function(lmdata){
   lm_gdppc <- lm(gini ~ gdppc, data = lmdata)
@@ -612,6 +616,7 @@ To estimate the the effecte between a regional development and regional inequali
 
 $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$
 
+
 ```{r}
 ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
@@ -622,8 +627,10 @@ ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
 
 ```{r}
 #| echo = FALSE
-gdppop2010 <- gdppop2010 %>% 
-  mutate(Gini2 = Gini * 100000)
+
+gdppop2010 <- gdppop2010%>%
+  filter(Gini > 0)%>%
+mutate(Gini_2 = Gini * 100000)
 Denmark2010 <- gdppop2010 %>%
   filter(nuts0=="DK") 
 France2010 <- gdppop2010 %>%
@@ -633,11 +640,11 @@ HungarySlovakia2010 <- gdppop2010 %>%
 Portugal2010 <- gdppop2010 %>%
   filter(nuts0=="PT")
 
-lm.1 = lm(Gini2 ~ gdp_per_capita, data = Denmark2010)
-lm.2 = lm(Gini2 ~ gdp_per_capita, data = France2010)
-lm.3 = lm(Gini2 ~ gdp_per_capita, data = HungarySlovakia2010)
-lm.4 = lm(Gini2 ~ gdp_per_capita, data = Portugal2010)
-lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
+lm.1 = lm(Gini_2 ~ gdp_per_capita, data = Denmark2010)
+lm.2 = lm(Gini_2 ~ gdp_per_capita, data = France2010)
+lm.3 = lm(Gini_2 ~ gdp_per_capita, data = HungarySlovakia2010)
+lm.4 = lm(Gini_2 ~ gdp_per_capita, data = Portugal2010)
+lm.5 = lm(Gini_2 ~ gdp_per_capita, data = gdppop2010)
 
 #Gen Table
   huxreg(
@@ -654,6 +661,7 @@ As we can see from the formula above......
 
 ### Plots the residuals against the predicted values of our model
 ```{r}
+
 ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
@@ -668,11 +676,13 @@ ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
 ```
 
 ```{r}
+
 ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_point() +
   geom_smooth(method = "lm") + 
   labs(x = "GDP per capita 2010", Y = "Gini")
 ```
+
 
 ```{r}
 ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
@@ -774,6 +784,7 @@ lm.9 = lm(Gini2 ~ Edu + lea, mlrdata)
 
 ```
 
+
 Road har ingen tall n/A observasjoner 
 
 ### Discuss the overall fit of your model
@@ -807,3 +818,4 @@ coeftest(reg,  )
 ```{r
 reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
 coefficients(reg,vcov=hccm )
+
