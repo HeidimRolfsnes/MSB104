@@ -779,8 +779,21 @@ France is the only country with many observations in 2010, and it will probably 
 
 We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010. France has the most observations, therefore we see it as the most relevant to use. Portugal, among other things, does not have observations on motorways.
 
+We can see that the significant level is 12,8 % for education, 2,3 % for life expectancy and 2,9 % for km. 
+```{r}
+#| echo = FALSE
+lm(Gini ~ Edu, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
 
+```{r}
+#| echo = FALSE
+lm(Gini ~ lea, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
 
+```{r}
+#| echo = FALSE
+lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
 
 # Assignment 3 
 
