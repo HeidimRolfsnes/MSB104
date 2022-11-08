@@ -285,7 +285,6 @@ Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT18
 
 In all the countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants. Paris has managed to have the highest GDP per capita and the poorest regions can be found in Hungary.
  
-
 ## Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
 Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level. 
