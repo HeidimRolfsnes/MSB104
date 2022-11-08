@@ -538,7 +538,6 @@ gdppop2010 <- gdppop %>%
 ## Growth and inequity
 
 Further in the assignment, we will look at growth and inequity in the countries at Nuts2 level.  
-
 Before we go further we want to make new variables for the data set. Moving forward we will make linear models (lm) and a form of regression that is simple. A simple regression model will show us the relationship between two variables (R for everyone s. 265). By using this model we can find the Y value when X = 0. 
 
 ```{r New variables}
@@ -550,9 +549,6 @@ left_join(Transport, by = c("nuts2", "Year"))%>%
   #economic development = (gdp_per_capita)
   mutate(nuts0 = substr(nuts2,1,2)) %>%
 filter(Year == 2010)
-
-gdppop2010 %>%
-  st(.)
 ```
 
 The gini value goes from 0 to 1. Where 0 is a perfect equality and 1 is unequality. As we can see in the summary there are gini.... 
@@ -578,7 +574,7 @@ ggplot()+
 ```
 
 In this ggplot, we can see how the Gini is distributed per country.
-We can see that France has a point that stands out from the others, while the other countries have most of their points between 0 and 0.1. What we have to be observant about is that the countries Denmark, Hungary, Portugal and Slovakia don't have so many observations after we divided the countries into Nuts2 levels, that´s why we choose to look onlu look at France by itself and the alle the countries when we move forward in the assignment.
+We can see that France has a point that stands out from the others, while the other countries have most of their points between 0 and 0.1. What we have to be observant about is that the countries Denmark, Hungary, Portugal and Slovakia don't have so many observations after we divided the countries into Nuts2 levels, that´s why we choose to look only look at France by itself and the alle the countries when we move forward in the assignment. 
 
 ```{r}
 #| echo = FALSE
@@ -666,7 +662,7 @@ lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
   )
 ```
 
-When we look at the table above we can see the impact regional development (X) has on regional inequality (Y). This means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. 
+When we look at the table above we can see the impact regional development (X) has on regional inequality (Y). This means how much an increase in X will mean for an increase in Y. Portugal is the only country that has a negative impact. We will take a closer look at this country by country. From this and earlier observations we choose to remove Paris from the France2010 dataset. 
 
 
 ### Discuss the goodness of fit of our estiamted model 
@@ -675,14 +671,14 @@ When we look at the simple regression that we have done, it is R2 that can help 
  We can see that Denmark and France have a high R2 value, Denmark with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completely trust this result. France, on the other hand, has 22 observations, the more observations the better outcome of the result  .
 When we look at all the countries together, we can see that both R2 is only 0.122, we can see that in the context of......
 
-### Plots the residuals against the predicted values of our model
+
 ```{r}
 #| echo = FALSE
-ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  labs(title = "Gini and GDP per capita for Denmark", x = "GDP per capita 2010", Y = "Gini")
+France2010 <- France2010 %>%
+  filter(nuts2 != 'FR10') 
+#removing Paris from France2010
 ```
+
 
 ```{r}
 #| echo = FALSE
@@ -692,31 +688,22 @@ ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
   labs(title = "Gini and GDP per capita for France",x = "GDP per capita 2010", Y = "Gini")
 ```
 
-```{r}
-#| echo = FALSE
-ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") + 
-  labs(title = "Gini and GDP per capita for Hungary and Slovakia",x = "GDP per capita 2010", Y = "Gini")
-```
 
 
-```{r}
-#| echo = FALSE
-ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") + 
-  labs(title = "Gini and GDP per capita for Portugal",x = "GDP per capita 2010", Y = "Gini")
-```
 
-### Plot the residuals against the predicted values of our model
+
+
+### Plot the residuals against the predicted values of our model 
+
+When we have carried out a regression analysis, we get a line that gives us an overview of where the best hits are made. Residuals show the distance to the best fit line. There can be both positive and negative residuals. If the value is above the line it is positive and if it is below the line it is negative.
 
 ```{r Residuals for all countries}
 #| echo = FALSE
 lm_residuals_plot(gdppop2010) +
   labs(title = "Residuals for all countries")
 ```
-When we look at all the countries together, we can see that few of the regions follow the residual line. There is great variation both between countries and regions.
+When we look at all the countries together, we can see that the regression line has both positive and negative hits on the line.
+
 
 ```{r Residuals for France }
 #| echo = FALSE
@@ -791,19 +778,19 @@ $$
 ```{r}
 #| echo = FALSE
 mlrdata <- Denmark2010
-lm.7 = lm(Gini2 ~ Edu , mlrdata) 
-lm.8 = lm(Gini2 ~  Road, mlrdata)
-lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~  lea, mlrdata)
-lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
+lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
+lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
+lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
 
 
 #Gen Table
   huxreg(
   list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
@@ -814,20 +801,19 @@ In Denmark, we can see that models 1, 2 and 4 all have a negative effect when it
 ```{r}
 #| echo = FALSE
 mlrdata <- France2010
-
-lm.7 = lm(Gini2 ~ Edu , mlrdata) 
-lm.8 = lm(Gini2 ~  Road, mlrdata)
-lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~  lea, mlrdata)
-lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
+lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
+lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
+lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
 
 
 #Gen Table
   huxreg(
   list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
@@ -837,20 +823,19 @@ France is the country with the most observations. Here we can see that both mode
 ```{r}
 #| echo = FALSE
 mlrdata <- HungarySlovakia2010
-
-lm.7 = lm(Gini2 ~ Edu , mlrdata) 
-lm.8 = lm(Gini2 ~  Road, mlrdata)
-lm.9 = lm(Gini2 ~ Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~  lea, mlrdata)
-lm.11 = lm(Gini2 ~ Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ Road + lea, mlrdata)
+lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
+lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
+lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
+lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
+lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
+lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
 
 
 #Gen Table
   huxreg(
   list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
+  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
@@ -860,10 +845,9 @@ Again we have chosen to merge Hungary and Slovakia when we are going to do this 
 ```{r}
 #| echo = FALSE
 mlrdata <- Portugal2010
-
-lm.7 = lm(Gini2 ~ Edu , mlrdata) 
-lm.8 = lm(Gini2 ~  lea, mlrdata)
-lm.9 = lm(Gini2 ~ Edu + lea, mlrdata)
+lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
+lm.8 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
+lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
 
 
 
@@ -871,7 +855,7 @@ lm.9 = lm(Gini2 ~ Edu + lea, mlrdata)
   huxreg(
   list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(Education = "Edu", Lifeexp = "lea", const. = "(Intercept)"),
+  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Lifeexp = "lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
@@ -886,11 +870,7 @@ France is the only country with many observations in 2010, and it will probably 
 
 We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010. France has the most observations, therefore we see it as the most relevant to use. Portugal, among other things, does not have observations on motorways.
 
-```{r}
-lm(Gini2 ~ Edu, data=France2010)%>% 
-  tidy%>%
-  kable(., digits=2)
-```
+
 
 
 
@@ -908,6 +888,12 @@ ggplot(aes(x =edu, y=Gini, fill=id_nuts2, color=id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 
+lm(Gini2 ~ Edu, data=France2010)%>% 
+  tidy%>%
+  kable(., digits=2)
+
+
+
 Lecture
 
 ```{r
@@ -919,3 +905,32 @@ coeftest(reg,  )
 reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
 coefficients(reg,vcov=hccm )
 
+
+#### Appendix
+
+Plots the residuals against the predicted values of our model
+
+```{r}
+#| echo = FALSE
+ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "Gini and GDP per capita for Denmark", x = "GDP per capita 2010", Y = "Gini")
+```
+
+
+```{r}
+#| echo = FALSE
+ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(title = "Gini and GDP per capita for Hungary and Slovakia",x = "GDP per capita 2010", Y = "Gini")
+```
+
+```{r}
+#| echo = FALSE
+ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  labs(title = "Gini and GDP per capita for Portugal",x = "GDP per capita 2010", Y = "Gini")
+```
