@@ -757,27 +757,28 @@ lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
 lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
 lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
 lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
-
+lm.13 = lm(Gini2 ~ gdp_per_capita +Road + lea + Edu, mlrdata)
 
 #Gen Table
   huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12, "Model 7" = lm.13),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
 ```
-France is the country with the most observations. Here we can see that both models 2,4 and 6 have positive effects on the Gini. But all R2 are quite low so we cannot say with certainty that these variables have any effect on the Gini
+France has 22 observations, such tests give the best results the more observations we have. R2 tells us something about whether the variables have an influence on the dependent variable. if the values have an increase for each new model, this tells us that we have a connection. if the value decreases, they will say that there is no connection between these variables.In our case, we can see that R2 rises right up to model 4. This may indicate that the combination of GDP per capita and life expectancy has no effect on Gini. We end up at 0.412 on R2 which says that 41,2% of the change in Gini can be attributed to these variables. in model 1 we can see that it is education that has the highest influence on the Gini, we also see this again in model 3. In the models we have life expectancy, it is this that has the highest influence on the Gini.In the 7th model where we have all the variables. We can see that it is Education and Lifeexpectancy that have the highest effect on the Gini.
 
 
 ### Discuss the overall fit of your model
 
-France is the only country with many observations in 2010, and it will probably give us the best basis for looking at whether the model fits our model or not. We want to find out whether education and the number of km have an effect on inequalities in France and whether these variables have a connection to how wealthy the various regions are.
+France is the only country with many observations in 2010, and it will probably give us the best basis for looking at whether the model fits our model or not. We want to find out whether education and the number of km have an effect on inequalities in France and whether these variables have a connection to how wealthy the various regions are.We want to see if life expectancy age and education have an influence on gini and why this is the case. We will also take a closer look at whether road has an effect on gini.
 
 ### Discuss the inference related to your findings
 
-We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010. France has the most observations, therefore we see it as the most relevant to use. Portugal, among other things, does not have observations on motorways.
+We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010. France has the most observations, therefore we see it as the most relevant to use. Portugal, among other things, does not have observations on motorways. overall, we see that the variables education and life expectancy age have the most influence on gini, while motorway has a rather small effect.
+What often happens when you have a higher education is that you move away from the small regions and slums and move to the big cities. We will probably see that again in the largest regions.
 
 
 
@@ -792,7 +793,7 @@ A slope coeffisient tells us the expected change in Yi when Xi increases by one
 qqnorm(ols)
 qqline(ols)
 
-#ols won´t work
+ols won´t work
 ``
 When we look at the normal Q-Q plot it doesn´t appear to show normal values. 
 
@@ -825,6 +826,8 @@ coefficients(reg,vcov=hccm )
 
 
 #### Appendix
+
+**Assignment 2**
 
 Plots the residuals against the predicted values of our model
 
