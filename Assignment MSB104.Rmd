@@ -497,13 +497,14 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 
 ```{r dummy variabel}
 gdppop2010$Fra <- ifelse(gdppop2010$nuts0 == "FR", 1,0)
+gdppop2010$Oth <- ifelse(gdppop2010$nuts0 == "FR", 0,1)
 
 ```
 
 ```{r}
 gdppop2010a <- gdppop2010
-lm.20 = lm(Gini2 ~ gdp_per_capita + Fra, gdppop2010)
-lm.21 = lm(Gini2 ~ gdp_per_capita + Fra + Road, gdppop2010)
+lm.20 = lm(Gini2 ~ gdp_per_capita + lea + Fra, gdppop2010)
+lm.21 = lm(Gini2 ~ gdp_per_capita + lea + Oth, gdppop2010)
 
 #Gen Table
   huxreg(
