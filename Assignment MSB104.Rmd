@@ -517,7 +517,6 @@ lm.12 = lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, testdata)
 
   coefs = c(const. = "(Intercept)", log(gdp_per_capita) = "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea"),
 
-`
 
 
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
