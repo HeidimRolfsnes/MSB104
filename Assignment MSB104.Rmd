@@ -22,6 +22,8 @@ suppressMessages(library(vtable))
 suppressMessages(library(wooldridge))
 suppressMessages(library(huxtable))
 suppressMessages(library(lmtest))
+suppressMessages(library(rstatix))
+suppressMessages(library(car))
 options(scipen = 999)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -448,15 +450,12 @@ $$
 mlrdata <- France2010
 lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
 lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
-lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
-lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
-lm.13 = lm(Gini2 ~ gdp_per_capita +Road + lea + Edu, mlrdata)
+lm.9 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
+lm.10 = lm(Gini2 ~ gdp_per_capita +Road + lea + Edu, mlrdata)
 
 #Gen Table
   huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12, "Model 7" = lm.13),
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(Const. = "(Intercept)", gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea"),
   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
@@ -494,8 +493,79 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 
 # Assignment 3 
 
+### Test if the effect of development is significantly different for different subsets of countries in your data set.
+
+```{r}
+#| echo = FALSE
+testdata <- France2010
+lm.7 = lm(Gini2 ~ log(gdp_per_capita) + Edu, testdata)
+lm.8 = lm(Gini2 ~ log(gdp_per_capita) + Road, testdata)
+lm.10 = lm(Gini2 ~ log(gdp_per_capita) + lea, testdata)
+lm.11 = lm(Gini2 ~ log(gdp_per_capita) + Edu + lea + Road, testdata)
+lm.12 = lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, testdata)
 
 
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3"  = lm.10,"Model 4" = lm.11, "Model 5" = lm.12),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note: {stars} T statistics in brackets."
+  )
+
+```
+
+  coefs = c(const. = "(Intercept)", log(gdp_per_capita) = "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea"),
+
+`
+
+
+## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
+
+#### Plot the corresponding scatter plots with the fitted estimate line.
+
+```{r}
+ggplot(data = France2010, aes(x = Gini2, y = gdp_per_capita)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw() +
+  xlab("Gini") +
+  ylab("GDP per capita")
+```
+
+
+
+
+
+
+#### Report the related estimates.
+
+#### Give a verbal interpretation of your estimate coefficients.
+
+#### Test for heteroskedasticity in the two new and the old model.
+
+### Discuss if we can interpret the estimates as causal.
+
+### Suggest potential remedies for eventual problems.
+
+# Assignment 4 
+
+Penal Estimates
+
+Use your entire data set to estimate the effect of regional development yj on regional inequality GINIWj in a penal setup. Present estimates that contain the following fixed effects separately and jointly:
+
+country fixed effects,
+year fixed effects
+NUTS 2 fixed effects
+(Please ignore for this assignment the alternative determinants from assignment 2)
+
+Clean up
+
+Use the feedback you obtained for Assignment one to three to improve and shorten your previous assignments.
+
+Write a consistent document that discusses the hypothesis that we can observe a significant and positive effect of development on regional inequality for your set of countries.
+
+Your final submission must have less than 10.000 words, three tables and five figures. Appendix and references not included.
 
 # Extra 
 
