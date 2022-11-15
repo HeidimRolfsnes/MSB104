@@ -641,9 +641,6 @@ info
 A slope coeffisient tells us the expected change in Yi when Xi increases by one 
 
 
-
- 
-
 (https://www.datasciencecentral.com/7-classical-assumptions-of-ordinary-least-squares-ols-linear/)
 
 
