@@ -502,17 +502,19 @@ gdppop2010$Oth <- ifelse(gdppop2010$nuts0 == "FR", 0,1)
 ```
 
 ```{r}
-gdppop2010a <- gdppop2010
-lm.20 = lm(Gini2 ~ gdp_per_capita + lea + Fra, gdppop2010)
-lm.21 = lm(Gini2 ~ gdp_per_capita + lea + Oth, gdppop2010)
+gdppop2010 <- gdppop2010
+lm.20 = lm(Gini2 ~ gdp_per_capita, filter(gdppop2010, Fra==1))
+lm.21 = lm(Gini2 ~ gdp_per_capita, filter(gdppop2010, Fra==0))
+lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 
 #Gen Table
   huxreg(
-  list("Model 1" = lm.20, "Model 2" = lm.21),
+  list("Only France" = lm.20, "No France" = lm.21, "Interaction" = lm.22),
   statistics = c(N = "nobs", R2 = "r.squared"),
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets."
   )
+
 ```
 
 
