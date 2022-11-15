@@ -612,7 +612,6 @@ ggplot(data = gdppop2010, aes(x = Gini2, y = gdp_per_capita)) +
 
 
 
-
 #### Report the related estimates.
 
 #### Give a verbal interpretation of your estimate coefficients.
