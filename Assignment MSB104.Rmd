@@ -25,6 +25,7 @@ suppressMessages(library(lmtest))
 suppressMessages(library(rstatix))
 suppressMessages(library(car))
 suppressMessages(library(jtools))
+suppressMessages(library(tinytex))
 options(scipen = 999)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -536,15 +537,21 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 ```
 
 # Assignment 3 
+
+In this part we are going to test if the effect of development is significantly different for different subsets of countries in your data set. Then we will look at alternative functional forms (e.g.log, cubical estimates) of our previous estimates on the relationship between regional development yi on regional inequality GINIWj. We will make arguments for two forms that might fit the data better and plot the corresponding scatter plots with the fitted estimate line. We are suppose to report the related estimates and give a verbal interpretation of our estimate coefficients. We will also test for heteroskedasticity in the two new and in the old model. We will discuss if we can interpret the estimates as casual and suggest potential remedies for eventual problems.
+
 ```{r
 #| echo = FALSE
-gdppop2010 <- gdppop2010 %>%
-  filter(nuts2 != 'FR10') 
+gdppop2010a <- gdppop2010 %>%
+  filter(nuts2 != 'FR') 
 #removing Paris from gdppop2010
+#Sjekk med Andre om å fjerne Portugal og Paris. 
 ```
 
 
 ### Test if the effect of development is significantly different for different subsets of countries in your data set
+
+
 
 ```{r dummy variabel}
 gdppop2010$Fra <- ifelse(gdppop2010$nuts0 == "FR", 1,0)
@@ -567,7 +574,7 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets.")
 ```  
- 
+## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
 
 ```{r}
 gdppop2010 <- gdppop2010
@@ -585,39 +592,6 @@ lm.25 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)
   note = "Note: {stars} T statistics in brackets."
   )
 ```
-
-
-
-
-
-
-  coefs = c(const. = "(Intercept)", log(gdp_per_capita) = "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea"),
-
-
-
-## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
-
-#### Plot the corresponding scatter plots with the fitted estimate line.
-
-```{r}
-ggplot(data = gdppop2010, aes(x = Gini2, y = gdp_per_capita)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme_bw() +
-  xlab("Gini") +
-  ylab("GDP per capita")
-```
-
-
-
-
-
-#### Report the related estimates.
-
-#### Give a verbal interpretation of your estimate coefficients.
-
-#### Test for heteroskedasticity in the two new and the old model.
-
 
 ```{r}
 gdppop2010 <- gdppop2010
@@ -640,6 +614,58 @@ lm.29 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)%>%
   note = "Note: {stars} T statistics in brackets."
   )
 ```
+
+#### Plot the corresponding scatter plots with the fitted estimate line.
+
+Sjekk med Paris - Legg inn to regresjonslinjer 
+
+```{r}
+ggplot(data = gdppop2010, aes(x = Gini2, y = gdp_per_capita)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+   geom_smooth(method = "lm", se = TRUE) +
+  theme_bw() +
+  xlab("Gini") +
+  ylab("GDP per capita")
+```
+
+
+```{r
+ggplot(data = mlrdata, aes(x = Gini2, y = gdp_per_capita)) +
+geom_point(size = 2.5, alpha = 0.8, aes(color = Fra, shape = Fra)) +
+geom_hline(yintercept = 0) +
+geom_vline(xintercept = 0) +
+geom_line(stat = "smooth", color = "orange", method = lm, alpha = 0.2, size = 1) +
+geom_abline(
+  intercept = lm_gdppc$coefficients[1],
+  slope = lm_gdppc$coefficients[2],
+  color = red_pink, size = 1
+) +
+geom_abline(
+  intercept = lm_gdppc$coefficients[1],
+  slope = lm_gdppc$coefficients[2],
+  color = "darkslategrey", size = 1
+) +
+xlab("Gini") +
+ylab("gdp_per_capita") +
+theme_empty +
+theme(
+  axis.title = element_text(size = 18),
+  plot.margin = structure(c(0, 0, 0.1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+) +
+scale_color_manual("", values = c(red_pink, "darkslategrey"), labels = c("Fra", "Male")) +
+scale_shape_manual("", values = c(16, 1), labels = c("Female", "Male"))
+```
+
+
+
+#### Report the related estimates.
+
+#### Give a verbal interpretation of your estimate coefficients.
+
+
+
+Trenger vi denne ? 
 ```{r,  echo=TRUE, include=TRUE}
 # Get data
 data('gdppop2010')
@@ -651,6 +677,11 @@ reg %>%
   geom_point(color = "darkslategray", size = 3) +
   theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
+  
+#### Test for heteroskedasticity in the two new and the old model.
+
+Eks fra oppgave 4 i R. BP = 352.89, df = 15, p-value < 2.2e-16
+Ja vi har problemer med heteroskedasiteten her pga at verdien er for høy.  
   
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -687,7 +718,29 @@ summ(reg)
 
 ### Discuss if we can interpret the estimates as causal.
 
+Veldig sannsynlig nei 
+
 ### Suggest potential remedies for eventual problems.
+
+Hvilke andre ting kan vi eksprementere på - EU gir penger til en region for utvikling. Er det en bra måte å utvikle en region på
+Konkludere om variablene har effekt. Hva andre ting kan spille inn. Vi har utdanning, levetid og km. Kan vi bruke lønn
+
+Heterodesk. 
+
+Breusch - Pagan test 
+
+```{r}
+model <- lm(price ~ lotsize + sqrft + bdrms)
+summary(model)
+
+
+```
+
+
+Alder har noe å si om befolkningen er ung eller gammel med tanke på utvikling av region/land. 
+
+
+
 
 # Assignment 4 
 
