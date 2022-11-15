@@ -24,6 +24,7 @@ suppressMessages(library(huxtable))
 suppressMessages(library(lmtest))
 suppressMessages(library(rstatix))
 suppressMessages(library(car))
+suppressMessages(library(jtools))
 options(scipen = 999)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -535,8 +536,15 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 ```
 
 # Assignment 3 
+```{r
+#| echo = FALSE
+gdppop2010 <- gdppop2010 %>%
+  filter(nuts2 != 'FR10') 
+#removing Paris from gdppop2010
+```
 
 
+### Test if the effect of development is significantly different for different subsets of countries in your data set
 
 ```{r dummy variabel}
 gdppop2010$Fra <- ifelse(gdppop2010$nuts0 == "FR", 1,0)
@@ -553,35 +561,35 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 #Gen Table
   huxreg(
   list("Only France" = lm.20, "No France" = lm.21, "Interaction" = lm.22),
-  statistics = c(N = "nobs", R2 = "r.squared"),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
-  note = "Note: {stars} T statistics in brackets."
-  )
-
-```
-
-
-### Test if the effect of development is significantly different for different subsets of countries in your data set.instal
+  note = "Note: {stars} T statistics in brackets.")
+```  
+ 
 
 ```{r}
-#| echo = FALSE
-testdata <- France2010
-lm.7 = lm(Gini2 ~ log(gdp_per_capita) + Edu, testdata)
-lm.8 = lm(Gini2 ~ log(gdp_per_capita) + Road, testdata)
-lm.10 = lm(Gini2 ~ log(gdp_per_capita) + lea, testdata)
-lm.11 = lm(Gini2 ~ log(gdp_per_capita) + Edu + lea + Road, testdata)
-lm.12 = lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, testdata)
-
+gdppop2010 <- gdppop2010
+lm.23 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
+lm.24 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==0))
+lm.25 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)
 
 #Gen Table
   huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3"  = lm.10,"Model 4" = lm.11, "Model 5" = lm.12),
-  statistics = c(N = "nobs", R2 = "r.squared"),
+  list("Only France (log)" = lm.23, "No France (log)" = lm.24, "Interaction" = lm.25),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets."
   )
-
 ```
+
+
+
+
+
 
   coefs = c(const. = "(Intercept)", log(gdp_per_capita) = "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea"),
 
@@ -592,7 +600,7 @@ lm.12 = lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, testdata)
 #### Plot the corresponding scatter plots with the fitted estimate line.
 
 ```{r}
-ggplot(data = France2010, aes(x = Gini2, y = gdp_per_capita)) +
+ggplot(data = gdppop2010, aes(x = Gini2, y = gdp_per_capita)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   theme_bw() +
@@ -610,6 +618,73 @@ ggplot(data = France2010, aes(x = Gini2, y = gdp_per_capita)) +
 #### Give a verbal interpretation of your estimate coefficients.
 
 #### Test for heteroskedasticity in the two new and the old model.
+
+
+```{r}
+gdppop2010 <- gdppop2010
+lm.26 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))%>%
+coeftest(vcov = hccm, save = TRUE)
+lm.27 = lm(Gini2 ~ log(I(gdp_per_capita)^2), filter(gdppop2010, Fra==1))%>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.28 = lm(Gini2 ~ log(I(gdp_per_capita)^3), filter(gdppop2010, Fra==1))%>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.29 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)%>%
+  coeftest(vcov = hccm, save = TRUE)
+
+#Gen Table
+  huxreg(
+  list("Only France (log)" = lm.26, "Only France (log) ^2" = lm.27, "Only France ^3" = lm.28, "Interaction" = lm.29),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+```{r,  echo=TRUE, include=TRUE}
+# Get data
+data('gdppop2010')
+#Estimate 
+reg<-lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, data = gdppop2010) 
+#plot
+reg %>% 
+  ggplot(aes(x = fitted(reg), y = resid(reg))) +
+  geom_point(color = "darkslategray", size = 3) +
+  theme_gray () + xlab("predicted values") + ylab("residuals")
+```
+  
+```{r,  echo=TRUE, include=TRUE}
+#Estimate 
+reg<-lm(Gini2 ~ gdp_per_capita + Edu + lea, data = gdppop2010)
+# Breusch-Pagan test F-Test (LM estimator)
+bptest(reg)$p.value
+
+```
+
+With a p-value = 0,07012004 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
+With a p-value = 0,03452553 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
+
+*Log-log estimate*
+
+```{r,  echo=TRUE, include=TRUE}
+#Estimate 
+reg <- lm(log(Gini2) ~ log(gdp_per_capita) + log(Edu) + log(lea), data = gdppop2010) 
+# Breusch-Pagan test F-Test (LM estimator)
+bptest(reg)$p.value
+
+```
+
+With a p-value = 0,01209977 we can not reject $H_0$ (homoskedasticity).
+With a p-value = 0,004737669 we can not reject $H_0$ (homoskedasticity).
+
+```{r}
+summary(reg)
+```
+```{r}
+summ(reg)
+```
+
+
 
 ### Discuss if we can interpret the estimates as causal.
 
