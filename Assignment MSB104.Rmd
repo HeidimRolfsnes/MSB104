@@ -2,7 +2,7 @@
 title: "Econometrics assignment"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 output:
-  html_document: default
+  bookdown:: html_document2
   pdf_document: default
   word_document: default
 
@@ -26,6 +26,7 @@ suppressMessages(library(rstatix))
 suppressMessages(library(car))
 suppressMessages(library(jtools))
 suppressMessages(library(tinytex))
+suppressMessages(library(bookdown))
 options(scipen = 999)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -95,9 +96,7 @@ Since Hungary and Slovakia have few nuts3 regions we chose to look at them toget
 ### Denmark
   
 
-Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions. Kobenhagen is the capital of Denmark, and as we can see above it stand out together with the surrounding region. we can se that the region around the capital has had a higher growth. Capital cities are often richer than other regions. we can see that in Denmark as well. 
-
-***Graph 1***
+Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions. Kobenhagen is the capital of Denmark, and as we can see above it stand out together with the surrounding region. we can se that the region around the capital has had a higher growth. Capital cities are often richer than other regions. we can see that in Denmark as well \@ref(fig:Gdp_in_Denmark).
 
 To get an overview, we have chosen to look at 2010 for all the regions in Denmark to see which regions are the richest and least wealties.
 
@@ -729,7 +728,7 @@ Heterodesk.
 
 Breusch - Pagan test 
 
-```{r}
+```{r
 model <- lm(price ~ lotsize + sqrft + bdrms)
 summary(model)
 
@@ -825,7 +824,7 @@ summarise( GDP_per_Capita = mean(gdp_per_capita))
 
 #### Graph 1 {data-link="Graph 1"}
 
-```{r GDP in Denmark}
+```{r Gdp_in_Denmark, fig.cap= "GDP in Denmark", label="Gdp_in_Denmark"}
 #| echo = FALSE
 gdppop%>%
      filter(grepl("DK...", Region)) %>%
