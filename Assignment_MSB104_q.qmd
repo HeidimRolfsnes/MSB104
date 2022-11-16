@@ -291,6 +291,7 @@ In the end we will discuss the overall fit of our model and the inference relate
 
 ### Data set: 
 
+
 We will start the assignment 2 with getting the data set from Eurostat. We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset. In the demographic data set we want to look at the life expectancy age.
 
 ```{r Data set Education }
