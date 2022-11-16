@@ -2,6 +2,7 @@
 title: "Assignment MSB104"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 data: today
+Bibliography: Reference.bib
 
 format:
   html:
@@ -77,6 +78,9 @@ We made a new dataset called gdppop. In this dataset we will gather the informat
 gdppop <- BNP %>%
   left_join(Pop, by = c("Region", "Year"))
 ```
+
+@seidel
+
 
 ## GDP per Capita 
 
@@ -440,8 +444,9 @@ When we look at the table above we can see the impact regional development (X) h
 
 ### Discuss the goodness of fit of our estiamted model 
 
-When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can be between 0 and 1. When R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. If it is 0, the independent variable has no influence on the dependent variable (Forskningsmetode - s.345).
+When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other. R2 tells us how much spread we have in the independent variable. The value in R2 can be between 0 and 1. When R2 is 1 it tells us that the independent variable has all the influence on the dependent variable. If it is 0, the independent variable has no influence on the dependent variable [@Forskningsmetode]  (Forskningsmetode - s.345).
 We can see that Denmark and France have a high R2 value, Denmark with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completly trust this result. France, on the other hand, has 22 observations, the more observations the better outcome of the result .
+
 
 
 ```{r}
@@ -815,6 +820,8 @@ coeftest(reg,  )
 r
 reg2 <- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010)
 coefficients(reg,vcov=hccm )
+
+### Bibliography
 
 
 #### Appendix
