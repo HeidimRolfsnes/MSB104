@@ -102,7 +102,7 @@ And then we further look at GDP, population and GDP per capita in our five count
 
 ***Table 2***
 
-From the summary we can see that GDP per capita at NUTS3 level for all our countries was 22 438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
+From the summary in @tbl-2  we can see that GDP per capita at NUTS3 level for all our countries was 22 438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
 
 It wasn't easy to draw any conclusion from the summary in table 2. We can see that there is a difference in GDP as the lowest value is 683,7 while the highest is 251 623,6. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 416,7. Population and gdp_ per_capita gave us the same results, with a very low minimum and a high maximum value. 
 
@@ -563,13 +563,7 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 
 In this part we are going to test if the effect of development is significantly different for different subsets of countries in your data set. Then we will look at alternative functional forms (e.g.log, cubical estimates) of our previous estimates on the relationship between regional development yi on regional inequality GINIWj. We will make arguments for two forms that might fit the data better and plot the corresponding scatter plots with the fitted estimate line. We are suppose to report the related estimates and give a verbal interpretation of our estimate coefficients. We will also test for heteroskedasticity in the two new and in the old model. We will discuss if we can interpret the estimates as casual and suggest potential remedies for eventual problems.
 
-```{r
-#| echo: false
-gdppop2010a <- gdppop2010 %>%
-  filter(nuts2 != 'FR') 
-#removing Paris from gdppop2010
-#Sjekk med Andre om å fjerne Portugal og Paris. 
-```
+
 
 
 ### Test if the effect of development is significantly different for different subsets of countries in your data set
@@ -577,12 +571,14 @@ gdppop2010a <- gdppop2010 %>%
 
 
 ```{r dummy variabel}
+#| echo: false
 gdppop2010$Fra <- ifelse(gdppop2010$nuts0 == "FR", 1,0)
 gdppop2010$Oth <- ifelse(gdppop2010$nuts0 == "FR", 0,1)
 
 ```
 
 ```{r}
+#| echo: false
 gdppop2010 <- gdppop2010
 lm.20 = lm(Gini2 ~ gdp_per_capita, filter(gdppop2010, Fra==1))
 lm.21 = lm(Gini2 ~ gdp_per_capita, filter(gdppop2010, Fra==0))
@@ -600,6 +596,7 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
 
 ```{r}
+#| echo: false
 gdppop2010 <- gdppop2010
 lm.23 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 lm.24 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==0))
@@ -842,11 +839,13 @@ gdppop %>%
 
 ```{r}
 #| echo: false
-
+#| output: true
+#| label: tbl-2
+#| tbl-cap: "mean of the different "
 gdppop %>%
    filter(Year==2010) %>%
   group_by(Year, Region) %>%
-mutate(gdp_per_capita1 = sum(gdp_per_capita))%>%
+mutate(gdp_per_capita = sum(gdp_per_capita))%>%
 ungroup() %>%
 summarise( GDP_per_Capita = mean(gdp_per_capita))
 
