@@ -448,7 +448,6 @@ When we look at the simple regression that we have done, it is R2 that can help 
 We can see that Denmark and France have a high R2 value, Denmark with 0,813 and France with 0,814. Denmark only has 4 observations, which tells us that we cannot completly trust this result. France, on the other hand, has 22 observations, the more observations the better outcome of the result .
 
 
-
 ```{r}
 #| echo: false
 France2010 <- France2010 %>%
@@ -580,7 +579,6 @@ In this part we are going to test if the effect of development is significantly 
 #| echo: false
 gdppop2010$Fra <- ifelse(gdppop2010$nuts0 == "FR", 1,0)
 gdppop2010$Oth <- ifelse(gdppop2010$nuts0 == "FR", 0,1)
-
 ```
 
 ```{r}
@@ -598,7 +596,14 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
       "P value" = "p.value"),
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets.")
-```  
+``` 
+To test the effect of differences for the different subgroups of countries, we have created the dummy variable of the regions to look at France as one and the other countries as one. We can then see if there are differences between those living in France and for the other countries.
+We have 38 observations in total, 22 belonging to France and 16 belonging to the other countries. This is not a very many observations. 
+
+Only France shows the effect for only France, No France shows the effect for the other countries. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
+
+The p values for Only France and Interaction are both zero, which is initially very unlikely. We cannot therefore say that this is a pattern but a random coincidence. No France is very close to one, which means that we can see more connections there.
+
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
 
 ```{r}
@@ -606,18 +611,20 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 gdppop2010 <- gdppop2010
 lm.23 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 lm.24 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==0))
-lm.25 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)
+lm.25 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)
 
 #Gen Table
   huxreg(
-  list("Only France (log)" = lm.23, "No France (log)" = lm.24, "Interaction" = lm.25),
+  list("Only France (log)" = lm.23, "No France (log)" = lm.24, "Interaction (log)" = lm.25),
   statistics = c("N" = "nobs", 
       R2 = "r.squared", "F statistic" = "statistic",
       "P value" = "p.value"),
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets."
   )
+  # Did we get the log right on lm.25?  
 ```
+
 
 ```{r}
 gdppop2010 <- gdppop2010
@@ -627,12 +634,10 @@ lm.27 = lm(Gini2 ~ log(I(gdp_per_capita)^2), filter(gdppop2010, Fra==1))%>%
   coeftest(vcov = hccm, save = TRUE)
 lm.28 = lm(Gini2 ~ log(I(gdp_per_capita)^3), filter(gdppop2010, Fra==1))%>%
   coeftest(vcov = hccm, save = TRUE)
-lm.29 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)%>%
-  coeftest(vcov = hccm, save = TRUE)
 
 #Gen Table
   huxreg(
-  list("Only France (log)" = lm.26, "Only France (log) ^2" = lm.27, "Only France ^3" = lm.28, "Interaction" = lm.29),
+  list("Only France (log)" = lm.26, "Only France (log) ^2" = lm.27, "Only France (log) ^3" = lm.28),
   statistics = c("N" = "nobs", 
       R2 = "r.squared", "F statistic" = "statistic",
       "P value" = "p.value"),
@@ -640,69 +645,40 @@ lm.29 = lm(Gini2 ~ gdp_per_capita*Fra, gdppop2010)%>%
   note = "Note: {stars} T statistics in brackets."
   )
 ```
+lm.29 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)%>%
+  coeftest(vcov = hccm, save = TRUE)
+  , "Interaction" = lm.29
+  
+  
+In the first alternative model, we used Log on the variables. Log means that large variations in the observations will have less impact on the results. Only France still has a high significant level of its variables, we see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above). R2 has dropped a bit but it is still high. No France no longer has a significant level on its variables. Oh a small increase in R2. Interaction no longer has a significance level on its Gini.
+
+In the second alternative, we raised Log (GDP per capita) in the second and third squares on France's dummy variables. We see that it produces a change in Log (GDP per capita) but that R2 is the same in all models. And that everyone has three stars at the significant level.
 
 #### Plot the corresponding scatter plots with the fitted estimate line.
 
-Sjekk med Paris - Legg inn to regresjonslinjer 
-
-```{r}
-ggplot(data = gdppop2010, aes(x = Gini2, y = gdp_per_capita)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-   geom_smooth(method = "lm", se = TRUE) +
-  theme_bw() +
-  xlab("Gini") +
-  ylab("GDP per capita")
+```{r,  echo=TRUE, include=TRUE}
+#Estimate 
+reg<-lm(Gini2 ~ log(gdp_per_capita), data = gdppop2010) 
+#plot
+reg %>% 
+  ggplot(aes(x = fitted(reg), y = resid(reg))) +
+  geom_point(color = "darkslategray", size = 3) +
+   geom_smooth(se = FALSE) +
+  theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
 
-
-```{r
-ggplot(data = mlrdata, aes(x = Gini2, y = gdp_per_capita)) +
-geom_point(size = 2.5, alpha = 0.8, aes(color = Fra, shape = Fra)) +
-geom_hline(yintercept = 0) +
-geom_vline(xintercept = 0) +
-geom_line(stat = "smooth", color = "orange", method = lm, alpha = 0.2, size = 1) +
-geom_abline(
-  intercept = lm_gdppc$coefficients[1],
-  slope = lm_gdppc$coefficients[2],
-  color = red_pink, size = 1
-) +
-geom_abline(
-  intercept = lm_gdppc$coefficients[1],
-  slope = lm_gdppc$coefficients[2],
-  color = "darkslategrey", size = 1
-) +
-xlab("Gini") +
-ylab("gdp_per_capita") +
-theme_empty +
-theme(
-  axis.title = element_text(size = 18),
-  plot.margin = structure(c(0, 0, 0.1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
-) +
-scale_color_manual("", values = c(red_pink, "darkslategrey"), labels = c("Fra", "Male")) +
-scale_shape_manual("", values = c(16, 1), labels = c("Female", "Male"))
-```
 
 
 
 #### Report the related estimates.
 
+Mønsteret avslører korrelasjonene mellom x og Y aksen. 
+
 #### Give a verbal interpretation of your estimate coefficients.
 
 
 
-Trenger vi denne ? 
-```{r,  echo=TRUE, include=TRUE}
-# Get data
-data('gdppop2010')
-#Estimate 
-reg<-lm(Gini2 ~ gdp_per_capita + Edu + lea + Road, data = gdppop2010) 
-#plot
-reg %>% 
-  ggplot(aes(x = fitted(reg), y = resid(reg))) +
-  geom_point(color = "darkslategray", size = 3) +
-  theme_gray () + xlab("predicted values") + ylab("residuals")
-```
+
   
 #### Test for heteroskedasticity in the two new and the old model.
 
@@ -711,31 +687,32 @@ Ja vi har problemer med heteroskedasiteten her pga at verdien er for høy.
   
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
-reg<-lm(Gini2 ~ gdp_per_capita + Edu + lea, data = gdppop2010)
+reg<-lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
 
 ```
 
-With a p-value = 0,07012004 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
-With a p-value = 0,03452553 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
+With a p-value = 0,6720791 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
+
 
 *Log-log estimate*
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
-reg <- lm(log(Gini2) ~ log(gdp_per_capita) + log(Edu) + log(lea), data = gdppop2010) 
+reg <- lm(Gini2 ~ log(gdp_per_capita),data = gdppop2010) 
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
 
 ```
 
-With a p-value = 0,01209977 we can not reject $H_0$ (homoskedasticity).
-With a p-value = 0,004737669 we can not reject $H_0$ (homoskedasticity).
+With a p-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
+
 
 ```{r}
 summary(reg)
 ```
+
 ```{r}
 summ(reg)
 ```
@@ -753,14 +730,9 @@ Konkludere om variablene har effekt. Hva andre ting kan spille inn. Vi har utdan
 
 Heterodesk. 
 
-Breusch - Pagan test 
-
-```{r
-model <- lm(price ~ lotsize + sqrft + bdrms)
-summary(model)
 
 
-```
+
 
 
 Alder har noe å si om befolkningen er ung eller gammel med tanke på utvikling av region/land. 
@@ -840,7 +812,6 @@ gdppop %>%
     filter(Year==2010) %>%
   select(GDP,Population,gdp_per_capita)%>%
   st()
-
 ```
 
 #### Table 2 
@@ -856,7 +827,6 @@ gdppop %>%
 mutate(gdp_per_capita = sum(gdp_per_capita))%>%
 ungroup() %>%
 summarise( GDP_per_Capita = mean(gdp_per_capita))
-
 ```
 
 #### Graph 1 
