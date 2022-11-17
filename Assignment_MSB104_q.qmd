@@ -600,6 +600,10 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 To test the effect of differences for the different subgroups of countries, we have created the dummy variable of the regions to look at France as one and the other countries as one. We can then see if there are differences between those living in France and for the other countries.
 We have 38 observations in total, 22 belonging to France and 16 belonging to the other countries. This is not a very many observations. 
 
+$$
+0.905>0.10
+$$
+
 Only France shows the effect for only France, No France shows the effect for the other countries. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
 
 The p values for Only France and Interaction are both zero, which is initially very unlikely. We cannot therefore say that this is a pattern but a random coincidence. No France is very close to one, which means that we can see more connections there.
