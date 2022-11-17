@@ -79,9 +79,6 @@ gdppop <- BNP %>%
   left_join(Pop, by = c("Region", "Year"))
 ```
 
-@seidel
-
-
 ## GDP per Capita 
 
 To calculate GDP per capita, we took GDP and divided it by the population. And then we have multiplied by one million, so that it is represented correctly in Euros.
@@ -94,17 +91,12 @@ na.omit()
 #NA variables are removed
 ```
 
-***Table 1***
 
-Hears the refrence to the table @tbl-des_2010
-
-
+Here is the refrence to the table @tbl-des_2010
 
 Briefly about what we found in the summary. We found the min and the max values. i.e. the smallest and the highest GDP per capita for the country. We also found 1st quartile and 3rd quartile. The first quartile was the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We have also look at mean which told us what the average observation for all regions was.
 
 And then we further look at GDP, population and GDP per capita in our five countries and what results it gives us when we calculate all the NUTS3 regions together.
-
-***Table 2***
 
 From the summary in @tbl-2  we can see that GDP per capita at NUTS3 level for all our countries was 22 438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
 
@@ -569,11 +561,7 @@ lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
 In this part we are going to test if the effect of development is significantly different for different subsets of countries in your data set. Then we will look at alternative functional forms (e.g.log, cubical estimates) of our previous estimates on the relationship between regional development yi on regional inequality GINIWj. We will make arguments for two forms that might fit the data better and plot the corresponding scatter plots with the fitted estimate line. We are suppose to report the related estimates and give a verbal interpretation of our estimate coefficients. We will also test for heteroskedasticity in the two new and in the old model. We will discuss if we can interpret the estimates as casual and suggest potential remedies for eventual problems.
 
 
-
-
 ### Test if the effect of development is significantly different for different subsets of countries in your data set
-
-
 
 ```{r dummy variabel}
 #| echo: false
@@ -600,10 +588,14 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 To test the effect of differences for the different subgroups of countries, we have created the dummy variable of the regions to look at France as one and the other countries as one. We can then see if there are differences between those living in France and for the other countries.
 We have 38 observations in total, 22 belonging to France and 16 belonging to the other countries. This is not a very many observations. 
 
+<<<<<<< HEAD
 
 Only France shows the effect for only France, No France shows the effect for the other countries. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
+=======
+Only France shows the effect for just France. No France shows the effect for the other countries without including France. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
+>>>>>>> d2c4579d583e991b92a9042bf9a22d1f66dea9d7
 
-The p values for Only France and Interaction are both zero, which is initially very unlikely. We cannot therefore say that this is a pattern but a random coincidence. No France is very close to one, which means that we can see more connections there.
+The p values for Only France and Interaction are both zero, which is initially very unlikely. We cannot therefore say that this is a pattern but a random convenience. No France is very close to one, which means that we can see more connections there.
 
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
 
@@ -646,7 +638,10 @@ lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_c
   )
 ```
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> d2c4579d583e991b92a9042bf9a22d1f66dea9d7
 In the first alternative model, we used Log on the variables. Log means that large variations in the observations will have less impact on the results. Only France still has a high significant level of its variables, we see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above). R2 has dropped a bit but it is still high. No France no longer has a significant level on its variables. Oh a small increase in R2. Interaction no longer has a significance level on its Gini.
 
 In the second alternative, we raised Log (GDP per capita) in the second and third squares on France's dummy variables. We see that it produces a change in Log (GDP per capita) but that R2 is the same in all models. And that everyone has three stars at the significant level.
@@ -781,12 +776,11 @@ coefficients(reg,vcov=hccm )
 
 **Assignment 1**
 
-#### Table 1 
 
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-des_2010
+#| label: tbl-1
 #| tbl-cap: "Main data descriptive statistics 2010"
 
 gdppop %>%
@@ -795,7 +789,6 @@ gdppop %>%
   st()
 ```
 
-#### Table 2 
 
 ```{r}
 #| echo: false
@@ -829,6 +822,9 @@ gdppop%>%
 
 ```{r the whealtiest regions in Denmark}
 #| echo: false
+#| output: true
+#| label: tbl-3
+#| tbl-cap: "The wealthiest regions in Denmark"
 gdpdk <- gdppop%>%
   filter(grepl("DK...", Region)) %>%
   filter(Year==2010) %>%
@@ -836,17 +832,20 @@ gdpdk <- gdppop%>%
 slice_max(gdpdk, gdp_per_capita, n=3)
 ```
 
-#### Table 4 
-
 ```{r The poorest regions in Denmark}
 #| echo: false
+#| output: true
+#| label: tbl-4
+#| tbl-cap: "The least wealthiest regions in Denmark"
 slice_min(gdpdk, gdp_per_capita, n=3)
 
 ```
 
-#### Table 5 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_5
+#| tbl-cap: "Summary gdpdk"
 gdpdk %>%
 summary()
 ```
@@ -865,6 +864,9 @@ gdppop%>%
 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_6
+#| tbl-cap: "Mean FR"
 gdppop%>%
   filter(grepl("FR...", Region)) %>%
   select(Population, gdp_per_capita) %>%
@@ -873,6 +875,9 @@ gdppop%>%
 
 ```{r Take away the FRY regions}
 #| echo: false
+#| output: true
+#| label: tbl_7
+#| tbl-cap: "Take away the FRY region"
 gdppop <- gdppop %>%
   filter(Region != 'FRY10') %>%
    filter(Region != 'FRY20') %>%
@@ -893,10 +898,13 @@ gdppop%>%
    labs(title = 'GDP per capita in France', x = "Year", y = "GDP Per capita")
 ```
 
-#### Table 6 
 
-```{r The whealtiest regions in France}
+
+```{r}
 #| echo: false
+#| output: true
+#| label: tbl_8
+#| tbl-cap: "The wealthiest regions in France"
 gdpfr <- gdppop %>%
   filter(grepl("FR...", Region)) %>%
   filter(Year==2010) %>%
@@ -904,15 +912,21 @@ gdpfr <- gdppop %>%
 slice_max(gdpfr, gdp_per_capita, n=3)
 ```
 
-#### Table 7 
 
-```{r The poorest regions in France}
+
+```{r}
 #| echo: false
+#| output: true
+#| label: tbl_9
+#| tbl-cap: "The least wealthiest regions in France"
 slice_min(gdpfr, gdp_per_capita, n=3)
 ```
 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_10
+#| tbl-cap: "Summary gdpfr"
 summary(gdpfr)
 ```
 
@@ -928,10 +942,12 @@ gdppop %>%
    labs(title = 'GDP per capita in Hungary and Slovakia ', x = "Year", y = "GDP Per capita")
 ```
 
-#### Table 8 
 
-```{r The whealtiest regions in Hungary and Slovakia}
+```{r }
 #| echo: false
+#| output: true
+#| label: tbl_11
+#| tbl-cap: "The wealthiest regions un Hungary and Slovakia"
 gdphusk <- gdppop%>%
   filter(grepl('HU..', Region) | grepl('SK..', Region)) %>%
   filter(Year==2010) %>%
@@ -939,15 +955,20 @@ gdphusk <- gdppop%>%
 slice_max(gdphusk, gdp_per_capita, n=3)
 ```
   
-#### Table 9 
 
 ```{r The poorest regions in Hungary and Slovakia}
 #| echo: false
+#| output: true
+#| label: tbl_12
+#| tbl-cap: "The least wealthiest regions in Hungary and Slovakia"
 slice_min(gdphusk, gdp_per_capita, n=3)
 ```
 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_13
+#| tbl-cap: "Summary gdphusk"
 gdphusk %>%
 summary()
 ```
@@ -966,8 +987,11 @@ gdppop%>%
 
 #### Table 10 
 
-```{r the whealtiest regions in Portugal}
+```{r}
 #| echo: false
+#| output: true
+#| label: tbl_14
+#| tbl-cap: "The wealthiest regions in Portugal"
 gdppt <- gdppop%>%
   filter(grepl("PT...", Region)) %>%
   filter(Year==2010) %>%
@@ -975,15 +999,19 @@ gdppt <- gdppop%>%
 slice_max(gdppt, gdp_per_capita, n=3)
 ```
 
-#### Table 11 
-
-```{r The poorest regions in Portugal}
+```{r}
 #| echo: false
+#| output: true
+#| label: tbl_15
+#| tbl-cap: "The least wealtiest regions in Portugal"
 slice_min(gdppt, gdp_per_capita, n=3)
 ```
 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_16
+#| tbl-cap: "Summary gdppt"
 gdppt %>%
 summary()
 ```
@@ -1004,6 +1032,9 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
 
 ```{r}
 #| echo: false
+#| output: true
+#| label: tbl_17
+#| tbl-cap: "Gini in DK regions"
 gdppop %>%
 filter(nuts0 == "DK") %>%
 select(Year,nuts2, gini_n2) %>%
