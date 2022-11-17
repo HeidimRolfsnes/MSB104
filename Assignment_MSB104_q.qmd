@@ -600,9 +600,6 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
 To test the effect of differences for the different subgroups of countries, we have created the dummy variable of the regions to look at France as one and the other countries as one. We can then see if there are differences between those living in France and for the other countries.
 We have 38 observations in total, 22 belonging to France and 16 belonging to the other countries. This is not a very many observations. 
 
-$$
-0.905>0.10
-$$
 
 Only France shows the effect for only France, No France shows the effect for the other countries. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
 
@@ -626,7 +623,6 @@ lm.25 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets."
   )
-  # Did we get the log right on lm.25?  
 ```
 
 
@@ -649,10 +645,7 @@ lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_c
   note = "Note: {stars} T statistics in brackets."
   )
 ```
-lm.29 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)%>%
-  coeftest(vcov = hccm, save = TRUE)
-  , "Interaction" = lm.29
-  
+
   
 In the first alternative model, we used Log on the variables. Log means that large variations in the observations will have less impact on the results. Only France still has a high significant level of its variables, we see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above). R2 has dropped a bit but it is still high. No France no longer has a significant level on its variables. Oh a small increase in R2. Interaction no longer has a significance level on its Gini.
 
@@ -661,7 +654,6 @@ In the second alternative, we raised Log (GDP per capita) in the second and thir
 #### Plot the corresponding scatter plots with the fitted estimate line.
 
 ```{r,  echo=TRUE, include=TRUE}
-
 #plot
 filter(gdppop2010, Fra==1) %>% 
   ggplot(aes(x = log(gdp_per_capita), y = Gini2)) +
@@ -670,7 +662,7 @@ filter(gdppop2010, Fra==1) %>%
   theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
 
-
+In this Scatterplott we kan se the 22 observations in France. The X axis shows the predicted variable for log GDP per capita. The Y axis shows the residual for Gini. We see that most of the points are gathered in the lower part of the figure and that we have one point that stands out.
 
 
 #### Report the related estimates.
@@ -685,61 +677,47 @@ Mønsteret avslører korrelasjonene mellom x og Y aksen.
   
 #### Test for heteroskedasticity in the two new and the old model.
 
-Eks fra oppgave 4 i R. BP = 352.89, df = 15, p-value < 2.2e-16
-Ja vi har problemer med heteroskedasiteten her pga at verdien er for høy.  
+When we are going to test for heteroscedasticity, we will use the Breusch-Pagan test, this test takes into account that the errors are normally distributed [@Wooldridge].
+
+```{r,  echo=TRUE, include=TRUE}
+#Estimate 
+reg <- lm(Gini2 ~ (gdp_per_capita),data = gdppop2010) 
+# Breusch-Pagan test F-Test (LM estimator)
+bptest(reg)$p.value
+```
+The first test is Gini and GDP per capita here we get a BP value of 0.0035. This is lower than 0.01. We then have to reject $H_0$
   
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
 reg<-lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
-
 ```
-
-With a p-value = 0,6720791 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
-
-
-*Log-log estimate* (A: Thats not log log thats level log for the full sample)
+the second test is Gini and log GDP per capita and we have filtered on France the variables, here we get a BP value of 0.672. This is higher than 0.10. We can then not reject $H_0$.
+Hence we facing Heteroskedasticity!
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
 reg <- lm(Gini2 ~ log(gdp_per_capita),data = gdppop2010) 
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
-
 ```
-
+The third test is Gini and log GDP per capita, here we get a BP value of 0.0413. This is higher than 0.01. We can then not reject $H_0$
 With a p-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
-
-
-```{r}
-summary(reg)
-```
-
-```{r}
-summ(reg)
-```
 
 
 
 ### Discuss if we can interpret the estimates as causal.
 
-Veldig sannsynlig nei 
+One possibility to estimate the causal effect is to run a regression model, this to see if the variables we are working with have an effect on each other. In this section, we have carried out three different tests and, based on the tests, we cannot say with certainty that an increase in GDP per capita has an effect on the Gini. We see in some tests that they very likely have an effect on the Gini, but we cannot say that it is the only cause.
 
 ### Suggest potential remedies for eventual problems.
 
+Earlier in the thesis, we looked at whether life expectancy, education and kilometers/transport have anything to do with Y (gini in our case). One hypothesis is that health benefits in countries may have something to do with Gini. We believe that wage levels can also have an effect on an increase in Gini. Other things we envision are inflation and the cost of living.
+
+
 Hvilke andre ting kan vi eksprementere på - EU gir penger til en region for utvikling. Er det en bra måte å utvikle en region på
 Konkludere om variablene har effekt. Hva andre ting kan spille inn. Vi har utdanning, levetid og km. Kan vi bruke lønn
-
-Heterodesk. 
-
-
-
-
-
-
-Alder har noe å si om befolkningen er ung eller gammel med tanke på utvikling av region/land. 
-
 
 
 
