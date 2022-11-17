@@ -628,11 +628,11 @@ lm.25 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)
 
 ```{r}
 gdppop2010 <- gdppop2010
-lm.26 = lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))%>%
+lm.26 = lm(Gini2 ~ I(log(gdp_per_capita)), filter(gdppop2010, Fra==1))%>%
 coeftest(vcov = hccm, save = TRUE)
-lm.27 = lm(Gini2 ~ log(I(gdp_per_capita)^2), filter(gdppop2010, Fra==1))%>%
+lm.27 = lm(Gini2 ~ log(gdp_per_capita) + I(log(gdp_per_capita)^2), filter(gdppop2010, Fra==1))%>%
   coeftest(vcov = hccm, save = TRUE)
-lm.28 = lm(Gini2 ~ log(I(gdp_per_capita)^3), filter(gdppop2010, Fra==1))%>%
+lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_capita)^3), filter(gdppop2010, Fra==1))%>%
   coeftest(vcov = hccm, save = TRUE)
 
 #Gen Table
@@ -657,13 +657,12 @@ In the second alternative, we raised Log (GDP per capita) in the second and thir
 #### Plot the corresponding scatter plots with the fitted estimate line.
 
 ```{r,  echo=TRUE, include=TRUE}
-#Estimate 
-reg<-lm(Gini2 ~ log(gdp_per_capita), data = gdppop2010) 
+
 #plot
-reg %>% 
-  ggplot(aes(x = fitted(reg), y = resid(reg))) +
+filter(gdppop2010, Fra==1) %>% 
+  ggplot(aes(x = log(gdp_per_capita), y = Gini2)) +
   geom_point(color = "darkslategray", size = 3) +
-   geom_smooth(se = FALSE) +
+  stat_function(color = "red", fun=function(x) lm.28[[1,1]]+lm.28[[2,1]]*x+lm.28[[3,1]]*x*x+lm.28[[4,1]]*x*x*x)+
   theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
 
@@ -696,7 +695,7 @@ bptest(reg)$p.value
 With a p-value = 0,6720791 we can reject $H_0$ (homoskedasticity). Hence we facing Heteroskedasticity!
 
 
-*Log-log estimate*
+*Log-log estimate* (A: Thats not log log thats level log for the full sample)
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
