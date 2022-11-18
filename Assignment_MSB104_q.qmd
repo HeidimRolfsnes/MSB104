@@ -580,14 +580,14 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
    stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note: {stars} T statistics in brackets.")
 ``` 
-To test the effect of differences for the different subgroups of countries, we have created the dummy variable. In a regression we cannot use country as a variable. but if we turn the countries into dummy variables, we get opportunities to filter on the countries. We have converted France to 1 and the remaining countries to 0. we can then look at the regions in France as one and the other countries as one. We can then see if there are differences between those living in France and for the other countries. 
-We have 38 observations in total, 22 belonging to France and 16 belonging to the other countries. This is not very many observations.
+To test the effect of differences for the different subgroups of countries, we have created the dummy variable. In a regression we cannot use country as a variable, but if we turn the countries into dummy variables, we get opportunities to filter on the countries. We have converted France to 1 and the remaining countries to 0. We can then look at the regions in France as one and the other countries as another one. Then we can see if there are differences between those who are living in France and for those who lives in the other countries. 
+We have 38 observations in total, 22 of the observation belongs to France and 16 og the observations belongs to the other countries. It is not a lot of observations in total.
 
-Only France shows the effect for only France, No France shows the effect for the other countries. Interaction shows for all countries and iteration of development with France dummy. Using this, we can see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means that there is not much of a connection between an increase in Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction also has a high significant level on several of the variables. They have an R2 of 0.675 which means that we can say that part of the increase in Gini can be attributed to GDP per Capita
+Only France shows the effect for France only. No France shows the effect for the other countries and  will not inclued France. Interaction shows for all countries and iteration of development with France dummy. Using this, it is possible to see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita. When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita. Which means there are not a connection between an increase on Gini and an increase in GDP per capita. We also see that No France has a very low R2, which also supports that the correlation between these variables is small. Interaction has a high significant level on several of the variables. The R2 is 0.675 which means that part of the increase in Gini can be attributed to GDP per Capita.
 
-In Only France and the interaction we can se that we have a p value that is 0. that is lower than all of our signifikant levels. We therefore have to retain the null hypothesis. But we can doubt that the p value is zero. which is very unlikely, we can therefore not say that there is any pattern but rather a random coincidence which means that we get zero in p value.
+In Only France and the interaction we can se that we have a P value that is 0. It is lower than all of our signifikant levels. We therefore have to retain the null hypothesis. But we can doubt that the P value is zero. It is very unlikely, and we can´t say that there is any pattern, but rather a random coincidence which means that we get zero in P value.
 
-No France have a p value that is 0,905, which is high, we must therefore reject the null hypothesis. but here too we can cast doubt on whether this is a pattern or a random connection. as mentioned earlier, we do not have many observations, which could have an influence on the result.
+No France have a P value that is 0,905. That is a high value, and we therefore reject the null hypothesis. It is possible to cast doubt on whether this is a pattern or a random connection. As mentioned earlier, we do not have a lot of observations, and that is something that can have an influence on the result.
 
 
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
@@ -631,10 +631,10 @@ lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_c
   )
 ```
 
-When we will now do two new tests with different arguments to see if we get data that can fit better. we choose in both tests and do a level log test.
-In the first alternative model, we used Log on the variables. Log means that large variations in the observations will have less impact on the results. Only France still has a high significant level of its variables, we see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above). R2 has dropped a bit but it is still high. No France no longer has a significant level on its variables. Oh a small increase in R2. Interaction no longer has a significance level on its Gini.
+We will now make two new tests with different arguments, just to see if we can get data that fits better. In both tests we choose to do a level log test.
+In the first alternative model, we used Log on the variables. Log means that large variations in the observations will have less impact on the results. Only France still has a high significant level of its variables, It is easy to see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above). R2 has dropped a bit but it is still high. No France no longer has a significant level on its variables. And it has a small increase in R2. Interaction no longer has a significance level on its Gini.
 
-In the second alternative, we raised Log (GDP per capita) in the second and third squares on France's dummy variables. We see that it produces a change in Log (GDP per capita) but that R2 is the same in all models. And that everyone has three stars at the significant level.
+In the second alternative, we raised Log (GDP per capita) in the second and third squares on France's dummy variables. It produces a change in Log (GDP per capita) but R2 is the same in all models. Everyone have three stars at the significant level.
 
 ```{r,  echo=TRUE, include=TRUE}
 #plot
@@ -645,13 +645,11 @@ filter(gdppop2010, Fra==1) %>%
   theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
 
-In this Scatterplott we kan se the 22 observations in France. The X axis shows the predicted variable for log GDP per capita. The Y axis shows the residual for Gini. We see that most of the points are gathered in the lower part of the figure and that we have one point that stands out.
-
-.
+In this Scatterplott there are 22 observations in France. The X axis shows the predicted variable for log GDP per capita. The Y axis shows the residual for Gini. Most of the points are gathered in the lower part of the figure and we can see there are one point that stands out. We suspect that the point that stands out is Paris as this has been shpwn in previous tests, but we cannot say that for sure. 
 
 #### Test for heteroskedasticity in the two new and the old model.
 
-When we are going to test for heteroscedasticity, we will use the Breusch-Pagan test, this test takes into account that the errors are normally distributed [@Wooldridge].
+When we are going to test for heteroscedasticity, we will use the Breusch-Pagan test. This test takes into account that the errors are normally distributed [@Wooldridge].
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -659,7 +657,7 @@ reg <- lm(Gini2 ~ (gdp_per_capita),data = gdppop2010)
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
 ```
-The first test is Gini and GDP per capita here we get a BP value of 0.0035. This is lower than 0.01. We then have to keep $H_0$
+The first test is Gini and GDP per capita. We do get a BP value of 0.0035. This is lower than 0.01. We then have to keep $H_0$
 
   
 ```{r,  echo=TRUE, include=TRUE}
@@ -669,9 +667,8 @@ reg<-lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 bptest(reg)$p.value
 ```
 
-the second test is Gini and log GDP per capita and we have filtered on France the variables, here we get a BP value of 0.672. This is higher than 0.10. We can then not reject $H_0$.
+The second test is Gini and log GDP per capita and we have filtered on France. We got a BP value of 0.672. This is higher than 0.10. We can then not reject $H_0$.
 Hence we facing Heteroskedasticity!
-
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -679,22 +676,20 @@ reg <- lm(Gini2 ~ log(gdp_per_capita),data = gdppop2010)
 # Breusch-Pagan test F-Test (LM estimator)
 bptest(reg)$p.value
 ```
-The third test is Gini and log GDP per capita, here we get a BP value of 0.0413. This is higher than 0.01. We can then not reject $H_0$
-With a p-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
-
-
+The third test is Gini and log GDP per capita. We got a BP value of 0.0413. That is higher than 0.01. Then we can´t reject $H_0$
+With a P-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
 
 ### Discuss if we can interpret the estimates as causal.
 
-To estimate the causal effect, we can carry out regression models, this to see if the variables we are working with have an effect on each other. In this section, we have carried out three different tests. Based on the tests we cannot say with certainty that an increase in GDP per capita has an effect on the Gini. based on some of the tests, we see that they very likely have an effect on the Gini, but we cannot say that it is the only reason.
+To estimate the causal effect, we can carry out regression models. Just to see if the variables we are working with have an effect on each other. In this section, we have carried out three different tests. Based on the tests we cannot say with certainty that an increase in GDP per capita has an effect on the Gini. Based on some of the tests,there are very likely that it has an effect on the Gini. Anyhow, we cannot say if it is the only reason.
 
-In this assignment, we have chosen to look at Gini and GDP per capita. in most of the tests we have carried out, we have rejected $H_0$, which may indicate that an increase in Gini and GDP per capita have a connection. We have not found anything to suggest that increases in these variables are only dependent on each other. We would therefore say that it is very unlikely that these increases are only dependent on each other.
+In this assignment, we have chosen to look at Gini and GDP per capita. In most of the tests we have carried out, we have rejected $H_0$, which may indicate that an increase in Gini and GDP per capita have a connection. We have not found anything to suggest that increases in these variables are only dependent on each other. Therefore we think it is fair to say that it is very unlikely that these increases are only dependent on each other.
 
 ### Suggest potential remedies for eventual problems.
 
-Through the assignment, we have seen that there are differences between the countries when it comes to GPD and GINI, but also the size of the countries and population. According to our observations, Denmark, Portugal and France appear as richer countries, while Hungary and Slovakia are at the other end of the scale. All these countries are part of the EU, so if they had chosen to invest in a region for development, this could have had a greater effect on the poor countries than it had on the richer countries.
+Through the assignment, we have seen that there are differences between the countries when it comes to GPD and GINI, but also the size of the countries and population. According to our observations, Denmark, Portugal and France appear as wealthier countries, while Hungary and Slovakia are at the other end of the scale. All these countries are part of the EU, so if they had chosen to invest in a region for development, this could have had a greater effect on the poor countries than it had on the wealthier countries.
 
-In the thesis, we have looked at the variables life expectancy, education and kilometres/transport. The effect of these variables had varying results. Other variables we look at that can have an effect on the Gini are the health benefits the different countries have, wage levels and unemployment. If there is high unemployment in the countries, we imagine that this could have a negative effect on the Gini.
+In the thesis, we have looked at the variables life expectancy, education and kilometres/transport. The effect of these variables have varying results. Other variables we can look at that may have an effect on the Gini are the different health benefits in the countries, wage levels and unemployment. If there is high unemployment in the countries, we imagine that this could have a negative effect on the Gini.
 
 # Assignment 4 
 
