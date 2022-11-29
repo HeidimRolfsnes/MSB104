@@ -45,6 +45,7 @@ suppressMessages(library(car))
 suppressMessages(library(jtools))
 suppressMessages(library(tinytex))
 suppressMessages(library(stargazer))
+suppressMessages(library(plm))
 
 ```
 # Assignment 1
@@ -615,10 +616,12 @@ lm.25 = lm(Gini2 ~ log(gdp_per_capita)*Fra, gdppop2010)
 gdppop2010 <- gdppop2010
 lm.26 = lm(Gini2 ~ I(log(gdp_per_capita)), filter(gdppop2010, Fra==1))%>%
 coeftest(vcov = hccm, save = TRUE)
-lm.27 = lm(Gini2 ~ log(gdp_per_capita) + I(log(gdp_per_capita)^2), filter(gdppop2010, Fra==1))%>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_capita)^3), filter(gdppop2010, Fra==1))%>%
-  coeftest(vcov = hccm, save = TRUE)
+
+lm.27 =lm(Gini2 ~ log(gdp_per_capita) + I(log(gdp_per_capita)^2), filter(gdppop2010, Fra==1)) %>%
+  coeftest(vcoc = hccm, save= TRUE)
+
+lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_capita)^3), filter(gdppop2010, Fra==1)) %>%
+  coeftest(vcoc = hccm, save= TRUE)
 
 #Gen Table
   huxreg(
@@ -702,6 +705,23 @@ year fixed effects
 NUTS 2 fixed effects
 (Please ignore for this assignment the alternative determinants from assignment 2)
 
+```{r}
+paneldata <- gdppop%>%
+  
+```
+
+
+```{r}
+Panel <- gdppop %>%
+ plm(y ~ x1, data=Panel, index=c("Region", "Year"), model="within")
+
+```
+
+  data(Penal, package = "wooldridge")
+Penal$id <- rep(1:50, each = 2)
+
+Penal <- pdata.frame(Penal, index=c("id") )
+pdim(Penal)
 Clean up
 
 Use the feedback you obtained for Assignment one to three to improve and shorten your previous assignments.
