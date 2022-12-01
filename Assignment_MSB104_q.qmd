@@ -718,25 +718,28 @@ penaldata <- gdppop %>%
   #Keeping only 1 obs per NUTS 2
     distinct(Year, nuts2,Gini,gdp_n2,pop_n2) %>%
   mutate(gdp_per_capita = gdp_n2/pop_n2*1000000)%>%
+  mutate(gdp_per_capita = log(gdp_n2/pop_n2*1000000))%>%
   mutate(Gini3 = Gini*100000)
   
- penaldata$Fra <- ifelse(penaldata$nuts2 == "FR..", 1,0)
-
 ```
 
 ```{r}
-penaldata <- gdppop %>%
-plm(nuts2 ~ Year, data = penaldata, index = c("nuts2", "Year"), model="within")
-summary(penaldata)
+penaldata %>%
+plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 
-```
- plm(nuts2 ~ Year, data=penaldata, index=c("nuts2", "Year"))
-  data(Penal, package = "wooldridge")
-Penal$id <- rep(1:50, each = 2)
+penaldata %>%
+plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("Year"), model = "within", effect = "twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 
-Penal <- pdata.frame(Penal, index=c("id") )
-pdim(Penal)
-Clean up
+penaldata %>%
+plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+``` 
+
+ 
+```{r}
+penaldata %>%
+plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts0", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+``` 
+
 
 Use the feedback you obtained for Assignment one to three to improve and shorten your previous assignments.
 
