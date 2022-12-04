@@ -78,7 +78,9 @@ gdppop <- BNP %>%
 
 ## GDP per Capita 
 
-To calculate GDP per capita, we took GDP and divided it by the population. And then we have multiplied by one million, so that it is represented correctly in Euros.
+To calculate GDP per capita, we use
+$$ y_i = GDP_i / population_i$$
+the litle i refers to NUTS3 regions in our countries. 
 
 ```{r Calculate GDP per capita}
 #| echo: false
@@ -88,13 +90,13 @@ na.omit()
 #NA variables are removed
 ```
 
-Briefly about what we found in the summary @tbl-1. We found the min and the max values. i.e. the smallest and the highest GDP per capita for the countries. We also found 1st quartile and 3rd quartile. The first quartile was the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value.We have also look at mean which told us what the average observation for all regions was.
+To create an overview of GDP per capita in our NUTS3 regions, we use descriptive statistics. A descriptive statistic contains the min and the max values. i.e. the smallest and the highest GDP per capita for the countries. We also can find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value. We have also look at mean which told us what the average observation for all regions was.
+ 
+in @tbl-1. we get an overview of GDP, population and gdp per capita for all the NUTS3 regions. We can see that the mean of GDP per capita for all nuts3 regions are 22 676 euro. the smalest value are 4394,85 euro and the highets are 92361,75 euros.      
 
-From the summary in @tbl-2  we can see that GDP per capita at NUTS3 level for all our countries was 22 438,88 Euro. Since we don't have any other values to compare with we can't say to much about it, because it doesn´t give us to much information. We will therefor look at the nuts3 regions for each country. 
+It wasn't easy to draw any conclusion from the summary in table 1, as we assume that there are large regional inequaties between the regions in the countries we have in our sample.
 
-It wasn't easy to draw any conclusion from the summary in table 2. We can see that there is a difference in GDP as the lowest value is 683,7 while the highest is 251 623,6. We can also see that the maximum value is high compared to the other values, as the 3rd quartile is only 18 416,7. Population and gdp_ per_capita gave us the same results, with a very low minimum and a high maximum value. 
-
-To get a better picture of the different countries and the opportunity to see if there are regions that stand out. We make summaries per country, because then we have the opportunity to exclude regions that stand out in futher assignments. We will also look at a spesific year for all the country to compare results with.
+To get a better picture of the different regions and the opportunity to see if there are regions that stand out. we create summaries per country, we then get a better overview of outliers in the different countries. We also choose to look at a specific year, this to make it easier to compare the countries in a given time period.
 
 To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
 
@@ -107,10 +109,8 @@ Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions
 
 ***Graph 1***
 
-To get an overview, we have chosen to look at 2010 for all the regions in Denmark to see which regions are the richest and least wealties.
-
-The three Whealties regions @tbl-3 in Denmark are Kobenhagen (DK011), Kobenhagen area (DK012) and Sydjylland (DK032).
-The three least wealtiest regions @tbl-4 in Denmark are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021).
+The three Whealties regions in 2010 Denmark are Kobenhagen (DK011), Kobenhagen area (DK012) and Sydjylland (DK032) @tbl-3.
+The three least wealtiest regions in Denmark in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021) @tbl-4.
 Denmark has 11 nuts3 regions, it is the capital and the surrounding region that stands out among the richest, in the poor countries it is more even, there is a difference of 30,000 Euro between these three regions.
 
 @tbl-5 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT 
@@ -121,8 +121,8 @@ France is a country in Western Europe, they also have colonies in other parts of
 
 Since France has so many nuts3 regions, it is not so easy to distinguish the different regions. In @fig-2 the capital Paris stands out. Based on the summary @tbl-6, we can see that there is a difference between min and max. If we look more closely at the figures, it is possible to see that the reason may be that France has colonies in other countries that are included. These colonies are located in Africa and South America which has a negative effect on France's overall GDP. For further research, we have chosen to remove these regions from the data set @tbl-7, @fig-3.
 
-After the FRY regions have been removed, we are left with 96 nuts3 regions. The three wealtiest regions @tbl-8 are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
-The three poorest regions @tbl-9 Creuse (FRI22), Ariège (FRJ21) and  Meuse(FRF32). These regions have quite the same GDP pr capita. 
+After the FRY regions have been removed, we are left with 96 nuts3 regions. The three wealtiest regions in 2010 are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26) @tbl-8. Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
+The three poorest regions in 2010 is  Creuse (FRI22), Ariège (FRJ21) and  Meuse(FRF32)@tbl-9. in these regions we find little variation in GDP per capita.
 
 @tbl-10 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT 
 
@@ -130,9 +130,9 @@ The three poorest regions @tbl-9 Creuse (FRI22), Ariège (FRJ21) and  Meuse(FRF3
 
 Hungary and Slovakia are both countries in Central Europe. Both Bratislava and Budapest had good growth until 2008. After that, things went down with Bratislava for a while, while Budapest had a larger increase @fig-4. The other regions in these countries have had more stable growth.
 
-Hungary and Slovakia has 28 regions together. The three whealties @tbl-11 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021). The capitals of both countries have the richest region. The least wheltiest regions @tbl-12 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323). We can see that the three poorest regions belong to Hungary. which means that they have a lower GDP per capita than Slovakia in the poorest regions. We see that there is a difference between min and max in the regions of Hungary. 
+Hungary and Slovakia has 28 regions together. The three whealties in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021) @tbl-11. The capitals of both countries have the richest region. The least wheltiest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323)@tbl-12. We can see that the three poorest regions belong to Hungary. which means that they have a lower GDP per capita than Slovakia in the poorest regions. We see that there is a difference between min and max in the regions of Hungary (HVOR HAR VI DETTE FRA??). 
 
-There is a difference of approximately 25,000 Euro between the whealties and poorest regions in Hungary. Based on these observations, Bratislava is the richest region, since we do not see any of Slovakia's regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.
+There is a difference of approximately 25,000 Euro between the whealties and poorest regions in Hungary IN 2010. Based on these observations, Bratislava is the richest region, since we do not see any of Slovakia's regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.
 
 @tbl-13 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT 
 
@@ -143,13 +143,8 @@ We see steady growth in all the regions, all have had a slight decline between 2
 
 @fig-5
 
-The whealtiest regions in Portugal
+Portugal has 25 regions. The wheltiest REGIONS IN 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150) @tbl-14. We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions IN 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) @tbl-15. There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.     
 
-@tbl-10
-
-Portugal has 25 regions. The wheltiest are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150). We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J). There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.     
-
-@tbl-11
 
 In all the countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants. Paris has managed to have the highest GDP per capita and the poorest regions can be found in Hungary.
  
@@ -186,9 +181,7 @@ gdppop  %>%
 select(gini_n2) %>%
 st()
 ```
-
-
-First, we look at all the regions in the selected countries. We have 46 observations. The total Gini for all countries for all years is 0.28. This Gini is for all 5 countries over the last 20 years. We think that it will be a bit "washed away" and will therefore look at each individual country. 
+First, we look at all the regions in the selected countries. We have 46 observations. The total Gini for all countries for 2010 is 0.28. This Gini is for all 5 countries over the last 20 years. We think that it will be a bit "washed away" and will therefore look at each individual country. (DITTA BLIR VEL FEIL FOR ME HAR JO FILTRERT PÅ 2010. SÅ HER MÅ TEKSTEN ENDRES.)
 We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. To look more specifically at the countries, we have chosen to only look at the year 2010.
 
 @fig-6
@@ -198,7 +191,7 @@ In the graph above, you can see that there are two regions that have varied quit
 @tbl-12
 @tbl-13
 
-In Denmark, the Gini coefficients are between 0 and 0,11. Denmark has a region Nordjylland (DK05) which is an outlier. In this region, no data has been recorded in 2010.  Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
+In Denmark, the Gini coefficients are between 0 and 0,11. Denmark has a region Nordjylland (DK05) which is an outlier. in this region we have so little data that what we get looks like they have a perfect gini of zero. Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
 
 ### France
 
@@ -785,6 +778,8 @@ gdppop %>%
 mutate(gdp_per_capita = sum(gdp_per_capita))%>%
 ungroup() %>%
 summarise( GDP_per_Capita = mean(gdp_per_capita))
+
+#denne kan vi ta bort. tallet finner vi i den ovenfor
 ```
 
 #### Graph 1 
