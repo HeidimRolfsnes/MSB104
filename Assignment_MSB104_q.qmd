@@ -52,7 +52,7 @@ suppressMessages(library(plm))
 In the subject MSB104 econometrics, this year we will hand in an assignment divided into four assignments throughout the semester. The assignments must be written and calculated in the software R. We are group one and the countries that will be representing in our assignment is: Denmark, France, Hungary, Portugal and Slovakia.
 
 
-## 1. Download two dataset from Eurostat
+### 1. Download two dataset from Eurostat
 The data contains GDP (nama_10r_3gdp) and population (demo_r_pjanaggr3,pi) for countries over the last 20 years, on a NUTS3 level. 
 
 ```{r Dataset GDP and rename obs_value, time_period and geo}
@@ -68,7 +68,7 @@ Pop <- Pop %>%
       rename(Population = "OBS_VALUE",Year = "TIME_PERIOD", Region = "geo") 
 ```
 
-To collect the information we need in these two datasets, we created a new dataset which we call gdppop. We collect the information we need to take with us further in the task.
+To collect the information we need in these two datasets, we created a new dataset which we called gdppop. We collect the information we need to take with us further in the task.
 
 ```{r Make one datset with GDP and Population}
 #| echo: false
@@ -76,11 +76,11 @@ gdppop <- BNP %>%
   left_join(Pop, by = c("Region", "Year"))
 ```
 
-## GDP per Capita 
+### GDP per Capita 
 
-To calculate GDP per capita, we use
+To calculate GDP per capita, we use:
 $$ y_i = GDP_i / population_i$$
-the litle i refers to NUTS3 regions in our countries. 
+The litle i refers to NUTS3 regions in our countries. 
 
 ```{r Calculate GDP per capita}
 #| echo: false
@@ -90,13 +90,13 @@ na.omit()
 #NA variables are removed
 ```
 
-To create an overview of GDP per capita in our NUTS3 regions, we use descriptive statistics. A descriptive statistic contains the min and the max values. i.e. the smallest and the highest GDP per capita for the countries. We also can find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value. We have also look at mean which told us what the average observation for all regions was.
+To create an overview of GDP per capita in our NUTS3 regions, we use descriptive statistics. A descriptive statistic contains the min and the max values. i.e. the smallest and the highest GDP per capita for the countries. W can find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value. It also shows mean which tells us what the average observation for all regions are.
  
-in @tbl-1. we get an overview of GDP, population and gdp per capita for all the NUTS3 regions. We can see that the mean of GDP per capita for all nuts3 regions are 22 676 euro. the smalest value are 4394,85 euro and the highets are 92361,75 euros.      
+In @tbl-1 we get an overview of GDP, population and gdp per capita for all the NUTS3 regions. The mean of GDP per capita for all nuts3 regions @tbl-2 are 22 676 euro. The smalest value are 4394,85 Euro and the highest are 92 361,75 Euros.      
 
 It wasn't easy to draw any conclusion from the summary in table 1, as we assume that there are large regional inequaties between the regions in the countries we have in our sample.
 
-To get a better picture of the different regions and the opportunity to see if there are regions that stand out. we create summaries per country, we then get a better overview of outliers in the different countries. We also choose to look at a specific year, this to make it easier to compare the countries in a given time period.
+To get a better picture of the different regions and the opportunity to see if there are regions that stands out, we created summaries per countryi It have us a better overview of outliers in the different countries. We also choose to look at a specific year, this to make it easier to compare the countries in a given time period.
 
 To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
 
@@ -105,9 +105,7 @@ Since Hungary and Slovakia have few nuts3 regions we chose to look at them toget
 
 ### Denmark
   
-Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions. Kobenhagen is the capital of Denmark, and as we can see above it stand out together with the surrounding region. The region around the capital has had a higher growth. Capital cities are often richer than other regions. 
-
-***Graph 1***
+Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions @fig-1. Kobenhagen is the capital of Denmark, and as we can see above, it stand out together with the surrounding region. The region around Paris has had a higher growth. Capital cities are often richer than other regions. 
 
 The three Whealties regions in 2010 Denmark are Kobenhagen (DK011), Kobenhagen area (DK012) and Sydjylland (DK032) @tbl-3.
 The three least wealtiest regions in Denmark in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021) @tbl-4.
@@ -117,7 +115,7 @@ Denmark has 11 nuts3 regions, it is the capital and the surrounding region that 
 
 ### France
 
-France is a country in Western Europe, they also have colonies in other parts of the world. France has the largest land areas in the EU, which we see in the fact that they have over a hundred nuts3 regions.
+France is a country in Western Europe, but they also have colonies in other parts of the world. France has the largest land areas in the EU, which we see in the fact that they have over a hundred nuts3 regions.
 
 Since France has so many nuts3 regions, it is not so easy to distinguish the different regions. In @fig-2 the capital Paris stands out. Based on the summary @tbl-6, we can see that there is a difference between min and max. If we look more closely at the figures, it is possible to see that the reason may be that France has colonies in other countries that are included. These colonies are located in Africa and South America which has a negative effect on France's overall GDP. For further research, we have chosen to remove these regions from the data set @tbl-7, @fig-3.
 
@@ -130,7 +128,7 @@ The three poorest regions in 2010 is  Creuse (FRI22), Ariège (FRJ21) and  Meuse
 
 Hungary and Slovakia are both countries in Central Europe. Both Bratislava and Budapest had good growth until 2008. After that, things went down with Bratislava for a while, while Budapest had a larger increase @fig-4. The other regions in these countries have had more stable growth.
 
-Hungary and Slovakia has 28 regions together. The three whealties in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021) @tbl-11. The capitals of both countries have the richest region. The least wheltiest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323)@tbl-12. We can see that the three poorest regions belong to Hungary. which means that they have a lower GDP per capita than Slovakia in the poorest regions. We see that there is a difference between min and max in the regions of Hungary (HVOR HAR VI DETTE FRA??). 
+Hungary and Slovakia has 28 regions together. The three whealties in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021) @tbl-11. The capitals of both countries have the richest region. The least wheltiest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323)@tbl-12. The three poorest regions in 2010 belong to Hungary, which could mean  that they have a lower GDP per capita than Slovakia when it comes to the poorest regions. . 
 
 There is a difference of approximately 25,000 Euro between the whealties and poorest regions in Hungary IN 2010. Based on these observations, Bratislava is the richest region, since we do not see any of Slovakia's regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.
 
@@ -138,22 +136,20 @@ There is a difference of approximately 25,000 Euro between the whealties and poo
 
 ### Portugal
 
-Portugal is a country in southern Europe. Portugal also has two archipelagos, each representing a different region.
-We see steady growth in all the regions, all have had a slight decline between 2010-2012, after that there has been an increase. We also see that in Portugal the capital Lisbon stands out as the richest region.
+Portugal is a country in southern Europe. Portugal has two archipelagos, each representing a different region @fig-5.
+There is a steady growth in the regions, but all regions have had a slight decline between 2010-2012, after that there has been an increase. 
 
-@fig-5
-
-Portugal has 25 regions. The wheltiest REGIONS IN 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150) @tbl-14. We can se that Lisboa has a litle higher GDP pr capita then the rest of the wheltiest regions. The poorest regions IN 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) @tbl-15. There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.     
+Portugal has 25 regions. The whealtiest regions @tbl-14 in 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150). Lisboa has a litle higher GDP pr capita then the rest of the whealtiest regions. The poorest regions in 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) @tbl-15. There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.     
 
 
 In all the countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants. Paris has managed to have the highest GDP per capita and the poorest regions can be found in Hungary.
  
-## Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
+### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
 
 Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level. 
 
 A Gini coefficient must be between 0 and 1. If it's 0, it means that there is little inequality, and if it's closer to 1, it means that there is a greater degree of inequality between rich and poor. We calculate a Gini coefficient by looking at how much wealth and income there is in a country and then how it is distributed among the population.
-when we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers. Outliers are values that are either very high or very low compared to the other data we have.
+When we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers. Outliers are values that are either very high or very low compared to the other data we have.
 
 ### Gini for all countries all years  
 
@@ -181,44 +177,26 @@ gdppop  %>%
 select(gini_n2) %>%
 st()
 ```
-First, we look at all the regions in the selected countries. We have 46 observations. The total Gini for all countries for 2010 is 0.28. This Gini is for all 5 countries over the last 20 years. We think that it will be a bit "washed away" and will therefore look at each individual country. (DITTA BLIR VEL FEIL FOR ME HAR JO FILTRERT PÅ 2010. SÅ HER MÅ TEKSTEN ENDRES.)
-We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. To look more specifically at the countries, we have chosen to only look at the year 2010.
+When we look at all the regions in the selected countries, we have 46 observations. The total Gini for all countries for 2010 is 0.28. We think that it will be a bit "washed away" and will therefore look at each individual country.
+We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0. 
 
-@fig-6
+In the graph @fig-6, there are two regions that have varied quite a bit over the past 20 years. They still stay below 0.025, which shows that there is little difference between rich and poor in these regions. Another region that stands out is DK01. It is a bit further up the graph than the other regions. Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.
 
-In the graph above, you can see that there are two regions that have varied quite a bit over the past 20 years. They still stay below 0.025, which shows that there is little difference between rich and poor in these regions. Another region that stands out is DK01. It is a bit further up the graph than the other regions. Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.
-
-@tbl-12
-@tbl-13
-
-In Denmark, the Gini coefficients are between 0 and 0,11. Denmark has a region Nordjylland (DK05) which is an outlier. in this region we have so little data that what we get looks like they have a perfect gini of zero. Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
+In Denmark, the Gini coefficients are between 0 and 0,11 @tbl-17. Denmark has a region Nordjylland (DK05) which is an outlier @tbl-18. in this region we have so little data that what we get looks like they have a perfect gini of zero. Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
 
 ### France
 
-@fig-7
+In France, there are so many regions that it is difficult to see the regions properly in the graph @fig-7. What is shown well is that the vast majority of regions follow each other evenly by being below 0.1. There are still some that stand out and we can see that FR10 is the highest with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020
 
-In France, there are so many regions that it is difficult to see the regions properly in the graph above. What is shown well is that the vast majority of regions follow each other evenly by being below 0.1. There are still some that stand out and we can see that FR10 is the highest with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020
-
-@tbl-14
-@tbl-15
-
-In France, the Gini coefficients are between 0,02 and 0,26, which shows us that France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France.France doesn´t have any outliers, after we took away the FRY regions, 
-
+In France, the Gini coefficients are between 0,02 and 0,26 @tbl-19, which shows us that France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France.France doesn´t have any outliers, after we took away the FRY regions @tbl-20. 
 
 ### Hungary and Slovakia
 
-Hungary and Slovakia have large fluctuations in their regions. One of the regions with the most fluctuations is HU22 where we can see that they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12. Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.
+Hungary and Slovakia have large fluctuations in their regions @fig-8. One of the regions with the most fluctuations is HU22 where they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12. Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.
 
-@fig-8
+In Hungary, the Gini coefficient are between 0 and 0,08 @tbl-21. Hungary has two regions which are outliers @tbl-23 Budapest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking into.   
 
-In Hungary, the Gini coefficient are between 0 and 0,08. Hungary has two regions which are outliers Budapest (HU11) and Pest (HU12). Pest and Budapest hasn't had any data for the periode that we are looking into.   
-
-@tbl-16
-@tbl-17
-
-@tbl-18
-
-In Slovakia,the Gini coefficient are also between 0 and 0,08. Slovakia has on region that is an outliers which are (SK01). It leaves only Slovakia with three regions from which we obtain data. 
+In Slovakia,the Gini coefficient are also between 0 and 0,08 @tbl-22. Slovakia has one region, SK01, that is an outliers @tbl-24. It leaves only Slovakia with three regions from which we obtain data. 
 
 ### Portugal
 
