@@ -233,7 +233,7 @@ have calculated the gini coefficients, we will also run a test on the
 data we have to see if we find outliers. Outliers are values that are
 either very high or very low compared to the other data we have.
 
-#### 2.1 Gini for all countries all years
+#### 2.1 Gini for all countries
 
 ```{r Gini for all countries }
 #| echo: false
@@ -261,11 +261,11 @@ st()
 ```
 
 When we look at all the nuts2 regions in the selected countries, we have
-46 observations. The total Gini for all countries in 2010 is 0.28. We
+46 observations. The total Gini for all countries in 2010 is 0.28. **We
 think that it will be a bit "washed away" and will therefore look at
 each individual country. We can also see that we have ginis that are 0
 which means a perfect correlation. We will look at each country to find
-out why and where there are regions that have ginis that are 0.
+out why and where there are regions that have ginis that are 0.**
 
 #### 2.1.1 Denmark
 
@@ -629,6 +629,8 @@ six assumptions.
     had been flat it would have been homoscedasticity.**
 -   **Assumption 6:The error term is normally distributed (optional)**
 
+Figur 12 og 13
+
 ### 4. Other determinants of inequity
 
 We have chosen to look at km, education and life expectancy to see if
@@ -678,8 +680,6 @@ we have life expectancy, it is this that has the highest influence on
 the Gini.In the fourth model where we have all the variables, it is the
 Education and the Lifeexpectancy that have the highest effect on the
 Gini.
-
-***Ta bort? Table 21*** ***Table 22*** ***Table 23***
 
 #### 4.2 Discuss the overall fit of your model
 
