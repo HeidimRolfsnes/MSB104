@@ -58,7 +58,7 @@ is: Denmark, France, Hungary, Portugal and Slovakia.
 
 ### 1. Sub-national GDP
 
-#### 1.1 Download the data sets from Eurostat 
+#### 1.1 Download the data sets from Eurostat
 
 The data sets contain GDP (nama_10r_3gdp) and population
 (demo_r\_pjanaggr3,pi) for our five countries over the last 20 years, on
@@ -135,7 +135,7 @@ country. It will give us an overview of the differences in the regions.
 If there are large deviations in any of the regions, we can possibly
 take them away so that the differences do not become too large.
 
-#### 1.3.1 Denmark 
+#### 1.3.1 Denmark
 
 Denmark is not a particularly large country in Europe nor does it have
 many nuts3 regions @fig-1. Copenhagen which is the capital of Denmark,
@@ -222,7 +222,7 @@ most and have the highest GDP per capita among their inhabitants. Paris
 has managed to have the highest GDP per capita and the poorest regions
 can be found in Hungary.
 
-### 2. Regional inequity 
+### 2. Regional inequity
 
 A Gini coefficient must be between 0 and 1. If it's 0, it means that
 there is little inequality, and if it's closer to 1, it means that there
@@ -260,14 +260,14 @@ select(gini_n2) %>%
 st()
 ```
 
-When we look at all the nuts2 regions in the selected countries, we have
-46 observations. The total Gini for all countries in 2010 is 0.28. We
-think that it will be a bit "washed away" and will therefore look at
-each individual country. We can also see that we have ginis that are 0
-which means a perfect correlation. We will look at each country to find
-out why and where there are regions that have ginis that are 0.
+**W**hen we look at all the nuts2 regions in the selected countries, we
+have 46 observations. The total Gini for all countries in 2010 is 0.28.
+**We think that it will be a bit "washed away" and will therefore look
+at each individual country. We can also see that we have ginis that are
+0 which means a perfect correlation. We will look at each country to
+find out why and where there are regions that have ginis that are 0.**
 
-#### 2.1.1 Denmark 
+#### 2.1.1 Denmark
 
 In @fig-6, there are two regions in Denmark that have varied quite a bit
 over the past 20 years. They still stay below 0.025, which shows us that
@@ -678,8 +678,6 @@ we have life expectancy, it is this that has the highest influence on
 the Gini.In the fourth model where we have all the variables, it is the
 Education and the Lifeexpectancy that have the highest effect on the
 Gini.
-
-***Ta bort? Table 21*** ***Table 22*** ***Table 23***
 
 #### 4.2 Discuss the overall fit of your model
 
@@ -1433,42 +1431,4 @@ olsfr = lm_function_plot(France2010)
 par(mfrow = c(2,2))
 plot(olsfr) + 
   labs(title = "OLS for France")
-```
-
-Plots the residuals against the predicted values of our model
-
-#### Graph 14
-
-```{r}
-#| echo: false
-#| label: fig-14
-#| fig-cap: "Gini and GDP per capita for Denmark"
-ggplot(Denmark2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  labs(title = "Gini and GDP per capita for Denmark", x = "GDP per capita 2010", Y = "Gini")
-```
-
-#### Graph 15
-
-```{r}
-#| echo: false
-#| label: fig-15
-#| fig-cap: "Gini and GDP per capita for Hungary and Slovakia"
-ggplot(HungarySlovakia2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") + 
-  labs(title = "Gini and GDP per capita for Hungary and Slovakia",x = "GDP per capita 2010", Y = "Gini")
-```
-
-#### Graph 16
-
-```{r}
-#| echo: false
-#| label: fig-16
-#| fig-cap: "Gini and GDP per capita for Portugal"
-ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
-  geom_point() +
-  geom_smooth(method = "lm") + 
-  labs(title = "Gini and GDP per capita for Portugal",x = "GDP per capita 2010", Y = "Gini")
 ```
