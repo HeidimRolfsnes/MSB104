@@ -3,15 +3,13 @@ title: "Assignment MSB104"
 author: "Heidi Marie Rolfsnes and Ann Elisabeth Jacobsen"
 data: today
 Bibliography: Reference.bib
+
 format:
   html:
     toc: true
     toc-depth: 2
     toc-location: left
     code-fold: true
-editor: 
-  markdown: 
-    wrap: sentence
 ---
 
 ```{r Packages}
@@ -50,15 +48,21 @@ suppressMessages(library(plm))
 
 ```
 
-# Introduction
+## Introduction
 
-In the subject MSB104 econometrics, this year we will hand in an assignment divided into four assignments throughout the semester.
-The assignments must be written and calculated in the software R.
-We are group one and the countries that will be representing in our assignment is: Denmark, France, Hungary, Portugal and Slovakia.
+In the subject MSB104 econometrics, this year we will hand in an
+assignment divided into four assignments throughout the semester. The
+assignments must be written and calculated in the software R. We are
+group one and the countries that will be representing in our assignment
+is: Denmark, France, Hungary, Portugal and Slovakia.
 
-### 1. Download two dataset from Eurostat
+### 1. Sub-national GDP
 
-The data contains GDP (nama_10r_3gdp) and population (demo_r\_pjanaggr3,pi) for countries over the last 20 years, on a NUTS3 level.
+#### 1.1 Download the data sets from Eurostat 
+
+The data sets contain GDP (nama_10r_3gdp) and population
+(demo_r\_pjanaggr3,pi) for our five countries over the last 20 years, on
+a NUTS3 level.
 
 ```{r Dataset GDP and rename obs_value, time_period and geo}
 #| echo: false
@@ -73,8 +77,9 @@ Pop <- Pop %>%
       rename(Population = "OBS_VALUE",Year = "TIME_PERIOD", Region = "geo") 
 ```
 
-To collect the information we need in these two datasets, we created a new dataset which we called gdppop.
-We collect the information we need to take with us further in the task.
+We would like to have the information we get from these two data sets
+collected in one data set. A new data set called gdppop has been created
+and is the data set that will be used further in the task.
 
 ```{r Make one datset with GDP and Population}
 #| echo: false
@@ -82,9 +87,11 @@ gdppop <- BNP %>%
   left_join(Pop, by = c("Region", "Year"))
 ```
 
-### GDP per Capita
+#### 1.2 Calculate GDP per Capita
 
-To calculate GDP per capita, we use: $$ y_i = GDP_i / population_i$$ The litle i refers to NUTS3 regions in our countries.
+To calculate GDP per capita, we use the formula:
+$$ y_i = GDP_i / population_i$$ The litle i refers to nuts3 regions in
+our countries.
 
 ```{r Calculate GDP per capita}
 #| echo: false
@@ -94,110 +101,139 @@ na.omit()
 #NA variables are removed
 ```
 
-To create an overview of GDP per capita in our NUTS3 regions, we use descriptive statistics.
-A descriptive statistic contains the min and the max values.
-i.e. the smallest and the highest GDP per capita for the countries.
-W can find 1st quartile and 3rd quartile.
-The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest.
-The median looks at the value that is observed the most times in the middle of the observations.
-The third quartile is then, naturally enough, the value between the median and the highest value.
-It also shows mean which tells us what the average observation for all regions are.
+#### 1.3 Descriptive statistics
 
-In @tbl-1 we get an overview of GDP, population and gdp per capita for all the NUTS3 regions.
-The mean of GDP per capita for all nuts3 regions @tbl-2 are 22 676 euro.
-The smalest value are 4394,85 Euro and the highest are 92 361,75 Euros.
+To create an overview of GDP per capita in our nuts3 regions, we use
+descriptive statistics. A descriptive statistic contains the min and the
+max values. i.e. the smallest and the highest GDP per capita for the
+countries. We can find first quartile and third quartile. The first
+quartile is the observation between the median and the lowest value, and
+looks at the 25% lowest values from the 75% highest. The median looks at
+the value that is observed the most times in the middle of the
+observations. The third quartile is then, naturally enough, the value
+between the median and the highest value. It also shows mean which tells
+us what the average observation for all regions are.
 
-It wasn't easy to draw any conclusion from the summary in table 1, as we assume that there are large regional inequaties between the regions in the countries we have in our sample.
+In @tbl-1 we get an overview of GDP, population and gdp per capita for
+all the nuts3 regions. The mean of GDP per capita for all nuts3 regions
+are 22 588 euro per capita. The smalest value are 4394,85 Euro per
+capita and the highest are 92 361,75 Euros per capita.
 
-To get a better picture of the different regions and the opportunity to see if there are regions that stands out, we created summaries per countryi It have us a better overview of outliers in the different countries.
-We also choose to look at a specific year, this to make it easier to compare the countries in a given time period.
+It is not easy to draw any conclusion from the summary in table 1, as we
+assume that there are large regional inequaties between the regions in
+the countries we have in our sample.
 
-To get the result by country, we made a summary of GDP per capita on each country.
-By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions.
-If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.
+In order to get a more defined picture of the various regions and see if
+any of them stand out, we want to divide the countries up, with the
+exception of Hungary and Slovakia. They both have few regions, so we
+choose to look at them together. This will hopefully give us a better
+overview of outliers in the various countries. In order to be able to
+compare the countries in a given period, we choose to reduce the number
+of years to only look at the year 2010. When we look at specific years
+and countries, we can look at GDP per inhabitant in each individual
+country. It will give us an overview of the differences in the regions.
+If there are large deviations in any of the regions, we can possibly
+take them away so that the differences do not become too large.
 
-Since Hungary and Slovakia have few nuts3 regions we chose to look at them together.
+#### 1.3.1 Denmark 
 
-### Denmark
+Denmark is not a particularly large country in Europe nor does it have
+many nuts3 regions @fig-1. Copenhagen which is the capital of Denmark,
+and the regions around Copenhagen are the ones that stand out.
+Furthermore, we will also see that it is the capitals that are often the
+richest regions.
 
-Denmark is a small country in Scandinavia,and they don't have many NUTS3 regions @fig-1.
-Kobenhagen is the capital of Denmark, and as we can see above, it stand out together with the surrounding region.
-The region around Paris has had a higher growth.
-Capital cities are often richer than other regions.
+Based on @tbl-2, we can see that the three richest regions in Denmark in
+2010 are Copenhagen (DK011), Copenhagen area (DK012) and Sydjylland
+(DK032). On @tbl-3 we can see that the three poorest regions in Denmark
+in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and
+Østsjælland (DK021). Between the poorest people in Østsjælland and the
+richest people in Copenhagen, there is a difference of more than 30,000
+Euro per capita.
 
-The three whealties regions in 2010 Denmark are Kobenhagen (DK011), Kobenhagen area (DK012) and Sydjylland (DK032) @tbl-3.
-The three least wealtiest regions in Denmark in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021) @tbl-4.
-Denmark has 11 nuts3 regions, it is the capital and the surrounding region that stands out among the richest, in the poor countries it is more even, there is a difference of 30,000 Euro between these three regions.
+#### 1.3.2 France
 
-@tbl-5 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT
+France is a country in southern Europe with over 100 nuts3 regions. Some
+of these regions are colonies in other parts of the world. It is not
+easy to distinguish the different regions. The @fig-2 shows us that it
+is the capital named Paris in France that stands out. Based on the
+summary in @tbl-4, we can see that there is a difference between min and
+max. If we look more closely at the figures, it is possible to see that
+the reason may be that France has colonies in other countries that are
+included. These colonies are located in Africa and South America which
+has a negative effect on France's overall GDP. For further research, we
+have chosen to remove these regions from the data set (@tbl-5, @fig-3).
 
-### France
+After the FRY regions have been removed, we are left with 96 nuts3
+regions. Based on @tbl-6 the three richest regions in 2010 are Paris
+(FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og
+Hauts-de-seine stands out clearly from the other region with a
+difference of approximately 50,000 Euro pr capita. The three poorest
+regions in 2010 is Creuse (FRI22), Ariège (FRJ21) and
+Meuse(FRF32)@tbl-7. In these regions we find little variation in gdp per
+capita. Between the Paris and Meuse there is a difference of over 74,000
+Euro per capita. It looks like there is a greater between rich and poor
+in France than in Denmark. An assumption could be that since France has
+a lot more regions then Denmark some of the regions in France can be
+very small compare to the few regions in Denmark.
 
-France is a country in Western Europe, but they also have colonies in other parts of the world.
-France has the largest land areas in the EU, which we see in the fact that they have over a hundred nuts3 regions.
+#### 1.3.3 Hungary and Slovakia
 
-Since France has so many nuts3 regions, it is not so easy to distinguish the different regions.
-In @fig-2 the capital Paris stands out.
-Based on the summary @tbl-6, we can see that there is a difference between min and max.
-If we look more closely at the figures, it is possible to see that the reason may be that France has colonies in other countries that are included.
-These colonies are located in Africa and South America which has a negative effect on France's overall GDP.
-For further research, we have chosen to remove these regions from the data set @tbl-7, @fig-3.
+Hungary and Slovakia are both countries in Central Europe. As we can se
+on @fig-4 both Bratislava and Budapest had a good growth until 2008.
+After that, things went down with Bratislava for a while. At the same
+time Budapest had a larger increase The other regions in these countries
+have had more stable growth.
 
-After the FRY regions have been removed, we are left with 96 nuts3 regions.
-The three wealtiest regions in 2010 are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26) @tbl-8.
-Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita.
-The three poorest regions in 2010 is Creuse (FRI22), Ariège (FRJ21) and Meuse(FRF32)@tbl-9.
-in these regions we find little variation in GDP per capita.
+Together, Hungary and Slovakia has 28 regions. In @tbl-8 The three
+richest regions in 2010 are Bratislava (SK010), Budapest (HU110) and
+Trnava (SK021). This refers to what we have commented on previously
+countries that the capital cities are often the richest regions when we
+look at gdp per capita.. In @tbl-9 it shows that the poorest regions in
+2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323). All the poorest
+regions belongs to Hungary, which may mean that Hungary has a lower GDP
+per capita than Slovakia. .
 
-@tbl-10 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT
+There is a difference of approximately 25,000 Euro per capita between
+the richest and poorest regions in Hungary IN 2010. Based on these
+observations, the capital Bratislava is the richest region. Since we do
+not see any of Slovakia's regions among the lowest, we can assume that
+Slovakia has a higher GDP per capita than Hungary has for its
+inhabitants.
 
-### Hungary and Slovakia
+#### 1.3.4 Portugal
 
-Hungary and Slovakia are both countries in Central Europe.
-Both Bratislava and Budapest had good growth until 2008.
-After that, things went down with Bratislava for a while, while Budapest had a larger increase @fig-4.
-The other regions in these countries have had more stable growth.
+Portugal is a country in southern Europe. Portugal has two archipelagos,
+each representing a different region. In @fig-5 we can see that there is
+a steady growth in the regions, but all regions have had a slight
+decline between 2010-2012. After 2012, it appears that all regions will
+increase again.
 
-Hungary and Slovakia has 28 regions together.
-The three whealties in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021) @tbl-11.
-The capitals of both countries have the richest region.
-The least wheltiest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323)@tbl-12.
-The three poorest regions in 2010 belong to Hungary, which could mean that they have a lower GDP per capita than Slovakia when it comes to the poorest regions.
-.
+Portugal has 25 regions. @tbl-10 shows us that the three richest regions
+in 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150).
+Lisboa has a litle higher GDP pr capita then the rest of the whealtiest
+regions. In @tbl-11 we can see that the three poorest regions in 2010
+are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da
+Estrela (PT16J) . There is approximatly 14,000 Euro per capita, in
+difference between the richest and the poorest regions in Portugal.
 
-There is a difference of approximately 25,000 Euro between the whealties and poorest regions in Hungary IN 2010.
-Based on these observations, Bratislava is the richest region, since we do not see any of Slovakia's regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.
+In all the countries, we see that it is the capitals that stand out the
+most and have the highest GDP per capita among their inhabitants. Paris
+has managed to have the highest GDP per capita and the poorest regions
+can be found in Hungary.
 
-@tbl-13 SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT
+### 2. Regional inequity 
 
-### Portugal
+A Gini coefficient must be between 0 and 1. If it's 0, it means that
+there is little inequality, and if it's closer to 1, it means that there
+is a greater degree of inequality between rich and poor. We calculate a
+Gini coefficient by looking at how much wealth and income there is in a
+country and then how it is distributed among the population. When we
+have calculated the gini coefficients, we will also run a test on the
+data we have to see if we find outliers. Outliers are values that are
+either very high or very low compared to the other data we have.
 
-Portugal is a country in southern Europe.
-Portugal has two archipelagos, each representing a different region.
-in @fig-5 we can se how the GDP per capita has evolved over the years from 2000 to 2020.
-we can see there is a steady growth in all of the regions, and all have had a slight decline between 2010-2012.
-before they start to increase again.
-
-In Portugal we can find 25 Nuts3 regions.
-The whealtiest regions in portugal in 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150)@tbl-14.
-Lisboa has a litle higher GDP pr capita then the rest of the whealtiest regions.
-The poorest regions in 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) @tbl-15.
-There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.
-
-In all our countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants.
-Paris has managed to have the highest GDP per capita and the poorest nuts3 regions can be found in Hungary.
-
-### Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers
-
-Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level.
-
-A Gini coefficient must be between 0 and 1.
-If it's 0, it means that there is little inequality, and if it's closer to 1, it means that there is a greater degree of inequality between rich and poor.
-We calculate a Gini coefficient by looking at how much wealth and income there is in a country and then how it is distributed among the population.
-When we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers.
-Outliers are values that are either very high or very low compared to the other data we have.
-
-### Gini for all countries in 2010
+#### 2.1 Gini for all countries all years
 
 ```{r Gini for all countries }
 #| echo: false
@@ -224,94 +260,115 @@ select(gini_n2) %>%
 st()
 ```
 
-When we look at all the Nuts2 regions in the selected countries, we have 46 observations.
-The total Gini for all countries for 2010 is 0.28.
-We think that it will be a bit "washed away" and will therefore look at each individual country.
-We can also see that we have ginis that are 0 which means a perfect correlation.
-We will look at each country to find out why and where there are regions that have ginis that are 0.
+When we look at all the nuts2 regions in the selected countries, we have
+46 observations. The total Gini for all countries in 2010 is 0.28. We
+think that it will be a bit "washed away" and will therefore look at
+each individual country. We can also see that we have ginis that are 0
+which means a perfect correlation. We will look at each country to find
+out why and where there are regions that have ginis that are 0.
 
-In the graph @fig-6, there are two regions that have varied quite a bit over the past 20 years.
-They still stay below 0.025, which shows that there is little difference between rich and poor in these regions.
-Another region that stands out is DK01.
-It is a bit further up the graph than the other regions.
-Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.
+#### 2.1.1 Denmark 
 
-In Denmark, the Gini coefficients are between 0 and 0,11 @tbl-17.
-Denmark has a region Nordjylland (DK05) which is an outlier @tbl-18.
-in this region we have so little data that what we get looks like they have a perfect gini of zero.
-Denmark has only five NUTS2 regions, which doesn't gives us much data to work with.
+In @fig-6, there are two regions in Denmark that have varied quite a bit
+over the past 20 years. They still stay below 0.025, which shows us that
+there is just a small difference between rich and poor in these regions.
+A region that really stands out is DK01. It is a bit further up the
+graph than the other regions. Although it is not close to 0, there is a
+greater difference between rich and poor here than in the other regions.
 
-### France
+As we can see in @tbl-12 the Gini coefficients are between 0 and 0,11 in
+Denmark. @tbl-13 shows us that Denmark has a region called Nordjylland
+(DK05) which is an outlier . In this region we don't have much data so
+the little data we get gives us a perfect gini of 0. Denmark has only
+five NUTS2 regions, and it doesn't gives us much data to work with.
 
-In France, there are so many regions that it is difficult to see the regions properly in the graph @fig-7.
-What is shown well is that the vast majority of regions follow each other evenly by being below 0.1.
-There are still some that stand out and we can see that FR10 is the highest with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020
+#### 2.1.2 France
 
-In France, the Gini coefficients are between 0,02 and 0,26 @tbl-19, which shows us that France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France.France doesn´t have any outliers, after we took away the FRY regions @tbl-20.
+France is a bit different from Denmark with a lot of regions. In @fig-7
+there are so many regions that we are unable to see them properly. What
+is shown well is that the vast majority of regions follow each other
+evenly by being below 0.1. There are still some regions that stand out
+and we can see that FR10 stands the most out with a Gini of 0.3, while
+FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020.
 
-### Hungary and Slovakia
+In France, the @tbl-14 shows that the Gini coefficients are between 0,02
+and 0,26. France has a slightly higher gini than Denmark, which means
+that the inequality is slightly greater in France. Without the FRY
+regions the @tbl-15 shows that France doesn´t have any outliers.
 
-Hungary and Slovakia have large fluctuations in their regions @fig-8.
-One of the regions with the most fluctuations is HU22 where they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12.
-Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.
+#### 2.1.3 Hungary and Slovakia
 
-In Hungary, the Gini coefficient are between 0 and 0,08 @tbl-21.
-Hungary has two regions which are outliers @tbl-23 Budapest (HU11) and Pest (HU12).
-Pest and Budapest hasn't had any data for the periode that we are looking into.
+In @fig-8 Hungary and Slovakia have large fluctuations in their regions
+. One of the regions with the most fluctuations is HU22 where they are
+down to a Gini of 0.075 in 2012, while in 2016 they are up to a gini of
+approximately 0.12. Hungary and Slovakia are small countries in Eastern
+Europe and we assume that this is the reason why there are large
+fluctuations.
 
-In Slovakia,the Gini coefficient are also between 0 and 0,08 @tbl-22.
-Slovakia has one region, SK01, that is an outliers @tbl-24.
-It leaves only Slovakia with three regions from which we obtain data.
+When we look at the @tbl-16 the Gini coefficient in Hungary is between 0
+and 0,08 . Based on @tbl-18 Hungary has two regions, Budapest (HU11) and
+Pest (HU12) which are outliers. Looking at the year 2010, Budapest and
+Pest do not have any data that we can look at.
 
-### Portugal
+@tbl-17 tells us that in Slovakia, the Gini coefficient are also between
+0 and 0,08 . Slovakia has one region called SK01 as we can see in
+@tbl-18, that is an outlier. Then we are left with three regions from
+which we can obtain data in Slovakia. The reason why we combined Hungary
+and Slovakia further up in the task was precisely that they also had few
+regions at the nuts3 level, in the same way that they also have now have
+few nuts2 levels.
 
-@fig-9
+#### 2.1.4 Portugal
 
-In the graph for Portugal, we can see that the Gini in several of the regions has been declining over the past 20 years.
-That is to say, the differences between rich and poor have narrowed over the years.
-PT18 stands out somewhat in that there are strong fluctuations over the years.
+In the @fig-9 for Portugal, we can see that the Gini in several of the
+regions has been declining over the past 20 years. That is to say, the
+differences between rich and poor have narrowed over the years. PT18
+stands out somewhat in that there are strong fluctuations over the
+years.
 
-@tbl-19 @tbl-20
+Based on @tbl-19 Portugal has their Gini coefficient between 0 and 0,08.
+Portugal has four regions, Algarve (PT15) Lisboa(PT17), Regiäo Autònoma
+dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30). Regiäo Autònoma
+dos Acores and Regiäo Autònoma da Madeira are both archipelagos,
+belonging to Portugal which may be the reason why they are outliers as
+we can see in @tbl-20. Portugal doesn't have many NUTS 2 regions, and
+when four of them have no value, there is not much confidence in the
+result we get.
 
-In Portugal, the Gini coefficient are between 0 and 0,08.
-Portugal has four regions, Algarve (PT15) Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30).
-Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers.
-Portugal doesn't have many NUTS 2 regions, and when four of them have no value, there is not much confidence in the result we get.
+#### 2.2 Discuss briefly if there are noteworthy outliers
 
-### Discuss briefly if there are noteworthy outliers
+To summarize what has been done in assignment 1, we have calculated GDP
+per capita for all the countries combined and per country we have been
+given. We saw that when we collected all the countries we got 22,805.13
+Euros per capita. Denmark had a significantly higher GDP per capita than
+the other countries. Hungary had the lowest with only 8781.69. France
+has colonies in other continents, we chose to remove these regions, this
+so that GDP would not be affected by these regions that belong to others
+continents. When we took away the FRY regions, there was no outliers in
+France.
 
-To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given.
-We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita.
-Denmark had a significantly higher GDP per capita than the other countries.
-Hungary had the lowest with only 8781.69.
-France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.
+When we look at outliers for our countries, we cannot find any outliers
+in France, but we do find in all the other countries. All the regions
+that are outliners are regions that have only one province, in Hungary,
+Slovakia and Portugal (HU11, HU12, SK01, PT15 and PT 17) the outliers
+are linked to the capitals. Capitals are often large areas, which only
+have one region. Portugal also has two Island groups (PT20 and PT30)
+that come up as outliers, these are small regions. The last region that
+has outliers can be found in Denmark (DK05), this is a small region.
 
-When we look at outliers for our countries, we can find in every country except for France.
-All the regions that are outliners are regions that have only one province, in Hungary, Slovakia and Portugal (HU11, HU12, SK01, PT15 and PT 17) the outliers are linked to the capitals.
-Capitals are often large areas, which only have one region.
-Portugal also has two island groups (PT20 and PT30) that come up as outliers, these are small regions.
-The last region that has outliners can be found in Denmark (DK05), this is a small region.
+### 3. Growth and inequity
 
-# Assignment 2
+In this assignment, we will look at growth and inequity in the countries
+at Nuts2 level.
 
-At the second assigment we are looking at growth and inequity.
-We are going to estimate the effect if regional development on regional inequality, for the year 2010.
-Then we will disuse the goodness of fit of our estimated model.
-We will plot the relationship between regional development and regional inequality and the fitted line corresponding to our estimate.
-We are also going to plot the residuals against the predicted values of our model.
-There will be a discussion about the classical assumptions OLS in light of our data and plots and other determinants of inequity.
+#### 3.1 Download new data sets from Eurostat
 
-We will also go back on Eurostat´s webpages and download EurostatLinks to an external site.
-It will be for our subset of countries regional (NUTS2, j) data related to transport infrastructure, education and demographics.
-We are suppose to select on variable per category that we would like to explore further in there relationship to regional inequality.
-We will try to estimate a multiple linear regression model with our new variables for 2010 and give a small interpretation of our findings.
-In the end we will discuss the overall fit of our model and the inference related to our findings.
-
-### Data set:
-
-We will start the assignment 2 with getting the data set from Eurostat.
-We want to look at the amount of people who have higher education in the education data set and how many motorways there is in kilometers when we look in the transport dataset.
-In the demographic data set we want to look at the life expectancy age.
+We will start the assignment 2 with getting three new data sets from
+Eurostat. The first data set is erducation, were we want to look at the
+amount of people who have higher education and in the second dataset we
+will look at transport. Find out how many motorways there is in
+kilometers, In the third, called demographic data set, we want to look
+at the life expectancy age.
 
 ```{r Data set Education }
 #| echo: false
@@ -352,14 +409,11 @@ gdppop2010 <- gdppop %>%
   mutate(gdp_per_capita = gdp_n2/pop_n2*1000000)
 ```
 
-## Growth and inequity
-
-In this assignment, we will look at growth and inequity in the countries at Nuts2 level.\
-
 Before we go further we want to make new variables for the data set.
-Moving forward we will also make linear models (lm) and a form of regression that is simple.
-A simple regression model will show us the relationship between two variables.
-By using this model we can find the Y value when X = 0 (R for everyone s. 265).
+Moving forward we will also make linear models (lm) and a form of
+regression that is simple. A simple regression model will show us the
+relationship between two variables. By using this model we can find the
+Y value when X = 0 (**R for everyone s. 265).**
 
 ```{r New variables}
 #| echo: false
@@ -372,15 +426,20 @@ left_join(Transport, by = c("nuts2", "Year"))%>%
 filter(Year == 2010)
 ```
 
-The gini value goes from 0 to 1.
-Where 0 is a perfect equality and 1 is inequality.
-When the gini is 0, it is likely to believe there is missing som data for 2010.
-Further we will use filter to take away the gini´s who are zero.
+The Gini value goes from 0 to 1. Where 0 is a perfect equality and 1 is
+inequality. When the Gini is 0, it is likely to believe there is missing
+som data for 2010. Further we will use filter to take away the Gini´s
+who are zero.
 
-In the ggplot in @fig-10, we can see how the Gini is distributed per country in 2010.
-We can see that France has a point that stands out from the others, while for the other countries we find most of their points between 0 and 0.1.
-Since most of the countries do not have that many observations after we divided them into nuts2 regions, this is something we have to take into account further in the task.
-We therefore choose to only look at France.
+#### 3.2 Gini per country
+
+In the @fig-10, we can see how the Gini is distributed per country.
+France has a point that stands out from the others, while the other
+countries have most of their points between 0 and 0.1. We have to be
+observant about that the countries Denmark, Hungary, Portugal and
+Slovakia don't have so many observations after we divided the countries
+into Nuts2 levels, that´s why we choose to only look at France by itself
+and all the countries together when we move forward in the assignment.
 
 ```{r}
 #| echo: false
@@ -418,19 +477,23 @@ lm_residuals_plot <- function(lmdata){
 }
 ```
 
-## Estimate the effect of regional development on regional inequality GINI for the year 2010
+#### 3.3 Estimate the effect of regional development on regional inequality GINI for the year 2010
 
-When we calculate regional development against regional inequality, we use the values we have found in Gini and GDP per capita.
-To estimate the effect between a regional development and regional inequality we can use the formula:
+When we calculate regional development against regional inequality, we
+use the values we have found in Gini and GDP per capita. To estimate the
+effect between a regional development and regional inequality we can use
+the formula:
 
-$$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$ This equation tells us what the regional inequality will be when the regional development is = 0 The slope of the curve will show us how much inequality will change for each increase in development.
-If we increase regional development by 1, regional inequality will increase by 1.
+$$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_i$$
+This equation tells us what the regional inequality will be when the
+regional development is = 0 The slope of the curve will show us how much
+inequality will change for each increase in development. If we increase
+regional development by 1, regional inequality will increase by 1.
 
-@fig-11
-
-In this ggplot we look at the relationship between Gini and GDP per capita in 2010 for all countries.
-We see in the graph that we have points that are above and below the regression line.
-There are two points on the right that stand out significantly.
+In the @fig-11 we look at the relationship between Gini and GDP per
+capita in 2010 for all countries. The graph shows that the points are
+above and below the regression line. **There are two points on the right
+that stand out significantly.**
 
 ```{r}
 #| echo: false
@@ -462,22 +525,26 @@ lm.5 = lm(Gini2 ~ gdp_per_capita, data = gdppop2010)
   )
 ```
 
-When we look at the table above we can see the impact regional development (X) has on regional inequality (Y).
-This means how much an increase in X will mean for an increase in Y.
-Portugal is the only country that has a negative impact.
-We will take a closer look at this country by country.
-From this and earlier observations we choose to remove Paris from the France2010 dataset.
+When we look at the table above we can see the impact regional
+development (X) has on regional inequality (Y). This means how much an
+increase in X will mean for an increase in Y. Portugal is the only
+country that has a negative impact. We will take a closer look at this
+country by country. Looking at this and earlier observations we choose
+to remove Paris from the France2010 dataset.
 
-### Discuss the goodness of fit of our estiamted model
+#### 3.4 Discuss the goodness of fit of our estiamted model
 
-When we look at the simple regression that we have done, it is R2 that can help us explain whether the variables have any relationship with each other.
-R2 tells us how much spread we have in the independent variable.
-The value in R2 can be between 0 and 1.
-When R2 is 1 it tells us that the independent variable has all the influence on the dependent variable.
-If it is 0, the independent variable has no influence on the dependent variable [@Forskningsmetode] (Forskningsmetode - s.345).
-We can see that Denmark and France have a high R2 value, Denmark with 0,813 and France with 0,814.
-Denmark only has 4 observations, which tells us that we cannot completly trust this result.
-France, on the other hand, has 22 observations, the more observations the better outcome of the result .
+When we look at the simple regression that we have made, it is R2 that
+can help us explain whether the variables have any relationship with
+each other. R2 tells us how much spread we have in the independent
+variable. The value in R2 can be between 0 and 1. When R2 is 1 it tells
+us that the independent variable has all the influence on the dependent
+variable. If it is 0, the independent variable has no influence on the
+dependent variable [@Forskningsmetode] **(Forskningsmetode - s.345).**
+Denmark and France have a high R2 value, Denmark with 0,813 and France
+with 0,814. Denmark only has 4 observations, which means that the result
+is not praticularly reliable. France, on the other hand, has 22
+observations, the more observations the better outcome of the result .
 
 ```{r}
 #| echo: false
@@ -494,12 +561,13 @@ ggplot(France2010, aes(x = gdp_per_capita, y = Gini)) +
   labs(title = "Gini and GDP per capita for France",x = "GDP per capita 2010", Y = "Gini")
 ```
 
-### Plot the residuals against the predicted values of our model
+#### 3.5 Plot the residuals against the predicted values of our model
 
-When we have carried out a regression analysis, we get a line that gives us an overview of where the best hits are made.
-Residuals show the distance to the best fit line.
-There can be both positive and negative residuals.
-If the value is above the line it is positive and if it is below the line it is negative.
+By carrying out a regression analysis, we get a line that gives us an
+overview of where the best hits are made. Residuals show the distance to
+the line of best fit. There can be both positive and negative residuals.
+If the value is above the line it is positive and if it is below the
+line it is negative.
 
 ```{r Residuals for all countries}
 #| echo: false
@@ -507,8 +575,15 @@ lm_residuals_plot(gdppop2010) +
   labs(title = "Residuals for all countries")
 ```
 
-When we look at all the countries together, we can see that the regression line has both positive and negative hits on the line.
-We can also se that the regions in each country is close to eachother except from France and Denmark which are a little more spread out on the line.
+Looking at all the countries together, we can see that the regression
+line has both positive and negative hits on the line. The regions in
+each country is close to eachother except from France and Denmark which
+are a little more spread out on the line. Hungary, Portugal and
+Slovakia, with the exception of one, only have positive residuals.
+France has a lot more regions and it looks like there are only a few
+positive ones. Considering that there is a big difference in
+observations in each country, France is probably the most reliable here
+as well, with definitely most observations.
 
 ```{r Residuals for France }
 #| echo: false
@@ -516,35 +591,58 @@ lm_residuals_plot(France2010) +
 labs(title = "Residuals for France")
 ```
 
-As we said earlier we are now only looking at France because it has 21 observations (when we remove Paris) and are more trustworthy then the others.
-We are also looking at all countries together.
-When we look at the graph for all the countries and at the one for France, we can see in both graphs that there are some of France´s regions that stands out.The best is when the points are on the line, but as we can see above most of the regions are above or below the line which means there is a large variation between the regions.
-In the graph, we can also see that France has a steeper curve than if we look at all the countries together.
-With a steeper curve, one must have more GDP to increase the Gini.
+When we look closer at France, there is 21 observations, when we remove
+Paris. With several observations it makes France more trustworthy then
+the other countries. When we separate France in a separate graph, we can
+see that some of the regions in France stand out. It will always be best
+if the points follow the lines, i.e. are on the line. In France, we can
+see that the regions are either above the line or below the line. This
+means that there is great variation between the regions. When we compare
+the two graphs above, we see that France has a steeper line. A steeper
+line tells us that small changes in GDP have a large effect on Gini.
 
-### Discuss the classical assumptions OLS in light of your data and plots
+#### 3.6 Discuss the classical assumptions OLS in light of your data and plots
 
-For linear regression there are seven OLS assumptions that are classical.
-To produce the the best estimates we usually use the first six assumptions.
+For linear regression there are seven OLS assumptions that are
+classical. To produce the the best estimates we usually use the first
+six assumptions.
 
--   Assumption 1: The regression model is linear in the coefficients and the error term When we look at all the countries it is close to linear, but when we look at France who have the most nuts2 regions, the regions either is above or under the line.
--   Assumption 2:The error term has a population mean of zero We can see that there are variations in the X variable both in France and in all the countries combined, which may indicate that we have fulfilled the second requirement for OLS
--   Assumption 3:All independent variables are uncorrelated with the error term The third assumption is about having a random dataset, even if we have made changes such as removing regions in France, we will still say that we have a random dataset based on the population.
--   **Assumption 4:Observations of the error term are uncorrelated with each other**
--   Assumption 5:The error term has a constant variance (no heteroscedasticity) When we look at the graph for France the line is not flat at all, which means it is heteroscedasticity. If the line had been flat it would have been homoscedasticity.
--   Assumption 6:The error term is normally distributed (optional)
+-   Assumption 1: The regression model is linear in the coefficients and
+    the error term When we look at all the countries it is close to
+    linear, but when we look at France who have the most nuts2 regions,
+    the regions either is above or under the line.
+-   Assumption 2:The error term has a population mean of zero We can see
+    that there are variations in the X variable both in France and in
+    all the countries combined, which may indicate that we have
+    fulfilled the second requirement for OLS
+-   Assumption 3:All independent variables are uncorrelated with the
+    error term The third assumption is about having a random dataset,
+    even if we have made changes such as removing regions in France, we
+    will still say that we have a random dataset based on the
+    population.
+-   **Assumption 4:Observations of the error term are uncorrelated with
+    each other. We do not have homoscedasticity, which means that the
+    error term has the same variation in the independent variable.**
+-   **Assumption 5:The error term has a constant variance (no
+    heteroscedasticity) When we look at the graph for France the line is
+    not flat at all, which means it is heteroscedasticity. If the line
+    had been flat it would have been homoscedasticity.**
+-   **Assumption 6:The error term is normally distributed (optional)**
 
-## Other determinants of inequity
+### 4. Other determinants of inequity
 
-We have chosen to look at km, education and life expectancy to see if there are other determinants of inequity.
-We want to see what the new variables have to say on the Gini.
+We have chosen to look at km, education and life expectancy to see if
+there are other determinants of inequity. We want to see what the new
+variables have to say on the Gini.
 
-### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
+#### 4.1 Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
 
-In a multiple linear regression model, we use several variables to see the effect of an increase in gini (Y).
-We use this formula:
+In a multiple linear regression model, we use several variables to see
+the effect of an increase in gini (Y). We can use the formula:
 
-$$Y_i = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i}+... + \beta_kX_{ki}+u_i$$
+$$
+Y_i = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i}+... + \beta_kX_{ki}+u_i
+$$
 
 ```{r}
 #| echo: false
@@ -552,7 +650,7 @@ mlrdata <- France2010
 lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
 lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
 lm.9 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
-lm.10 = lm(Gini2 ~ gdp_per_capita +Road + lea + Edu, mlrdata)
+lm.10 = lm(Gini2 ~ gdp_per_capita + Road + lea + Edu, mlrdata)
 
 #Gen Table
   huxreg(
@@ -565,41 +663,79 @@ lm.10 = lm(Gini2 ~ gdp_per_capita +Road + lea + Edu, mlrdata)
 
 ```
 
-France has 21 observations, such tests give the best results the more observations we have.
-R2 tells us something about whether the variables have an influence on the dependent variable.
-if the values have an increase for each new model, this tells us that we have a connection.
-if the value decreases, they will say that there is no connection between these variables.In our case, we can see that R2 rises right up to model 4.
-This may indicate that the combination of GDP per capita and life expectancy has no effect on Gini.
-We end up at 0.412 on R2 which says that 41,2% of the change in Gini can be attributed to these variables.
-in model 1 we can see that it is education that has the highest influence on the Gini, we also see this again in model 3.
-In the models we have life expectancy, it is this that has the highest influence on the Gini.In the 7th model where we have all the variables.
-We can see that it is Education and Lifeexpectancy that have the highest effect on the Gini.
+France has 21 observations, such tests give the best results the more
+observations we have. R2 tells us something about whether the variables
+have an influence on the dependent variable. if the values have an
+increase for each new model, this tells us that we have a connection. If
+the value decreases, they will say that there is no connection between
+these variables.In our case, we can see that R2 rises right up to model
+4. This may indicate that the combination of GDP per capita and life
+expectancy has no effect on Gini. We end up at 0.412 on R2 which says
+that 41,2% of the change in Gini can be attributed to these variables.
+In model 1 we can see that it is education that has the highest
+influence on the Gini, we also see this again in model 3. In the models
+we have life expectancy, it is this that has the highest influence on
+the Gini.In the fourth model where we have all the variables, it is the
+Education and the Lifeexpectancy that have the highest effect on the
+Gini.
 
-***Table 21*** ***Table 22*** ***Table 23***
+***Ta bort? Table 21*** ***Table 22*** ***Table 23***
 
-### Discuss the overall fit of your model
+#### 4.2 Discuss the overall fit of your model
 
-France is the only country with many observations in 2010, and it will probably give us the best basis for looking at whether the model fits our model or not.
-We want to find out whether education and the number of km have an effect on inequalities in France and whether these variables have a connection to how wealthy the various regions are.We want to see if life expectancy age and education have an influence on gini and why this is the case.
-We will also take a closer look at whether road has an effect on gini.
+France is the only country with many observations in 2010, and it will
+probably give us the best basis for looking at whether the model fits
+our model or not. We want to find out whether education and the number
+of km have an effect on inequalities in France and whether these
+variables have a connection to how wealthy the various regions are.We
+want to see if life expectancy age and education have an influence on
+gini and why this is the case. We will also take a closer look at
+whether road has an effect on gini.
 
-### Discuss the inference related to your findings
+#### 4.3 Discuss the inference related to your findings
 
-We want to see if variable education, motorway and life expectancy have a connection to growth and inequality in France in 2010.
-France has the most observations, therefore we see it as the most relevant to use.
+We want to see if variable education, motorway and life expectancy have
+a connection to growth and inequality in France in 2010. France has the
+most observations, therefore we see it as the most relevant to use.
 Portugal, among other things, does not have observations on motorways.
-overall, we see that the variables education and life expectancy age have the most influence on gini, while motorway has a rather small effect.
-What often happens when you have a higher education is that you move away from the small regions and slums and move to the big cities.
+overall, we see that the variables education and life expectancy age
+have the most influence on gini, while motorway has a rather small
+effect. What often happens when you have a higher education is that you
+move away from the small regions and slums and move to the big cities.
 We will probably see that again in the largest regions.
+
+We can see that the significant level is 12,8 % for education, 2,3 % for
+life expectancy and 2,9 % for km.
+
+```{r}
+#| echo: false
+lm(Gini ~ Edu, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
+
+```{r}
+#| echo: false
+lm(Gini ~ lea, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
+
+```{r}
+#| echo: false
+lm(Gini ~ Road, data = France2010) %>% tidy()%>% kable(., digits=4)
+```
 
 # Assignment 3
 
-In this part we are going to test if the effect of development is significantly different for different subsets of countries in your data set.
-Then we will look at alternative functional forms (e.g.log, cubical estimates) of our previous estimates on the relationship between regional development yi on regional inequality GINIWj.
-We will make arguments for two forms that might fit the data better and plot the corresponding scatter plots with the fitted estimate line.
-We are suppose to report the related estimates and give a verbal interpretation of our estimate coefficients.
-We will also test for heteroskedasticity in the two new and in the old model.
-We will discuss if we can interpret the estimates as casual and suggest potential remedies for eventual problems.
+In this part we are going to test if the effect of development is
+significantly different for different subsets of countries in your data
+set. Then we will look at alternative functional forms (e.g.log, cubical
+estimates) of our previous estimates on the relationship between
+regional development yi on regional inequality GINIWj. We will make
+arguments for two forms that might fit the data better and plot the
+corresponding scatter plots with the fitted estimate line. We are
+suppose to report the related estimates and give a verbal interpretation
+of our estimate coefficients. We will also test for heteroskedasticity
+in the two new and in the old model. We will discuss if we can interpret
+the estimates as casual and suggest potential remedies for eventual
+problems.
 
 ### Test if the effect of development is significantly different for different subsets of countries in your data set
 
@@ -626,34 +762,44 @@ lm.22 = lm(Gini2 ~ gdp_per_capita*Fra , gdppop2010)
   note = "Note: {stars} T statistics in brackets.")
 ```
 
-To test the effect of differences for the different subgroups of countries, we have created the dummy variable.
-In a regression we cannot use country as a variable, but if we turn the countries into dummy variables, we get opportunities to filter on the countries.
-We have converted France to 1 and the remaining countries to 0.
-We can then look at the regions in France as one and the other countries as another one.
-Then we can see if there are differences between those who are living in France and for those who lives in the other countries.
-We have 38 observations in total, 22 of the observation belongs to France and 16 og the observations belongs to the other countries.
-It is not a lot of observations in total.
+To test the effect of differences for the different subgroups of
+countries, we have created the dummy variable. In a regression we cannot
+use country as a variable, but if we turn the countries into dummy
+variables, we get opportunities to filter on the countries. We have
+converted France to 1 and the remaining countries to 0. We can then look
+at the regions in France as one and the other countries as another one.
+Then we can see if there are differences between those who are living in
+France and for those who lives in the other countries. We have 38
+observations in total, 22 of the observation belongs to France and 16 og
+the observations belongs to the other countries. It is not a lot of
+observations in total.
 
-Only France shows the effect for France only.
-No France shows the effect for the other countries and will not inclued France.
-Interaction shows for all countries and iteration of development with France dummy.
-Using this, it is possible to see that Only France has a very high R2, and they have three significant stars, which means that an increase in Gini can be explained by an increase in GDP per capita.
-When we look at No France, they also have three stars on the significance level when it comes to Gini, but not on GDP per capita.
-Which means there are not a connection between an increase on Gini and an increase in GDP per capita.
-We also see that No France has a very low R2, which also supports that the correlation between these variables is small.
+Only France shows the effect for France only. No France shows the effect
+for the other countries and will not inclued France. Interaction shows
+for all countries and iteration of development with France dummy. Using
+this, it is possible to see that Only France has a very high R2, and
+they have three significant stars, which means that an increase in Gini
+can be explained by an increase in GDP per capita. When we look at No
+France, they also have three stars on the significance level when it
+comes to Gini, but not on GDP per capita. Which means there are not a
+connection between an increase on Gini and an increase in GDP per
+capita. We also see that No France has a very low R2, which also
+supports that the correlation between these variables is small.
 Interaction has a high significant level on several of the variables.
-The R2 is 0.675 which means that part of the increase in Gini can be attributed to GDP per Capita.
+The R2 is 0.675 which means that part of the increase in Gini can be
+attributed to GDP per Capita.
 
-In Only France and the interaction we can se that we have a P value that is 0.
-It is lower than all of our signifikant levels.
-We therefore have to retain the null hypothesis.
-But we can doubt that the P value is zero.
-It is very unlikely, and we can´t say that there is any pattern, but rather a random coincidence which means that we get zero in P value.
+In Only France and the interaction we can se that we have a P value that
+is 0. It is lower than all of our signifikant levels. We therefore have
+to retain the null hypothesis. But we can doubt that the P value is
+zero. It is very unlikely, and we can´t say that there is any pattern,
+but rather a random coincidence which means that we get zero in P value.
 
-No France have a P value that is 0,905.
-That is a high value, and we therefore reject the null hypothesis.
-It is possible to cast doubt on whether this is a pattern or a random connection.
-As mentioned earlier, we do not have a lot of observations, and that is something that can have an influence on the result.
+No France have a P value that is 0,905. That is a high value, and we
+therefore reject the null hypothesis. It is possible to cast doubt on
+whether this is a pattern or a random connection. As mentioned earlier,
+we do not have a lot of observations, and that is something that can
+have an influence on the result.
 
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.
 
@@ -697,19 +843,21 @@ lm.28 = lm(Gini2 ~ log(gdp_per_capita)+ I(log(gdp_per_capita)^2)+I(log(gdp_per_c
   )
 ```
 
-We will now make two new tests with different arguments, just to see if we can get data that fits better.
-In both tests we choose to do a level log test.
-In the first alternative model, we used Log on the variables.
-Log means that large variations in the observations will have less impact on the results.
-Only France still has a high significant level of its variables, It is easy to see that Log(GDP per capita) has increased a lot from GDP per capita in the model above (table above).
-R2 has dropped a bit but it is still high.
-No France no longer has a significant level on its variables.
-And it has a small increase in R2.
+We will now make two new tests with different arguments, just to see if
+we can get data that fits better. In both tests we choose to do a level
+log test. In the first alternative model, we used Log on the variables.
+Log means that large variations in the observations will have less
+impact on the results. Only France still has a high significant level of
+its variables, It is easy to see that Log(GDP per capita) has increased
+a lot from GDP per capita in the model above (table above). R2 has
+dropped a bit but it is still high. No France no longer has a
+significant level on its variables. And it has a small increase in R2.
 Interaction no longer has a significance level on its Gini.
 
-In the second alternative, we raised Log (GDP per capita) in the second and third squares on France's dummy variables.
-It produces a change in Log (GDP per capita) but R2 is the same in all models.
-Everyone have three stars at the significant level.
+In the second alternative, we raised Log (GDP per capita) in the second
+and third squares on France's dummy variables. It produces a change in
+Log (GDP per capita) but R2 is the same in all models. Everyone have
+three stars at the significant level.
 
 ```{r,  echo=TRUE, include=TRUE}
 #plot
@@ -720,16 +868,18 @@ filter(gdppop2010, Fra==1) %>%
   theme_gray () + xlab("predicted values") + ylab("residuals")
 ```
 
-In this Scatterplott there are 22 observations in France.
-The X axis shows the predicted variable for log GDP per capita.
-The Y axis shows the residual for Gini.
-Most of the points are gathered in the lower part of the figure and we can see there are one point that stands out.
-We suspect that the point that stands out is Paris as this has been shpwn in previous tests, but we cannot say that for sure.
+In this Scatterplott there are 22 observations in France. The X axis
+shows the predicted variable for log GDP per capita. The Y axis shows
+the residual for Gini. Most of the points are gathered in the lower part
+of the figure and we can see there are one point that stands out. We
+suspect that the point that stands out is Paris as this has been shpwn
+in previous tests, but we cannot say that for sure.
 
 #### Test for heteroskedasticity in the two new and the old model.
 
-When we are going to test for heteroscedasticity, we will use the Breusch-Pagan test.
-This test takes into account that the errors are normally distributed [@Wooldridge].
+When we are going to test for heteroscedasticity, we will use the
+Breusch-Pagan test. This test takes into account that the errors are
+normally distributed [@Wooldridge].
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -738,10 +888,8 @@ reg <- lm(Gini2 ~ (gdp_per_capita),data = gdppop2010)
 bptest(reg)$p.value
 ```
 
-The first test is Gini and GDP per capita.
-We do get a BP value of 0.0035.
-This is lower than 0.01.
-We then have to keep $H_0$
+The first test is Gini and GDP per capita. We do get a BP value of
+0.0035. This is lower than 0.01. We then have to keep $H_0$
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -750,11 +898,9 @@ reg<-lm(Gini2 ~ log(gdp_per_capita), filter(gdppop2010, Fra==1))
 bptest(reg)$p.value
 ```
 
-The second test is Gini and log GDP per capita and we have filtered on France.
-We got a BP value of 0.672.
-This is higher than 0.10.
-We can then not reject $H_0$.
-Hence we facing Heteroskedasticity!
+The second test is Gini and log GDP per capita and we have filtered on
+France. We got a BP value of 0.672. This is higher than 0.10. We can
+then not reject $H_0$. Hence we facing Heteroskedasticity!
 
 ```{r,  echo=TRUE, include=TRUE}
 #Estimate 
@@ -763,44 +909,57 @@ reg <- lm(Gini2 ~ log(gdp_per_capita),data = gdppop2010)
 bptest(reg)$p.value
 ```
 
-The third test is Gini and log GDP per capita.
-We got a BP value of 0.0413.
-That is higher than 0.01.
-Then we can´t reject $H_0$ With a P-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
+The third test is Gini and log GDP per capita. We got a BP value of
+0.0413. That is higher than 0.01. Then we can´t reject $H_0$ With a
+P-value = 0,04131447 we can not reject $H_0$ (homoskedasticity).
 
 ### Discuss if we can interpret the estimates as causal.
 
-To estimate the causal effect, we can carry out regression models.
-Just to see if the variables we are working with have an effect on each other.
-In this section, we have carried out three different tests.
-Based on the tests we cannot say with certainty that an increase in GDP per capita has an effect on the Gini.
-Based on some of the tests,there are very likely that it has an effect on the Gini.
-Anyhow, we cannot say if it is the only reason.
+To estimate the causal effect, we can carry out regression models. Just
+to see if the variables we are working with have an effect on each
+other. In this section, we have carried out three different tests. Based
+on the tests we cannot say with certainty that an increase in GDP per
+capita has an effect on the Gini. Based on some of the tests,there are
+very likely that it has an effect on the Gini. Anyhow, we cannot say if
+it is the only reason.
 
 In this assignment, we have chosen to look at Gini and GDP per capita.
-In most of the tests we have carried out, we have rejected $H_0$, which may indicate that an increase in Gini and GDP per capita have a connection.
-We have not found anything to suggest that increases in these variables are only dependent on each other.
-Therefore we think it is fair to say that it is very unlikely that these increases are only dependent on each other.
+In most of the tests we have carried out, we have rejected $H_0$, which
+may indicate that an increase in Gini and GDP per capita have a
+connection. We have not found anything to suggest that increases in
+these variables are only dependent on each other. Therefore we think it
+is fair to say that it is very unlikely that these increases are only
+dependent on each other.
 
 ### Suggest potential remedies for eventual problems.
 
-Through the assignment, we have seen that there are differences between the countries when it comes to GPD and GINI, but also the size of the countries and population.
-According to our observations, Denmark, Portugal and France appear as wealthier countries, while Hungary and Slovakia are at the other end of the scale.
-All these countries are part of the EU, so if they had chosen to invest in a region for development, this could have had a greater effect on the poor countries than it had on the wealthier countries.
+Through the assignment, we have seen that there are differences between
+the countries when it comes to GPD and GINI, but also the size of the
+countries and population. According to our observations, Denmark,
+Portugal and France appear as wealthier countries, while Hungary and
+Slovakia are at the other end of the scale. All these countries are part
+of the EU, so if they had chosen to invest in a region for development,
+this could have had a greater effect on the poor countries than it had
+on the wealthier countries.
 
-In the thesis, we have looked at the variables life expectancy, education and kilometres/transport.
-The effect of these variables have varying results.
-Other variables we can look at that may have an effect on the Gini are the different health benefits in the countries, wage levels and unemployment.
-If there is high unemployment in the countries, we imagine that this could have a negative effect on the Gini.
+In the thesis, we have looked at the variables life expectancy,
+education and kilometres/transport. The effect of these variables have
+varying results. Other variables we can look at that may have an effect
+on the Gini are the different health benefits in the countries, wage
+levels and unemployment. If there is high unemployment in the countries,
+we imagine that this could have a negative effect on the Gini.
 
 # Assignment 4
 
 Penal Estimates
 
-Use your entire data set to estimate the effect of regional development yj on regional inequality GINIWj in a penal setup.
-Present estimates that contain the following fixed effects separately and jointly:
+Use your entire data set to estimate the effect of regional development
+yj on regional inequality GINIWj in a penal setup. Present estimates
+that contain the following fixed effects separately and jointly:
 
-country fixed effects, year fixed effects NUTS 2 fixed effects (Please ignore for this assignment the alternative determinants from assignment 2)
+country fixed effects, year fixed effects NUTS 2 fixed effects (Please
+ignore for this assignment the alternative determinants from assignment
+2)
 
 ```{r penal}
 #| echo: false
@@ -837,14 +996,17 @@ penaldata %>%
 plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts0", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 ```
 
-Use the feedback you obtained for Assignment one to three to improve and shorten your previous assignments.
+Use the feedback you obtained for Assignment one to three to improve and
+shorten your previous assignments.
 
-Write a consistent document that discusses the hypothesis that we can observe a significant and positive effect of development on regional inequality for your set of countries.
+Write a consistent document that discusses the hypothesis that we can
+observe a significant and positive effect of development on regional
+inequality for your set of countries.
 
-Your final submission must have less than 10.000 words, three tables and five figures.
-Appendix and references not included.
+Your final submission must have less than 10.000 words, three tables and
+five figures. Appendix and references not included.
 
-### Bibliography
+# Bibliography
 
 #### Appendix
 
@@ -862,22 +1024,7 @@ gdppop %>%
   st()
 ```
 
-```{r}
-#| echo: false
-#| output: true
-#| label: tbl-2
-#| tbl-cap: "mean of the different "
-gdppop %>%
-   filter(Year==2010) %>%
-  group_by(Year, Region) %>%
-mutate(gdp_per_capita = sum(gdp_per_capita))%>%
-ungroup() %>%
-summarise( GDP_per_Capita = mean(gdp_per_capita))
-
-#denne kan vi ta bort. tallet finner vi i den ovenfor
-```
-
-#### Denmark
+#### Graph 1
 
 ```{r GDP in Denmark}
 #| echo: false
@@ -895,7 +1042,7 @@ gdppop%>%
 ```{r the whealtiest regions in Denmark}
 #| echo: false
 #| output: true
-#| label: tbl-3
+#| label: tbl-2
 #| tbl-cap: "The wealthiest regions in Denmark"
 gdpdk <- gdppop%>%
   filter(grepl("DK...", Region)) %>%
@@ -907,22 +1054,13 @@ slice_max(gdpdk, gdp_per_capita, n=3)
 ```{r The poorest regions in Denmark}
 #| echo: false
 #| output: true
-#| label: tbl-4
+#| label: tbl-3
 #| tbl-cap: "The least wealthiest regions in Denmark"
 slice_min(gdpdk, gdp_per_capita, n=3)
 
 ```
 
-```{r}
-#| echo: false
-#| output: true
-#| label: tbl_5
-#| tbl-cap: "Summary gdpdk"
-gdpdk %>%
-summary()
-```
-
-#### France
+#### Graph 2
 
 ```{r GDP in France}
 #| echo: false
@@ -939,7 +1077,7 @@ gdppop%>%
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_6
+#| label: tbl_4
 #| tbl-cap: "Mean FR"
 gdppop%>%
   filter(grepl("FR...", Region)) %>%
@@ -950,7 +1088,7 @@ gdppop%>%
 ```{r Take away the FRY regions}
 #| echo: false
 #| output: true
-#| label: tbl_7
+#| label: tbl_5
 #| tbl-cap: "Take away the FRY region"
 gdppop <- gdppop %>%
   filter(Region != 'FRY10') %>%
@@ -960,7 +1098,7 @@ gdppop <- gdppop %>%
    filter(Region != 'FRY50') 
 ```
 
-#### France 2
+#### Graph 3
 
 ```{r France without the FRY regions}
 #| echo: false
@@ -977,7 +1115,7 @@ gdppop%>%
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_8
+#| label: tbl_6
 #| tbl-cap: "The wealthiest regions in France"
 gdpfr <- gdppop %>%
   filter(grepl("FR...", Region)) %>%
@@ -989,20 +1127,12 @@ slice_max(gdpfr, gdp_per_capita, n=3)
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_9
+#| label: tbl_7
 #| tbl-cap: "The least wealthiest regions in France"
 slice_min(gdpfr, gdp_per_capita, n=3)
 ```
 
-```{r}
-#| echo: false
-#| output: true
-#| label: tbl_10
-#| tbl-cap: "Summary gdpfr"
-summary(gdpfr)
-```
-
-#### Hun/Slo
+#### Graph 4
 
 ```{r GDP in Hungary and Slovakia}
 #| echo: false
@@ -1019,7 +1149,7 @@ gdppop %>%
 ```{r }
 #| echo: false
 #| output: true
-#| label: tbl_11
+#| label: tbl_8
 #| tbl-cap: "The wealthiest regions un Hungary and Slovakia"
 gdphusk <- gdppop%>%
   filter(grepl('HU..', Region) | grepl('SK..', Region)) %>%
@@ -1031,21 +1161,12 @@ slice_max(gdphusk, gdp_per_capita, n=3)
 ```{r The poorest regions in Hungary and Slovakia}
 #| echo: false
 #| output: true
-#| label: tbl_12
+#| label: tbl_9
 #| tbl-cap: "The least wealthiest regions in Hungary and Slovakia"
 slice_min(gdphusk, gdp_per_capita, n=3)
 ```
 
-```{r}
-#| echo: false
-#| output: true
-#| label: tbl_13
-#| tbl-cap: "Summary gdphusk"
-gdphusk %>%
-summary()
-```
-
-#### Portugal
+#### Graph 5
 
 ```{r GDP in Portugal}
 #| echo: false
@@ -1062,7 +1183,7 @@ gdppop%>%
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_14
+#| label: tbl_10
 #| tbl-cap: "The wealthiest regions in Portugal"
 gdppt <- gdppop%>%
   filter(grepl("PT...", Region)) %>%
@@ -1074,21 +1195,12 @@ slice_max(gdppt, gdp_per_capita, n=3)
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_15
+#| label: tbl_11
 #| tbl-cap: "The least wealtiest regions in Portugal"
 slice_min(gdppt, gdp_per_capita, n=3)
 ```
 
-```{r}
-#| echo: false
-#| output: true
-#| label: tbl_16
-#| tbl-cap: "Summary gdppt"
-gdppt %>%
-summary()
-```
-
-#### Denmark gini
+#### Graph 6
 
 ```{r NUTS2 in Denmark}
 #| echo: false
@@ -1105,7 +1217,7 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl_17
+#| label: tbl_12
 #| tbl-cap: "Gini in DK regions"
 gdppop %>%
 filter(nuts0 == "DK") %>%
@@ -1117,7 +1229,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 ```{r Outliers in Denmark}
 #| echo: false
 #| output: true
-#| label: tbl-18
+#| label: tbl-13
 #| tbl-cap: "TOutliers in Denmark"
 dkoutliers <- gdppop %>%
   filter(nuts0 == "DK") %>%
@@ -1126,7 +1238,7 @@ dkoutliers <- gdppop %>%
 dkoutliers
 ```
 
-#### France gini
+#### Graph 7
 
 ```{r NUTS2 in France}
 #| echo: false
@@ -1144,7 +1256,7 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-19
+#| label: tbl-14
 #| tbl-cap: "Gini in France"
 gdppop %>%
 filter(nuts0 == "FR") %>%
@@ -1156,7 +1268,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-20
+#| label: tbl-15
 #| tbl-cap: "Outliers in France"
 froutliers <- gdppop %>%
   filter(nuts0 == "FR") %>%
@@ -1165,7 +1277,7 @@ froutliers <- gdppop %>%
 froutliers
 ```
 
-#### Hun/Slo Gini
+#### Graph 8
 
 ```{r NUTS2 in Hungary and Slovakia}
 #| echo: false
@@ -1183,7 +1295,7 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-21
+#| label: tbl-16
 #| tbl-cap: "Gini in Hungary"
 gdppop %>%
 filter(nuts0 == "HU") %>%
@@ -1195,7 +1307,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-22
+#| label: tbl-17
 #| tbl-cap: "Gini in Slovakia"
 gdppop %>%
 filter(nuts0 == "SK") %>%
@@ -1207,7 +1319,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 ```{r Outliers in Hungary and Slovakia}
 #| echo: false
 #| output: true
-#| label: tbl-23
+#| label: tbl-18
 #| tbl-cap: "Outliers in Hungary and Slovakia"
 huskoutliers <- gdppop %>%
    filter (grepl('HU..', Region) | grepl('SK..', Region)) %>%
@@ -1216,7 +1328,7 @@ huskoutliers <- gdppop %>%
 huskoutliers
 ```
 
-#### Portugal Gini
+#### Graph 9
 
 ```{r NUTS2 in Portugal}
 #| echo: false
@@ -1234,7 +1346,7 @@ ggplot(aes(x = Year, y=gini_n2, fill=nuts2, color=nuts2)) +
 ```{r}
 #| echo: false
 #| output: true
-#| label: tbl-24
+#| label: tbl-19
 #| tbl-cap: "Gini in Portugal"
 gdppop %>%
 filter(nuts0 == "PT") %>%
@@ -1246,7 +1358,7 @@ distinct(nuts2, Year,.keep_all =TRUE) %>%
 ```{r Outliers in Portugal}
 #| echo: false
 #| output: true
-#| label: tbl-25
+#| label: tbl-20
 #| tbl-cap: "Outliers in Portugal"
 ptoutliers <- gdppop %>%
   filter(nuts0 == "PT") %>%
@@ -1257,7 +1369,7 @@ ptoutliers
 
 **Assignment 2**
 
-#### Gini all countries
+#### Graph 10
 
 ```{r}
 #| echo: false
@@ -1283,7 +1395,8 @@ ggplot()+
 
 #### Graph 11
 
-Estimate the effect of regional development on regional inequality GINI for the year 2010
+Estimate the effect of regional development on regional inequality GINI
+for the year 2010
 
 ```{r}
 #| echo: false
@@ -1359,86 +1472,3 @@ ggplot(Portugal2010, aes(x = gdp_per_capita, y = Gini)) +
   geom_smooth(method = "lm") + 
   labs(title = "Gini and GDP per capita for Portugal",x = "GDP per capita 2010", Y = "Gini")
 ```
-
-#### Table 21
-
-```{r}
-#| echo: false
-mlrdata <- Denmark2010
-lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
-lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
-lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
-lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
-
-
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-
-```
-
-In Denmark, we can see that models 1, 2 and 4 all have a negative effect when it comes to the variables being dependent on each other.
-in model 5, where we look at education and life expectancy, we can see a positive effect.
-the same in model 6 with motorway and life expectancy.
-when we look at R2, this is high on model 3.
-but since we only have 4 observations from Denmark, it is not possible to draw any conclusion as to whether these variables are relevant to each other.
-
-#### Table 22
-
-```{r}
-#| echo: false
-mlrdata <- HungarySlovakia2010
-lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
-lm.8 = lm(Gini2 ~ gdp_per_capita + Road, mlrdata)
-lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + Road, mlrdata)
-lm.10 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
-lm.11 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
-lm.12 = lm(Gini2 ~ gdp_per_capita +Road + lea, mlrdata)
-
-
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9,"Model 4" = lm.10,"Model 5" = lm.11, "Model 6" = lm.12),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Motorway = "Road", Lifeexp = "lea", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-
-```
-
-Again we have chosen to merge Hungary and Slovakia when we are going to do this multiple regression analysis.
-here we can see that models 4 and 5 have a positive effect on Gini.
-Model 5, which has education and life expectancy as variables, both values are positive but they have a rather low R2, which means that they do not have such a strong correlation anyway.
-
-#### Table 23
-
-```{r}
-#| echo: false
-mlrdata <- Portugal2010
-lm.7 = lm(Gini2 ~ gdp_per_capita +Edu , mlrdata) 
-lm.8 = lm(Gini2 ~ gdp_per_capita + lea, mlrdata)
-lm.9 = lm(Gini2 ~ gdp_per_capita + Edu + lea, mlrdata)
-
-
-
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.7, "Model 2" = lm.8, "Model 3" = lm.9),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(gdp_per_capita= "gdp_per_capita", Education = "Edu", Lifeexp = "lea", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-
-```
-
-Portugal had no observations on the Motorway, we have therefore removed this variable from these observations.
-we are then left with three models.
-and we can see that all the models are positive, model 1 has a higher R2 than model 2 has.
-while model 3 has a perfect 1.
-but since we only have 3 observations we cannot put much faith in this R2.

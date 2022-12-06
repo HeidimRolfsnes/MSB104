@@ -113,12 +113,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
-  <ul class="collapse">
-  <li><a href="#download-two-dataset-from-eurostat" id="toc-download-two-dataset-from-eurostat" class="nav-link" data-scroll-target="#download-two-dataset-from-eurostat">1. Download two dataset from Eurostat</a></li>
-  <li><a href="#gdp-per-capita" id="toc-gdp-per-capita" class="nav-link" data-scroll-target="#gdp-per-capita">GDP per Capita</a></li>
-  <li><a href="#descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers" id="toc-descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers" class="nav-link" data-scroll-target="#descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers">Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers</a></li>
-  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#assignment-2" id="toc-assignment-2" class="nav-link" data-scroll-target="#assignment-2">Assignment 2</a>
   <ul class="collapse">
   <li><a href="#growth-and-inequity" id="toc-growth-and-inequity" class="nav-link" data-scroll-target="#growth-and-inequity">Growth and inequity</a></li>
@@ -130,7 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#explore-alternative-functional-forms-e.g.log-cubical-estimates-of-your-previous-estimates-on-the-relationship-between-regional-development-yi-on-regional-inequality-giniwj.-give-an-argument-for-two-forms-that-might-fit-the-data-better." id="toc-explore-alternative-functional-forms-e.g.log-cubical-estimates-of-your-previous-estimates-on-the-relationship-between-regional-development-yi-on-regional-inequality-giniwj.-give-an-argument-for-two-forms-that-might-fit-the-data-better." class="nav-link" data-scroll-target="#explore-alternative-functional-forms-e.g.log-cubical-estimates-of-your-previous-estimates-on-the-relationship-between-regional-development-yi-on-regional-inequality-giniwj.-give-an-argument-for-two-forms-that-might-fit-the-data-better.">Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better.</a></li>
   </ul></li>
   <li><a href="#assignment-4" id="toc-assignment-4" class="nav-link" data-scroll-target="#assignment-4">Assignment 4</a></li>
-  <li><a href="#extra" id="toc-extra" class="nav-link" data-scroll-target="#extra">Extra</a></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
   </ul>
 </nav>
 </div>
@@ -163,65 +158,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div style="page-break-after: always;"></div>
 </div>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>In the subject MSB104 econometrics, this year we will hand in an assignment divided into four assignments throughout the semester. The assignments must be written and calculated in the software R. We are group one and the countries that will be representing in our assignment is: Denmark, France, Hungary, Portugal and Slovakia.</p>
-<section id="download-two-dataset-from-eurostat" class="level2">
-<h2 class="anchored" data-anchor-id="download-two-dataset-from-eurostat">1. Download two dataset from Eurostat</h2>
-<p>The data contains GDP (nama_10r_3gdp) and population (demo_r_pjanaggr3,pi) for countries over the last 20 years, on a NUTS3 level.</p>
+<section id="sub-national-gdp" class="level3">
+<h3 class="anchored" data-anchor-id="sub-national-gdp">1. Sub-national GDP</h3>
+<section id="downloaded-the-data-sets-from-eurostat" class="level4">
+<h4 class="anchored" data-anchor-id="downloaded-the-data-sets-from-eurostat">1.1 Downloaded the data sets from Eurostat</h4>
+<p>The data sets contain GDP (nama_10r_3gdp) and population (demo_r_pjanaggr3,pi) for our five countries over the last 20 years, on a NUTS3 level.</p>
 <div class="cell">
 
 </div>
-<p>To collect the information we need in these two datasets, we created a new dataset which we call gdppop. We collect the information we need to take with us further in the task.</p>
+<p>We would like to have the information we get from these two data sets collected in one data set. A new data set called gdppop has been created and is the data set that will be used further in the task.</p>
 <div class="cell">
 
 </div>
 </section>
-<section id="gdp-per-capita" class="level2">
-<h2 class="anchored" data-anchor-id="gdp-per-capita">GDP per Capita</h2>
-<p>To calculate GDP per capita, we use <span class="math display">\[ y_i = GDP_i / population_i\]</span> the litle i refers to NUTS3 regions in our countries.</p>
+<section id="calculate-gdp-per-capita" class="level4">
+<h4 class="anchored" data-anchor-id="calculate-gdp-per-capita">1.2 Calculate GDP per Capita</h4>
+<p>To calculate GDP per capita, we use the formula: <span class="math display">\[ y_i = GDP_i / population_i\]</span> The litle i refers to nuts3 regions in our countries.</p>
 <div class="cell">
 
 </div>
-<p>To create an overview of GDP per capita in our NUTS3 regions, we use descriptive statistics. A descriptive statistic contains the min and the max values. i.e.&nbsp;the smallest and the highest GDP per capita for the countries. W can find 1st quartile and 3rd quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value. It also shows mean which tells us what the average observation for all regions are.</p>
-<p>In <a href="#tbl-1">Table&nbsp;1</a> we get an overview of GDP, population and gdp per capita for all the NUTS3 regions. The mean of GDP per capita for all nuts3 regions <a href="#tbl-2">Table&nbsp;2</a> are 22 676 euro. The smalest value are 4394,85 Euro and the highest are 92 361,75 Euros.</p>
-<p>It wasn’t easy to draw any conclusion from the summary in table 1, as we assume that there are large regional inequaties between the regions in the countries we have in our sample.</p>
-<p>To get a better picture of the different regions and the opportunity to see if there are regions that stands out, we created summaries per countryi It have us a better overview of outliers in the different countries. We also choose to look at a specific year, this to make it easier to compare the countries in a given time period.</p>
-<p>To get the result by country, we made a summary of GDP per capita on each country. By creating such a summary for each country, we can get an overview of whether there are major inequality within the various regions. If we find such deviations, we can choose to remove some of our regions in order not to have large inequalities.</p>
-<p>Since Hungary and Slovakia have few nuts3 regions we chose to look at them together.</p>
-<section id="denmark" class="level3">
-<h3 class="anchored" data-anchor-id="denmark">Denmark</h3>
-<p>Denmark is a small country in Scandinavia,and they don’t have many NUTS3 regions <a href="#fig-1">Figure&nbsp;1</a>. Kobenhagen is the capital of Denmark, and as we can see above, it stand out together with the surrounding region. The region around Paris has had a higher growth. Capital cities are often richer than other regions.</p>
-<p>The three Whealties regions in 2010 Denmark are Kobenhagen (DK011), Kobenhagen area (DK012) and Sydjylland (DK032) <a href="#tbl-3">Table&nbsp;3</a>. The three least wealtiest regions in Denmark in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021) <a href="#tbl-4">Table&nbsp;4</a>. Denmark has 11 nuts3 regions, it is the capital and the surrounding region that stands out among the richest, in the poor countries it is more even, there is a difference of 30,000 Euro between these three regions.</p>
-<p><strong>?@tbl-5</strong> SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT</p>
 </section>
-<section id="france" class="level3">
-<h3 class="anchored" data-anchor-id="france">France</h3>
-<p>France is a country in Western Europe, but they also have colonies in other parts of the world. France has the largest land areas in the EU, which we see in the fact that they have over a hundred nuts3 regions.</p>
-<p>Since France has so many nuts3 regions, it is not so easy to distinguish the different regions. In <a href="#fig-2">Figure&nbsp;2</a> the capital Paris stands out. Based on the summary <strong>?@tbl-6</strong>, we can see that there is a difference between min and max. If we look more closely at the figures, it is possible to see that the reason may be that France has colonies in other countries that are included. These colonies are located in Africa and South America which has a negative effect on France’s overall GDP. For further research, we have chosen to remove these regions from the data set <strong>?@tbl-7</strong>, <a href="#fig-3">Figure&nbsp;3</a>.</p>
-<p>After the FRY regions have been removed, we are left with 96 nuts3 regions. The three wealtiest regions in 2010 are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26) <strong>?@tbl-8</strong>. Paris og Hauts-de-seine stands out clarly from the other region with a difference of approximately 50,000 Euro GDP pr capita. The three poorest regions in 2010 is Creuse (FRI22), Ariège (FRJ21) and Meuse(FRF32)<strong>?@tbl-9</strong>. in these regions we find little variation in GDP per capita.</p>
-<p><strong>?@tbl-10</strong> SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT</p>
+<section id="descriptive-statistics" class="level4">
+<h4 class="anchored" data-anchor-id="descriptive-statistics">1.3 Descriptive statistics</h4>
+<p>To create an overview of GDP per capita in our nuts3 regions, we use descriptive statistics. A descriptive statistic contains the min and the max values. i.e.&nbsp;the smallest and the highest GDP per capita for the countries. We can find first quartile and third quartile. The first quartile is the observation between the median and the lowest value, and looks at the 25% lowest values from the 75% highest. The median looks at the value that is observed the most times in the middle of the observations. The third quartile is then, naturally enough, the value between the median and the highest value. It also shows mean which tells us what the average observation for all regions are.</p>
+<p>In <a href="#tbl-1">Table&nbsp;1</a> we get an overview of GDP, population and gdp per capita for all the nuts3 regions. The mean of GDP per capita for all nuts3 regions are 22 588 euro per capita. The smalest value are 4394,85 Euro per capita and the highest are 92 361,75 Euros per capita.</p>
+<p>It is not easy to draw any conclusion from the summary in table 1, as we assume that there are large regional inequaties between the regions in the countries we have in our sample.</p>
+<p>In order to get a more defined picture of the various regions and see if any of them stand out, we want to divide the countries up, with the exception of Hungary and Slovakia. They both have few regions, so we choose to look at them together. This will hopefully give us a better overview of outliers in the various countries. In order to be able to compare the countries in a given period, we choose to reduce the number of years to only look at the year 2010. When we look at specific years and countries, we can look at GDP per inhabitant in each individual country. It will give us an overview of the differences in the regions. If there are large deviations in any of the regions, we can possibly take them away so that the differences do not become too large.</p>
 </section>
-<section id="hungary-and-slovakia" class="level3">
-<h3 class="anchored" data-anchor-id="hungary-and-slovakia">Hungary and Slovakia</h3>
-<p>Hungary and Slovakia are both countries in Central Europe. Both Bratislava and Budapest had good growth until 2008. After that, things went down with Bratislava for a while, while Budapest had a larger increase <a href="#fig-4">Figure&nbsp;4</a>. The other regions in these countries have had more stable growth.</p>
-<p>Hungary and Slovakia has 28 regions together. The three whealties in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021) <strong>?@tbl-11</strong>. The capitals of both countries have the richest region. The least wheltiest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323)<strong>?@tbl-12</strong>. The three poorest regions in 2010 belong to Hungary, which could mean that they have a lower GDP per capita than Slovakia when it comes to the poorest regions. .</p>
-<p>There is a difference of approximately 25,000 Euro between the whealties and poorest regions in Hungary IN 2010. Based on these observations, Bratislava is the richest region, since we do not see any of Slovakia’s regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.</p>
-<p><strong>?@tbl-13</strong> SKAL VI SNAKKE OM SAMMENDRAGET ELLER TA DET BORT</p>
+<section id="denmark" class="level4">
+<h4 class="anchored" data-anchor-id="denmark">1.3.1 Denmark</h4>
+<p>Denmark is not a particularly large country in Europe nor does it have many nuts3 regions <a href="#fig-1">Figure&nbsp;1</a>. Copenhagen which is the capital of Denmark, and the regions around Copenhagen are the ones that stand out. Furthermore, we will also see that it is the capitals that are often the richest regions.</p>
+<p>Based on <a href="#tbl-2">Table&nbsp;2</a>, we can see that the three richest regions in Denmark in 2010 are Copenhagen (DK011), Copenhagen area (DK012) and Sydjylland (DK032). On <a href="#tbl-3">Table&nbsp;3</a> we can see that the three poorest regions in Denmark in 2010 are Vest- og Sydjælland (DK022), Bornholm (DK014) and Østsjælland (DK021). Between the poorest people in Østsjælland and the richest people in Copenhagen, there is a difference of more than 30,000 Euro per capita.</p>
 </section>
-<section id="portugal" class="level3">
-<h3 class="anchored" data-anchor-id="portugal">Portugal</h3>
-<p>Portugal is a country in southern Europe. Portugal has two archipelagos, each representing a different region <a href="#fig-5">Figure&nbsp;5</a>. There is a steady growth in the regions, but all regions have had a slight decline between 2010-2012, after that there has been an increase.</p>
-<p>Portugal has 25 regions. The whealtiest regions <strong>?@tbl-14</strong> in 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150). Lisboa has a litle higher GDP pr capita then the rest of the whealtiest regions. The poorest regions in 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) <strong>?@tbl-15</strong>. There is approximatly 14,000 Euro in GDP per capita, in difference between the wealties and the poorest regions.</p>
+<section id="france" class="level4">
+<h4 class="anchored" data-anchor-id="france">1.3.2 France</h4>
+<p>France is a country in southern Europe with over 100 nuts3 regions. Some of these regions are colonies in other parts of the world. It is not easy to distinguish the different regions. The <a href="#fig-2">Figure&nbsp;2</a> shows us that it is the capital named Paris in France that stands out. Based on the summary in <strong>?@tbl-4</strong>, we can see that there is a difference between min and max. If we look more closely at the figures, it is possible to see that the reason may be that France has colonies in other countries that are included. These colonies are located in Africa and South America which has a negative effect on France’s overall GDP. For further research, we have chosen to remove these regions from the data set (<strong>?@tbl-5</strong>, <a href="#fig-3">Figure&nbsp;3</a>).</p>
+<p>After the FRY regions have been removed, we are left with 96 nuts3 regions. Based on <strong>?@tbl-6</strong> the three richest regions in 2010 are Paris (FR101), Hauts-de-seine (FR105) and Rhône (FRK26). Paris og Hauts-de-seine stands out clearly from the other region with a difference of approximately 50,000 Euro pr capita. The three poorest regions in 2010 is Creuse (FRI22), Ariège (FRJ21) and Meuse(FRF32)<strong>?@tbl-7</strong>. In these regions we find little variation in gdp per capita. Between the Paris and Meuse there is a difference of over 74,000 Euro per capita. It looks like there is a greater between rich and poor in France than in Denmark. An assumption could be that since France has a lot more regions then Denmark some of the regions in France can be very small compare to the few regions in Denmark.</p>
+</section>
+<section id="hungary-and-slovakia" class="level4">
+<h4 class="anchored" data-anchor-id="hungary-and-slovakia">1.3.3 Hungary and Slovakia</h4>
+<p>Hungary and Slovakia are both countries in Central Europe. As we can se on <a href="#fig-4">Figure&nbsp;4</a> both Bratislava and Budapest had a good growth until 2008. After that, things went down with Bratislava for a while. At the same time Budapest had a larger increase The other regions in these countries have had more stable growth.</p>
+<p>Together, Hungary and Slovakia has 28 regions. In <strong>?@tbl-8</strong> The three richest regions in 2010 are Bratislava (SK010), Budapest (HU110) and Trnava (SK021). This refers to what we have commented on previously countries that the capital cities are often the richest regions when we look at gdp per capita.. In <strong>?@tbl-9</strong> it shows that the poorest regions in 2010 are Nògràd(HU313), Szabolcs-Szatmàr-Bereg(HU323). All the poorest regions belongs to Hungary, which may mean that Hungary has a lower GDP per capita than Slovakia. .</p>
+<p>There is a difference of approximately 25,000 Euro per capita between the richest and poorest regions in Hungary IN 2010. Based on these observations, the capital Bratislava is the richest region. Since we do not see any of Slovakia’s regions among the lowest, we can assume that Slovakia has a higher GDP per capita than Hungary has for its inhabitants.</p>
+</section>
+<section id="portugal" class="level4">
+<h4 class="anchored" data-anchor-id="portugal">1.3.4 Portugal</h4>
+<p>Portugal is a country in southern Europe. Portugal has two archipelagos, each representing a different region. In <a href="#fig-5">Figure&nbsp;5</a> we can see that there is a steady growth in the regions, but all regions have had a slight decline between 2010-2012. After 2012, it appears that all regions will increase again.</p>
+<p>Portugal has 25 regions. <strong>?@tbl-10</strong> shows us that the three richest regions in 2010 are Lisboa(PT170), Alentejo Litoral (PT181) and Algarve (PT150). Lisboa has a litle higher GDP pr capita then the rest of the whealtiest regions. In <strong>?@tbl-11</strong> we can see that the three poorest regions in 2010 are Tãmega e Sousa (PT11C), Alto Tãmega (PT11B) and Beiras e Serra da Estrela (PT16J) . There is approximatly 14,000 Euro per capita, in difference between the richest and the poorest regions in Portugal.</p>
 <p>In all the countries, we see that it is the capitals that stand out the most and have the highest GDP per capita among their inhabitants. Paris has managed to have the highest GDP per capita and the poorest regions can be found in Hungary.</p>
 </section>
 </section>
-<section id="descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers" class="level2">
-<h2 class="anchored" data-anchor-id="descriptive-statistics-regional-inequity-gini-nuts2-and-discuss-briefly-if-there-are-noteworthy-outliers">Descriptive Statistics regional inequity (Gini Nuts2) and discuss briefly if there are noteworthy outliers</h2>
-<p>Furthermore, we will use the data to calculate population waterproof GDP Ginie coefficients for our countries at a NUTS2 () level.</p>
+<section id="regional-inequity" class="level3">
+<h3 class="anchored" data-anchor-id="regional-inequity">2. Regional inequity</h3>
 <p>A Gini coefficient must be between 0 and 1. If it’s 0, it means that there is little inequality, and if it’s closer to 1, it means that there is a greater degree of inequality between rich and poor. We calculate a Gini coefficient by looking at how much wealth and income there is in a country and then how it is distributed among the population. When we have calculated the gini coefficients, we will also run a test on the data we have to see if we find outliers. Outliers are values that are either very high or very low compared to the other data we have.</p>
-<section id="gini-for-all-countries-all-years" class="level3">
-<h3 class="anchored" data-anchor-id="gini-for-all-countries-all-years">Gini for all countries all years</h3>
+<section id="gini-for-all-countries-all-years" class="level4">
+<h4 class="anchored" data-anchor-id="gini-for-all-countries-all-years">2.1 Gini for all countries all years</h4>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2840999</code></pre>
@@ -258,32 +252,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 </div>
-<p>When we look at all the regions in the selected countries, we have 46 observations. The total Gini for all countries for 2010 is 0.28. We think that it will be a bit “washed away” and will therefore look at each individual country. We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0.</p>
-<p>In the graph <a href="#fig-6">Figure&nbsp;6</a>, there are two regions that have varied quite a bit over the past 20 years. They still stay below 0.025, which shows that there is little difference between rich and poor in these regions. Another region that stands out is DK01. It is a bit further up the graph than the other regions. Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.</p>
-<p>In Denmark, the Gini coefficients are between 0 and 0,11 <strong>?@tbl-17</strong>. Denmark has a region Nordjylland (DK05) which is an outlier <a href="#tbl-18">Table&nbsp;5</a>. in this region we have so little data that what we get looks like they have a perfect gini of zero. Denmark has only five NUTS2 regions, which doesn’t gives us much data to work with.</p>
+<p>When we look at all the nuts2 regions in the selected countries, we have 46 observations. The total gini for all countries in 2010 is 0.28. We think that it will be a bit “washed away” and will therefore look at each individual country. We can also see that we have ginis that are 0 which means a perfect correlation. We will look at each country to find out why and where there are regions that have ginis that are 0.</p>
 </section>
-<section id="france-1" class="level3">
-<h3 class="anchored" data-anchor-id="france-1">France</h3>
-<p>In France, there are so many regions that it is difficult to see the regions properly in the graph <a href="#fig-7">Figure&nbsp;7</a>. What is shown well is that the vast majority of regions follow each other evenly by being below 0.1. There are still some that stand out and we can see that FR10 is the highest with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020</p>
-<p>In France, the Gini coefficients are between 0,02 and 0,26 <a href="#tbl-19">Table&nbsp;6</a>, which shows us that France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France.France doesn´t have any outliers, after we took away the FRY regions <a href="#tbl-20">Table&nbsp;7</a>.</p>
+<section id="denmark-1" class="level4">
+<h4 class="anchored" data-anchor-id="denmark-1">2.1.1 Denmark</h4>
+<p>In <a href="#fig-6">Figure&nbsp;6</a>, there are two regions in Denmark that have varied quite a bit over the past 20 years. They still stay below 0.025, which shows us that there is just a small difference between rich and poor in these regions. A region that really stands out is DK01. It is a bit further up the graph than the other regions. Although it is not close to 0, there is a greater difference between rich and poor here than in the other regions.</p>
+<p>As we can see in <strong>?@tbl-12</strong> the gini coefficients are between 0 and 0,11 in Denmark. <a href="#tbl-13">Table&nbsp;4</a> shows us that Denmark has a region called Nordjylland (DK05) which is an outlier . In this region we don’t have much data so the little data we get gives us a perfect gini of 0. Denmark has only five NUTS2 regions, and it doesn’t gives us much data to work with.</p>
 </section>
-<section id="hungary-and-slovakia-1" class="level3">
-<h3 class="anchored" data-anchor-id="hungary-and-slovakia-1">Hungary and Slovakia</h3>
-<p>Hungary and Slovakia have large fluctuations in their regions <a href="#fig-8">Figure&nbsp;8</a>. One of the regions with the most fluctuations is HU22 where they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12. Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.</p>
-<p>In Hungary, the Gini coefficient are between 0 and 0,08 <a href="#tbl-21">Table&nbsp;8</a>. Hungary has two regions which are outliers <a href="#tbl-23">Table&nbsp;10</a> Budapest (HU11) and Pest (HU12). Pest and Budapest hasn’t had any data for the periode that we are looking into.</p>
-<p>In Slovakia,the Gini coefficient are also between 0 and 0,08 <a href="#tbl-22">Table&nbsp;9</a>. Slovakia has one region, SK01, that is an outliers <a href="#tbl-24">Table&nbsp;11</a>. It leaves only Slovakia with three regions from which we obtain data.</p>
+<section id="france-1" class="level4">
+<h4 class="anchored" data-anchor-id="france-1">2.1.2 France</h4>
+<p>France is a bit different from Denmark with a lot of regions. In <a href="#fig-7">Figure&nbsp;7</a> there are so many regions that we are unable to see them properly. What is shown well is that the vast majority of regions follow each other evenly by being below 0.1. There are still some regions that stand out and we can see that FR10 stands the most out with a gini of 0.3, while FRJ1 and FRK1 fluctuate quite a bit from 2005 to 2020.</p>
+<p>In France, the <a href="#tbl-14">Table&nbsp;5</a> shows that the gini coefficients are between 0,02 and 0,26. France has a slightly higher gini than Denmark, which means that the inequality is slightly greater in France. Without the FRY regions the <a href="#tbl-15">Table&nbsp;6</a> shows that France doesn´t have any outliers.</p>
 </section>
-<section id="portugal-1" class="level3">
-<h3 class="anchored" data-anchor-id="portugal-1">Portugal</h3>
-<p><a href="#fig-9">Figure&nbsp;9</a></p>
-<p>In the graph for Portugal, we can see that the Gini in several of the regions has been declining over the past 20 years. That is to say, the differences between rich and poor have narrowed over the years. PT18 stands out somewhat in that there are strong fluctuations over the years.</p>
-<p><a href="#tbl-19">Table&nbsp;6</a> <a href="#tbl-20">Table&nbsp;7</a></p>
-<p>In Portugal, the Gini coefficient are between 0 and 0,08. Portugal has four regions, Algarve (PT15) Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30). Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos belonging to Portugal which may be the reason why they are outliers. Portugal doesn’t have many NUTS 2 regions, and when four of them have no value, there is not much confidence in the result we get.</p>
+<section id="hungary-and-slovakia-1" class="level4">
+<h4 class="anchored" data-anchor-id="hungary-and-slovakia-1">2.1.3 Hungary and Slovakia</h4>
+<p>In <a href="#fig-8">Figure&nbsp;8</a> Hungary and Slovakia have large fluctuations in their regions . One of the regions with the most fluctuations is HU22 where they are down to a gini of 0.075 in 2012, while in 2016 they are up to a gini of approximately 0.12. Hungary and Slovakia are small countries in Eastern Europe and we assume that this is the reason why there are large fluctuations.</p>
+<p>When we look at the <a href="#tbl-16">Table&nbsp;7</a> the hini coefficient in Hungary is between 0 and 0,08 . Based on <a href="#tbl-18">Table&nbsp;9</a> Hungary has two regions, Budapest (HU11) and Pest (HU12) which are outliers. Looking at the year 2010, Budapest and Pest do not have any data that we can look at.</p>
+<p><a href="#tbl-17">Table&nbsp;8</a> tells us that in Slovakia, the gini coefficient are also between 0 and 0,08 . Slovakia has one region called SK01 as we can see in <a href="#tbl-18">Table&nbsp;9</a>, that is an outlier. Then we are left with three regions from which we can obtain data in Slovakia. The reason why we combined Hungary and Slovakia further up in the task was precisely that they also had few regions at the nuts3 level, in the same way that they also have now have few nuts2 levels.</p>
 </section>
-<section id="discuss-briefly-if-there-are-noteworthy-outliers" class="level3">
-<h3 class="anchored" data-anchor-id="discuss-briefly-if-there-are-noteworthy-outliers">Discuss briefly if there are noteworthy outliers</h3>
-<p>To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros in GDP per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents.</p>
-<p>When we look at outliers for our countries, we can not find any outliers in France, but we do find in all the other countries. All the regions that are outliners are regions that have only one province, in Hungary, Slovakia and Portugal (HU11, HU12, SK01, PT15 and PT 17) the outliers are linked to the capitals. Capitals are often large areas, which only have one region. Portugal also has two island groups (PT20 and PT30) that come up as outliers, these are small regions. The last region that has outliners can be found in Denmark (DK05), this is a small region.</p>
+<section id="portugal-1" class="level4">
+<h4 class="anchored" data-anchor-id="portugal-1">2.1.4 Portugal</h4>
+<p>In the <a href="#fig-9">Figure&nbsp;9</a> for Portugal, we can see that the gini in several of the regions has been declining over the past 20 years. That is to say, the differences between rich and poor have narrowed over the years. PT18 stands out somewhat in that there are strong fluctuations over the years.</p>
+<p>Based on <a href="#tbl-19">Table&nbsp;10</a> Portugal has their gini coefficient between 0 and 0,08. Portugal has four regions, Algarve (PT15) Lisboa(PT17), Regiäo Autònoma dos Acores (PT20) and Regiäo Autònoma da Madeira (PT30). Regiäo Autònoma dos Acores and Regiäo Autònoma da Madeira are both archipelagos, belonging to Portugal which may be the reason why they are outliers as we can see in <a href="#tbl-20">Table&nbsp;11</a>. Portugal doesn’t have many NUTS 2 regions, and when four of them have no value, there is not much confidence in the result we get.</p>
+</section>
+<section id="discuss-briefly-if-there-are-noteworthy-outliers" class="level4">
+<h4 class="anchored" data-anchor-id="discuss-briefly-if-there-are-noteworthy-outliers">2.2 Discuss briefly if there are noteworthy outliers</h4>
+<p>To summarize what has been done in assignment 1, we have calculated GDP per capita for all the countries combined and per country we have been given. We saw that when we collected all the countries we got 22,805.13 Euros per capita. Denmark had a significantly higher GDP per capita than the other countries. Hungary had the lowest with only 8781.69. France has colonies in other continents, we chose to remove these regions, this so that GDP would not be affected by these regions that belong to others continents. When we took away the FRY regions, there was no outliers in France.</p>
+<p>When we look at outliers for our countries, we cannot find any outliers in France, but we do find in all the other countries. All the regions that are outliners are regions that have only one province, in Hungary, Slovakia and Portugal (HU11, HU12, SK01, PT15 and PT 17) the outliers are linked to the capitals. Capitals are often large areas, which only have one region. Portugal also has two Island groups (PT20 and PT30) that come up as outliers, these are small regions. The last region that has outliers can be found in Denmark (DK05), this is a small region.</p>
 </section>
 </section>
 </section>
@@ -858,18 +853,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Write a consistent document that discusses the hypothesis that we can observe a significant and positive effect of development on regional inequality for your set of countries.</p>
 <p>Your final submission must have less than 10.000 words, three tables and five figures. Appendix and references not included.</p>
 </section>
-<section id="extra" class="level1">
-<h1>Extra</h1>
-<p>info</p>
-<p>A slope coeffisient tells us the expected change in Yi when Xi increases by one</p>
-<p>(https://www.datasciencecentral.com/7-classical-assumptions-of-ordinary-least-squares-ols-linear/)</p>
-<p>r BNP2010 %&gt;% filter(Year==2010 &amp; nuts0==“DK”) %&gt;% ggplot(aes(x =edu, y=Gini, fill=id_nuts2, color=id_nuts2)) + geom_point(lwd = .8) + labs(x = “Education”, y = “Gini”)</p>
-<p>lm(Gini2 ~ Edu, data=France2010)%&gt;% tidy%&gt;% kable(., digits=2)</p>
-<p>Lecture</p>
-<p>r reg &lt;- lm(gdp_n2 ~ lea + gdp_per_capita + Edu, data = gdppop2010) coeftest(reg, )</p>
-<p>r reg2 &lt;- lm(log(gdp_n2) ~ log(lea) + log(gdp_per_capita) + log(Edu), data = gdppop2010) coefficients(reg,vcov=hccm )</p>
-<section id="bibliography" class="level3">
-<h3 class="anchored" data-anchor-id="bibliography">Bibliography</h3>
+<section id="bibliography" class="level1">
+<h1>Bibliography</h1>
 <section id="appendix" class="level4">
 <h4 class="anchored" data-anchor-id="appendix">Appendix</h4>
 <p><strong>Assignment 1</strong></p>
@@ -928,20 +913,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div id="tbl-2" class="anchored">
-
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-2"><caption>Table&nbsp;2:  mean of the different </caption>
-<colgroup><col></colgroup><tbody><tr>
-<th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">GDP_per_Capita</th></tr>
-<tr>
-<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">2.26e+04</td></tr>
-</tbody></table>
-
-</div>
-</div>
-</div>
 </section>
 <section id="graph-1" class="level4">
 <h4 class="anchored" data-anchor-id="graph-1">Graph 1</h4>
@@ -957,9 +928,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-3" class="anchored">
+<div id="tbl-2" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-3"><caption>Table&nbsp;3:  The wealthiest regions in Denmark </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-2"><caption>Table&nbsp;2:  The wealthiest regions in Denmark </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -975,9 +946,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-4" class="anchored">
+<div id="tbl-3" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-4"><caption>Table&nbsp;4:  The least wealthiest regions in Denmark </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-3"><caption>Table&nbsp;3:  The least wealthiest regions in Denmark </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -989,17 +960,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </tbody></table>
 
 </div>
-</div>
-</div>
-<div class="cell" data-tbl-cap="Summary gdpdk">
-<div class="cell-output cell-output-stdout">
-<pre><code>      Year         Region          gdp_per_capita 
- Min.   :2010   Length:11          Min.   :29276  
- 1st Qu.:2010   Class :character   1st Qu.:32793  
- Median :2010   Mode  :character   Median :36862  
- Mean   :2010                      Mean   :40570  
- 3rd Qu.:2010                      3rd Qu.:41504  
- Max.   :2010                      Max.   :64695  </code></pre>
 </div>
 </div>
 </section>
@@ -1045,7 +1005,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_8"><caption>The wealthiest regions in France</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_6"><caption>The wealthiest regions in France</caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1061,7 +1021,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_9"><caption>The least wealthiest regions in France</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_7"><caption>The least wealthiest regions in France</caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1072,17 +1032,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">2010</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">FRF32</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">1.93e+04</td></tr>
 </tbody></table>
 
-</div>
-</div>
-<div class="cell" data-tbl-cap="Summary gdpfr">
-<div class="cell-output cell-output-stdout">
-<pre><code>      Year         Region          gdp_per_capita 
- Min.   :2010   Length:96          Min.   :18154  
- 1st Qu.:2010   Class :character   1st Qu.:21951  
- Median :2010   Mode  :character   Median :24289  
- Mean   :2010                      Mean   :26566  
- 3rd Qu.:2010                      3rd Qu.:28190  
- Max.   :2010                      Max.   :92362  </code></pre>
 </div>
 </div>
 </section>
@@ -1101,7 +1050,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_11"><caption>The wealthiest regions un Hungary and Slovakia</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_8"><caption>The wealthiest regions un Hungary and Slovakia</caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1117,7 +1066,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_12"><caption>The least wealthiest regions in Hungary and Slovakia</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_9"><caption>The least wealthiest regions in Hungary and Slovakia</caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1128,17 +1077,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">2010</td><td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">HU332</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">5.72e+03</td></tr>
 </tbody></table>
 
-</div>
-</div>
-<div class="cell" data-tbl-cap="Summary gdphusk">
-<div class="cell-output cell-output-stdout">
-<pre><code>      Year         Region          gdp_per_capita 
- Min.   :2010   Length:28          Min.   : 4395  
- 1st Qu.:2010   Class :character   1st Qu.: 6629  
- Median :2010   Mode  :character   Median : 8018  
- Mean   :2010                      Mean   : 9561  
- 3rd Qu.:2010                      3rd Qu.:10106  
- Max.   :2010                      Max.   :32670  </code></pre>
 </div>
 </div>
 </section>
@@ -1157,7 +1095,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_14"><caption>The wealthiest regions in Portugal</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_10"><caption>The wealthiest regions in Portugal</caption>
 <colgroup><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1173,7 +1111,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_15"><caption>The least wealtiest regions in Portugal</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_11"><caption>The least wealtiest regions in Portugal</caption>
 <colgroup><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Region</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gdp_per_capita</th></tr>
 <tr>
@@ -1184,17 +1122,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">PT11B</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">1.08e+04</td></tr>
 </tbody></table>
 
-</div>
-</div>
-<div class="cell" data-tbl-cap="Summary gdppt">
-<div class="cell-output cell-output-stdout">
-<pre><code>    Region          gdp_per_capita 
- Length:25          Min.   : 9919  
- Class :character   1st Qu.:12449  
- Mode  :character   Median :14708  
-                    Mean   :14558  
-                    3rd Qu.:15762  
-                    Max.   :24120  </code></pre>
 </div>
 </div>
 </section>
@@ -1213,7 +1140,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_17"><caption>Gini in DK regions</caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl_12"><caption>Gini in DK regions</caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gini_n2</th></tr>
 <tr>
@@ -1232,9 +1159,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-18" class="anchored">
+<div id="tbl-13" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-18"><caption>Table&nbsp;5:  TOutliers in Denmark </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-13"><caption>Table&nbsp;4:  TOutliers in Denmark </caption>
 <colgroup><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th></tr>
 <tr>
@@ -1259,9 +1186,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-19" class="anchored">
+<div id="tbl-14" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-19"><caption>Table&nbsp;6:  Gini in France </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-14"><caption>Table&nbsp;5:  Gini in France </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gini_n2</th></tr>
 <tr>
@@ -1315,9 +1242,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-20" class="anchored">
+<div id="tbl-15" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-20"><caption>Table&nbsp;7:  Outliers in France </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-15"><caption>Table&nbsp;6:  Outliers in France </caption>
 <colgroup><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th></tr>
 </tbody></table>
@@ -1340,9 +1267,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-21" class="anchored">
+<div id="tbl-16" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-21"><caption>Table&nbsp;8:  Gini in Hungary </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-16"><caption>Table&nbsp;7:  Gini in Hungary </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gini_n2</th></tr>
 <tr>
@@ -1366,14 +1293,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </div>
-</section>
-<section id="table-17" class="level4">
-<h4 class="anchored" data-anchor-id="table-17">Table 17</h4>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-22" class="anchored">
+<div id="tbl-17" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-22"><caption>Table&nbsp;9:  Gini in Slovakia </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-17"><caption>Table&nbsp;8:  Gini in Slovakia </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gini_n2</th></tr>
 <tr>
@@ -1391,9 +1315,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-23" class="anchored">
+<div id="tbl-18" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-23"><caption>Table&nbsp;10:  Outliers in Hungary and Slovakia </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-18"><caption>Table&nbsp;9:  Outliers in Hungary and Slovakia </caption>
 <colgroup><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th></tr>
 <tr>
@@ -1422,9 +1346,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-24" class="anchored">
+<div id="tbl-19" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-24"><caption>Table&nbsp;11:  Gini in Portugal </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-19"><caption>Table&nbsp;10:  Gini in Portugal </caption>
 <colgroup><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Year</th><th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">gini_n2</th></tr>
 <tr>
@@ -1448,9 +1372,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="tbl-25" class="anchored">
+<div id="tbl-20" class="anchored">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-25"><caption>Table&nbsp;12:  Outliers in Portugal </caption>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:tbl-20"><caption>Table&nbsp;11:  Outliers in Portugal </caption>
 <colgroup><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">nuts2</th></tr>
 <tr>
@@ -1595,7 +1519,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-43">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-38">
 <colgroup><col><col><col><col><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 1</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 2</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 3</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 4</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 5</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 6</th></tr>
 <tr>
@@ -1635,7 +1559,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-44">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-39">
 <colgroup><col><col><col><col><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 1</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 2</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 3</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 4</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 5</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 6</th></tr>
 <tr>
@@ -1675,7 +1599,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-45">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-40">
 <colgroup><col><col><col><col></colgroup><tbody><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 1</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 2</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Model 3</th></tr>
 <tr>
@@ -1705,7 +1629,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>Portugal had no observations on the Motorway, we have therefore removed this variable from these observations. we are then left with three models. and we can see that all the models are positive, model 1 has a higher R2 than model 2 has. while model 3 has a perfect 1. but since we only have 3 observations we cannot put much faith in this R2.</p>
-</section>
 </section>
 </section>
 
