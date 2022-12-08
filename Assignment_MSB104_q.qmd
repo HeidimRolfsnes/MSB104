@@ -1024,7 +1024,7 @@ plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts0", "Y
 In this penalty estimate, we have used the entire original data set with all the countries. We see that we have 995 observations. We can see that we do not get a very high R2 on any of these models. but we find three significant stars on both the second and fourth models.
 
 
-## Bibliography
+
 
 ## References
 ::: {#refs}
