@@ -81,7 +81,7 @@ We would like to have the information we get from these two data sets
 collected in one data set. A new data set called gdppop has been created
 and is the data set that will be used further in the task.
 
-#### 3.1 Download new data sets from Eurostat
+#### 1.1.1 Download new data sets from Eurostat
 
 We will start the assignment 2 with getting three new data sets from
 Eurostat. The first data set is erducation, were we want to look at the
@@ -1036,6 +1036,8 @@ plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("Year"), m
 penaldata %>%
 plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 
+
+```
 #Gen Table
   huxreg(
   list( "Nuts2" = plm, "year" = plm, "All" = plm ),
@@ -1043,7 +1045,7 @@ plm(Gini3 ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2", "
   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
   note = "Note): {stars} T statistics in brackets."
   )
-```
+
 
 ```{r}
 penaldata %>%
@@ -1154,7 +1156,7 @@ gdppop <- gdppop %>%
 #trenger ikke være en tabell for den tar bare bort FRY regionene skulle kanskje vert i teksten heller.
 ```
 
-#### Graph 3
+#### Figure 3
 
 ```{r France without the FRY regions}
 #| echo: false
@@ -1192,7 +1194,7 @@ slice_max(gdpfr, gdp_per_capita, n=3)
 slice_min(gdpfr, gdp_per_capita, n=3)
 ```
 
-#### Graph 4
+#### Figure 4
 
 ```{r GDP in Hungary and Slovakia}
 #| echo: false
@@ -1230,7 +1232,7 @@ slice_max(gdphusk, gdp_per_capita, n=3)
 slice_min(gdphusk, gdp_per_capita, n=3)
 ```
 
-#### Graph 5
+#### Figure 5
 
 ```{r GDP in Portugal}
 #| echo: false
@@ -1268,7 +1270,7 @@ slice_max(gdppt, gdp_per_capita, n=3)
 slice_min(gdppt, gdp_per_capita, n=3)
 ```
 
-#### Graph 6
+#### Figure 6
 
 ```{r NUTS2 in Denmark}
 #| echo: false
@@ -1310,7 +1312,7 @@ dkoutliers <- gdppop %>%
 dkoutliers
 ```
 
-#### Graph 7
+#### Figure 7
 
 ```{r NUTS2 in France}
 #| echo: false
@@ -1353,7 +1355,7 @@ froutliers <- gdppop %>%
 froutliers
 ```
 
-#### Graph 8
+#### Figure 8
 
 ```{r NUTS2 in Hungary and Slovakia}
 #| echo: false
@@ -1410,7 +1412,7 @@ huskoutliers <- gdppop %>%
 huskoutliers
 ```
 
-#### Graph 9
+#### Figure 9
 
 ```{r NUTS2 in Portugal}
 #| echo: false
@@ -1494,7 +1496,7 @@ ggplot(gdppop2010, aes(x = gdp_per_capita, y = Gini)) +
   labs(title = "Gini and GDP per capita in 2010 for all countries")
 ```
 
-#### Graph 12
+#### Figure 12
 
 Discuss the classical assumptions OLS in light of your data and plots
 
@@ -1508,7 +1510,7 @@ plot(ols) +
   labs(title = "OLS for all countries")
 ```
 
-#### Graph 13
+#### Figure 13
 
 ```{r}
 #| echo: false
