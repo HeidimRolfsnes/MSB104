@@ -48,7 +48,7 @@ suppressMessages(library(plm))
 
 ```
 
-## Introduction hei 
+## Introduction 
 
 In the subject MSB104 econometrics, this year we will hand in an
 assignment divided into four tasks throughout the semester. The
@@ -152,7 +152,7 @@ value, and looks at the 25% lowest values from the 75% highest. The
 median looks at the value that is observed the most times in the middle
 of the observations. The third quartile is then, naturally enough, the
 value between the median and the highest value. It also shows mean which
-tells us what the average observation for all regions are.
+tells us what the average observation for all regions are [@johannessen2004forskningsmetode].
 
 In @tbl-1 we get an overview of GDP, population and GDP per capita for
 all the nuts3 regions. The mean of GDP per capita for all nuts3 regions
@@ -163,7 +163,7 @@ GDP is about the economy of each individual country. It tells us
 something about how the economy is developing in the various country. It
 is calculated from all goods and services produced in the country in a
 given year and subtracted from the products or services used in this
-production **SSB**
+production.
 
 As previously mentioned, we have been allocated five countries, where we
 will, among other things, look at the population. Populations means the
