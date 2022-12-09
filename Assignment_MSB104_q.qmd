@@ -48,7 +48,7 @@ suppressMessages(library(plm))
 
 ```
 
-## Introduction
+## Introduction hei hå
 
 In the subject MSB104 econometrics, this year we will hand in an
 assignment divided into four tasks throughout the semester. The
