@@ -975,6 +975,65 @@ on the Gini are the different health benefits in the countries, wage
 levels and unemployment. If there is high unemployment in the countries,
 we imagine that this could have a negative effect on the Gini.
 
+<<<<<<< HEAD
+### 8. Penal Estimates
+
+Use your entire data set to estimate the effect of regional development
+yj on regional inequality GINIWj in a penal setup. Present estimates
+that contain the following fixed effects separately and jointly:
+
+country fixed effects, year fixed effects NUTS 2 fixed effects (Please
+ignore for this assignment the alternative determinants from assignment
+2)
+
+Panel estimates are
+
+```{r penal}
+#| echo: false
+penaldata <- gdppop %>%
+  mutate(nuts2 = substr(Region,1,4))%>%
+  group_by(nuts2, Year) %>%
+  mutate(Gini = gini.wtd(gdp_per_capita, w = Population),
+         gdp_n3 = sum(GDP, na.rm=T),
+         pop_n3 = sum(Population, na.rm=T)) %>%
+  mutate(gdp_n2 = sum(gdp_n3),pop_n2 = sum(pop_n3))%>%
+  ungroup() %>%
+  #Keeping only 1 obs per NUTS 2
+    distinct(Year, nuts2,Gini,gdp_n2,pop_n2) %>%
+  mutate(gdp_per_capita = gdp_n2/pop_n2*10000)%>%
+  mutate(gdp_per_capita = log(gdp_per_capita))%>%
+  mutate(nuts0 = substr(nuts2,1,2))
+ 
+```
+
+```{r}
+plm.1 <- penaldata %>%
+plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+ 
+plm.2 <- penaldata %>%
+plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("Year"), model = "within", effect = "twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+ 
+plm.3 <- penaldata %>%
+plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts2", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+
+plm.4 <- penaldata %>%
+plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts0", "Year"), model="within", effect ="twoways") %>% coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+
+#Gen Table
+  huxreg(
+  list( "Regio FE" = plm.1, "Year FE" = plm.2, "Regio & Year FE" = plm.3 , "Country & Year FE" = plm.4 ),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note): {stars} T statistics in brackets."
+  )
+```
+In this penalty estimate, we have used the entire original data set with all the countries. We see that we have 995 observations. We can see that we do not get a very high R2 on any of these models. but we find three significant stars on both the second and fourth models.
+
+
+
+
+=======
+>>>>>>> eea90cda8c9cbfe896932bc4fc20da25f6848790
 ## References
 
 ::: {#refs}
