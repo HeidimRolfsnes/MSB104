@@ -1557,3 +1557,5 @@ plm(Gini ~ gdp_per_capita + I(gdp_per_capita^2), data = ., index = c("nuts0", "Y
   note = "Note): {stars} T statistics in brackets."
   )
 ```
+
+
