@@ -941,7 +941,7 @@ and year. here we see that the effect is much greater, we have an R2 of
 34.1% and three significant stars, which means that over time we see a
 greater effect on countries and years than on the other combinations.
 
-## **Conclusion** 
+## **Conclusion**
 
 Through this assignment, we have looked at regional inequity, growth and
 inequity and other determinants of inequity. We have used Gini and GDP
